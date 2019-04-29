@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -18,6 +17,7 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.stavro_xhardha.pockettreasure.home.isDebugMode
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar) //set the toolbar
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
@@ -38,23 +38,22 @@ class MainActivity : AppCompatActivity(),
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
-
         setupNavigation(navController)
 
         setupActionBar(navController, appBarConfiguration)
 
+        setupNavControllerListener(navController)
+    }
+
+    private fun setupNavControllerListener(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val dest: String = try {
                 resources.getResourceName(destination.id)
             } catch (e: Resources.NotFoundException) {
                 Integer.toString(destination.id)
             }
-
-            Toast.makeText(
-                this@MainActivity, "Navigated to $dest",
-                Toast.LENGTH_SHORT
-            ).show()
-            Log.d("NavigationActivity", "Navigated to $dest")
+            if (isDebugMode)
+                Log.d("NavigationActivity", "Navigated to $dest")
         }
     }
 
@@ -70,6 +69,7 @@ class MainActivity : AppCompatActivity(),
         sideNavView?.setupWithNavController(navController)
 
         val drawerLayout: DrawerLayout? = findViewById(R.id.drawer_layout)
+
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.fragment1, R.id.fragment2),
             drawerLayout
