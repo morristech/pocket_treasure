@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure.home
+package com.stavro_xhardha.pockettreasure
 
 import com.stavro_xhardha.pockettreasure.BuildConfig
 

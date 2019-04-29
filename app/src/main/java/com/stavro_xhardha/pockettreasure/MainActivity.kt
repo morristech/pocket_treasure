@@ -17,20 +17,19 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.stavro_xhardha.pockettreasure.home.isDebugMode
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
     AppBarConfiguration.OnNavigateUpListener {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration;
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar) //set the toolbar
+        setSupportActionBar(toolbar)
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
@@ -71,7 +70,16 @@ class MainActivity : AppCompatActivity(),
         val drawerLayout: DrawerLayout? = findViewById(R.id.drawer_layout)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.fragment1, R.id.fragment2),
+            setOf(
+                R.id.homeFragment,
+                R.id.namesFragment,
+                R.id.quranFragment,
+                R.id.calendarFragment,
+                R.id.tasbeehFragment,
+                R.id.galleryFragment,
+                R.id.newsFragment,
+                R.id.settingsFragment
+            ),
             drawerLayout
         )
     }

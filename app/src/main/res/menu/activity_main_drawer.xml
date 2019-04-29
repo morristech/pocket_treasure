@@ -5,37 +5,36 @@
 
     <group android:checkableBehavior="single">
         <item
-                android:id="@+id/fragment1"
+                android:id="@+id/homeFragment"
+                android:icon="@drawable/ic_home_grey_24dp"
+                android:title="@string/home"/>
+        <item
+                android:id="@+id/namesFragment"
                 android:icon="@drawable/ic_names_of_god"
                 android:title="@string/names_of_god"/>
         <item
-                android:id="@+id/fragment2"
+                android:id="@+id/quranFragment"
                 android:icon="@drawable/ic_quran"
                 android:title="@string/quran"/>
         <item
-                android:id="@+id/nav_calendar"
+                android:id="@+id/calendarFragment"
                 android:icon="@drawable/ic_calendar"
                 android:title="@string/calendar_and_events"/>
 
         <item
-                android:id="@+id/nav_tasbeeh"
+                android:id="@+id/tasbeehFragment"
                 android:icon="@drawable/ic_tasbeeh"
                 android:title="@string/tasbeeh"/>
 
         <item
-                android:id="@+id/nav_gallery"
+                android:id="@+id/galleryFragment"
                 android:icon="@drawable/ic_menu_gallery"
                 android:title="@string/gallery"/>
 
         <item
-                android:id="@+id/nav_news"
+                android:id="@+id/newsFragment"
                 android:icon="@drawable/ic_news"
                 android:title="@string/news"/>
-
-        <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_settings_dark_grey_24dp"
-                android:title="@string/action_settings"/>
     </group>
 
     <item android:title="@string/more">
@@ -46,9 +45,9 @@
             <!--android:icon="@drawable/ic_menu_share"-->
             <!--android:title="Share"/>-->
             <item
-                    android:id="@+id/nav_finish"
-                    android:icon="@drawable/ic_exit_to_app_dark_grey_24dp"
-                    android:title="@string/finish"/>
+                    android:id="@+id/settingsFragment"
+                    android:icon="@drawable/ic_settings_dark_grey_24dp"
+                    android:title="@string/action_settings"/>
         </menu>
     </item>
 
