@@ -3,8 +3,10 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   tools:context=".setup.SetupFragment">
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-              android:text="@string/pick_a_country"/>
+                                                   tools:context=".ui.setup.SetupFragment">
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCountries"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,5 +45,6 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 
 }

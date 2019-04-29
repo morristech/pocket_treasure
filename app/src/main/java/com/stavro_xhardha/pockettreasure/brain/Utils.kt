@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure
+package com.stavro_xhardha.pockettreasure.brain
 
 import com.stavro_xhardha.pockettreasure.BuildConfig
 

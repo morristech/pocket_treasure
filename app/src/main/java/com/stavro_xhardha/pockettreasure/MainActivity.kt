@@ -17,10 +17,10 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(),
-    AppBarConfiguration.OnNavigateUpListener {
+class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
