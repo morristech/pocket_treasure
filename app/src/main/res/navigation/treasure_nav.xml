@@ -5,12 +5,11 @@
             android:id="@+id/treasure_nav" android:label="Pick a country">
     <fragment android:id="@+id/pick_a_country" android:name="com.stavro_xhardha.pockettreasure.ui.setup.SetupFragment"
               android:label="Pick a country" tools:layout="@layout/fragment_setup"/>
-    <fragment android:id="@+id/homeFragment" android:name="com.stavro_xhardha.pockettreasure.ui.home.Home"
+    <fragment android:id="@+id/homeFragment" android:name="com.stavro_xhardha.pockettreasure.ui.home.HomeFragment"
               android:label="Home" tools:layout="@layout/fragment_home">
         <action android:id="@+id/action_home_fragment_to_pick_a_country" app:destination="@id/pick_a_country"/>
         <action android:id="@+id/action_home_fragment_to_namesFragment2" app:destination="@id/namesFragment"/>
         <action android:id="@+id/action_home_fragment_to_quranFragment" app:destination="@id/quranFragment"/>
-        <action android:id="@+id/action_homeFragment_to_calendarFragment" app:destination="@id/calendarFragment"/>
         <action android:id="@+id/action_homeFragment_to_tasbeehFragment" app:destination="@id/tasbeehFragment"/>
         <action android:id="@+id/action_homeFragment_to_galleryFragment" app:destination="@id/galleryFragment"/>
         <action android:id="@+id/action_homeFragment_to_newsFragment" app:destination="@id/newsFragment"/>
@@ -20,8 +19,6 @@
               android:label="Names of Allah" tools:layout="@layout/fragment_names"/>
     <fragment android:id="@+id/quranFragment" android:name="com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment"
               android:label="Quran" tools:layout="@layout/fragment_quran"/>
-    <fragment android:id="@+id/calendarFragment" android:name="com.stavro_xhardha.pockettreasure.ui.calendar.CalendarFragment"
-              android:label="Calendar" tools:layout="@layout/fragment_calendar"/>
     <fragment android:id="@+id/tasbeehFragment" android:name="com.stavro_xhardha.pockettreasure.ui.tasbeeh.TasbeehFragment"
               android:label="Tasbeeh" tools:layout="@layout/fragment_tasbeeh"/>
     <fragment android:id="@+id/galleryFragment" android:name="com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragment"

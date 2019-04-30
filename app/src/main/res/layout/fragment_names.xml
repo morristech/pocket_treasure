@@ -5,9 +5,9 @@
              android:layout_height="match_parent"
              tools:context=".ui.names.NamesFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNames"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Names of God Fragment"/>
+            android:layout_height="match_parent"/>
 
 </FrameLayout>

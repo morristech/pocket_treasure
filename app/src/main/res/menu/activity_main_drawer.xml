@@ -16,10 +16,6 @@
                 android:id="@+id/quranFragment"
                 android:icon="@drawable/ic_quran"
                 android:title="@string/quran"/>
-        <item
-                android:id="@+id/calendarFragment"
-                android:icon="@drawable/ic_calendar"
-                android:title="@string/calendar_and_events"/>
 
         <item
                 android:id="@+id/tasbeehFragment"

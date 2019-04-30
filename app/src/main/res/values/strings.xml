@@ -29,4 +29,7 @@
     <string name="asr">Asr</string>
     <string name="maghrib">Maghrib</string>
     <string name="isha">Isha</string>
+    <string name="test_arabic">الرَّح</string>
+    <string name="test_transliteration">Ar Rahmaan</string>
+    <string name="test_meaning">The Precious / The Most Mighty</string>
 </resources>

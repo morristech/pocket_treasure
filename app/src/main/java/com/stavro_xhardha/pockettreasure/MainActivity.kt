@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
                 R.id.homeFragment,
                 R.id.namesFragment,
                 R.id.quranFragment,
-                R.id.calendarFragment,
                 R.id.tasbeehFragment,
                 R.id.galleryFragment,
                 R.id.newsFragment,
