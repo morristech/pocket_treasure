@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure.tasbeeh
+package com.stavro_xhardha.pockettreasure.ui.tasbeeh
 
 
 import android.os.Bundle

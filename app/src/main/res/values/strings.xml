@@ -20,4 +20,13 @@
     <string name="country">Contry</string>
     <string name="pick_a_country">Pick your country</string>
     <string name="home">Home</string>
+    <string name="current_month">Sha\'ban</string>
+    <string name="dateTimeTitle">7 Sha\'ban 1440 / 30 Apr 2019</string>
+    <string name="current_location">Tirana , Albania</string>
+    <string name="test_time">12:25</string>
+    <string name="fajr">Fajr</string>
+    <string name="dhuhr">Dhuhr</string>
+    <string name="asr">Asr</string>
+    <string name="maghrib">Maghrib</string>
+    <string name="isha">Isha</string>
 </resources>

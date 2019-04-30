@@ -22,7 +22,7 @@
               android:label="Quran" tools:layout="@layout/fragment_quran"/>
     <fragment android:id="@+id/calendarFragment" android:name="com.stavro_xhardha.pockettreasure.ui.calendar.CalendarFragment"
               android:label="Calendar" tools:layout="@layout/fragment_calendar"/>
-    <fragment android:id="@+id/tasbeehFragment" android:name="com.stavro_xhardha.pockettreasure.tasbeeh.TasbeehFragment"
+    <fragment android:id="@+id/tasbeehFragment" android:name="com.stavro_xhardha.pockettreasure.ui.tasbeeh.TasbeehFragment"
               android:label="Tasbeeh" tools:layout="@layout/fragment_tasbeeh"/>
     <fragment android:id="@+id/galleryFragment" android:name="com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragment"
               android:label="Gallery" tools:layout="@layout/fragment_gallery"/>
