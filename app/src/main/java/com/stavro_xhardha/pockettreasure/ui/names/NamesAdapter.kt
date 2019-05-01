@@ -10,13 +10,18 @@ import kotlinx.android.synthetic.main.single_item_name.view.*
 
 class NamesAdapter(var namesList: ArrayList<Name>) : RecyclerView.Adapter<NamesAdapter.NamesViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NamesAdapter.NamesViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NamesViewHolder =
         NamesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_name, parent, false))
 
     override fun getItemCount(): Int = namesList.size
 
-    override fun onBindViewHolder(holder: NamesAdapter.NamesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NamesViewHolder, position: Int) {
         holder.bind(namesList[position])
+    }
+
+    fun setItemList(namesArrayList: ArrayList<Name>) {
+        this.namesList = namesArrayList
+        notifyDataSetChanged()
     }
 
     class NamesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

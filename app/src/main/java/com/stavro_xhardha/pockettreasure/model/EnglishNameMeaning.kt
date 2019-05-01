@@ -1,3 +1,5 @@
 package com.stavro_xhardha.pockettreasure.model
 
-data class EnglishNameMeaning(val meaning: String)
+import com.google.gson.annotations.SerializedName
+
+data class EnglishNameMeaning(@SerializedName("meaning") val meaning: String)
