@@ -1,13 +1,13 @@
 package com.stavro_xhardha.pockettreasure.dependency_injection
 
-import android.content.Context
+import android.app.Application
 import dagger.Module
 import dagger.Provides
 
 @Module
-class AppContextModule(private val context: Context) {
+class AppContextModule(private val context: Application) {
 
     @Provides
     @ApplicationScope
-    fun provideApplicationContext(): Context = context
+    fun provideApplicationContext(): Application = context
 }

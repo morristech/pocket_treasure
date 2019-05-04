@@ -1,6 +1,7 @@
 package com.stavro_xhardha
 
 import android.app.Application
+import com.stavro_xhardha.pockettreasure.dependency_injection.AppContextModule
 import com.stavro_xhardha.pockettreasure.dependency_injection.DaggerPocketTreasureComponent
 import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureComponent
 
@@ -9,7 +10,8 @@ class PocketTreasureApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        pocketTreasureComponent = DaggerPocketTreasureComponent.builder().build()
+        pocketTreasureComponent =
+            DaggerPocketTreasureComponent.builder().appContextModule(AppContextModule(this)).build()
     }
 
     fun getPocketTreasureComponent() = pocketTreasureComponent

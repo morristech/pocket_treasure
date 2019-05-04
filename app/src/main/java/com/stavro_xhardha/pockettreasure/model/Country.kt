@@ -1,3 +1,12 @@
 package com.stavro_xhardha.pockettreasure.model
 
-data class Country(val name: String, val capitalCity: String, val flagUrl: String)
+import com.google.gson.annotations.SerializedName
+
+data class Country(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("capital")
+    val capitalCity: String,
+    @SerializedName("flag")
+    val flagUrl: String
+)

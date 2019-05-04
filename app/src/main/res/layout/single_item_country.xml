@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/md_white_1000"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-</RelativeLayout>
+        android:weightSum="100"
+        android:padding="@dimen/global_unit_smaller"
+        android:layout_height="wrap_content">
+    <ImageView
+            android:padding="@dimen/global_unit_smaller"
+            android:layout_weight="80"
+            android:id="@+id/ivCountryFlag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <TextView android:layout_width="match_parent"
+              android:padding="@dimen/global_unit_smaller"
+              android:layout_weight="20"
+              android:textSize="@dimen/text_global_unit_bigger_x"
+              android:textStyle="bold"
+              android:id="@+id/tvCountryName"
+              android:text="@string/country"
+              android:layout_height="wrap_content"/>
+</LinearLayout>

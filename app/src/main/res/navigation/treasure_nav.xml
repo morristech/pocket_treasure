@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools" app:startDestination="@id/homeFragment"
+            xmlns:tools="http://schemas.android.com/tools" app:startDestination="@id/setupFragment"
             android:id="@+id/treasure_nav" android:label="Pick a country">
-    <fragment android:id="@+id/pick_a_country" android:name="com.stavro_xhardha.pockettreasure.ui.setup.SetupFragment"
-              android:label="Pick a country" tools:layout="@layout/fragment_setup"/>
-    <fragment android:id="@+id/homeFragment" android:name="com.stavro_xhardha.pockettreasure.ui.home.HomeFragment"
+    <fragment android:id="@+id/homeFragment"
+              android:name="com.stavro_xhardha.pockettreasure.ui.home.HomeFragment"
               android:label="Home" tools:layout="@layout/fragment_home">
-        <action android:id="@+id/action_home_fragment_to_pick_a_country" app:destination="@id/pick_a_country"/>
         <action android:id="@+id/action_home_fragment_to_namesFragment2" app:destination="@id/namesFragment"/>
         <action android:id="@+id/action_home_fragment_to_quranFragment" app:destination="@id/quranFragment"/>
         <action android:id="@+id/action_homeFragment_to_tasbeehFragment" app:destination="@id/tasbeehFragment"/>
@@ -19,12 +17,20 @@
               android:label="Names of Allah" tools:layout="@layout/fragment_names"/>
     <fragment android:id="@+id/quranFragment" android:name="com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment"
               android:label="Quran" tools:layout="@layout/fragment_quran"/>
-    <fragment android:id="@+id/tasbeehFragment" android:name="com.stavro_xhardha.pockettreasure.ui.tasbeeh.TasbeehFragment"
+    <fragment android:id="@+id/tasbeehFragment"
+              android:name="com.stavro_xhardha.pockettreasure.ui.tasbeeh.TasbeehFragment"
               android:label="Tasbeeh" tools:layout="@layout/fragment_tasbeeh"/>
-    <fragment android:id="@+id/galleryFragment" android:name="com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragment"
+    <fragment android:id="@+id/galleryFragment"
+              android:name="com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragment"
               android:label="Gallery" tools:layout="@layout/fragment_gallery"/>
     <fragment android:id="@+id/newsFragment" android:name="com.stavro_xhardha.pockettreasure.ui.news.NewsFragment"
               android:label="News" tools:layout="@layout/fragment_news"/>
-    <fragment android:id="@+id/settingsFragment" android:name="com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment"
+    <fragment android:id="@+id/settingsFragment"
+              android:name="com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment"
               android:label="Settings" tools:layout="@layout/fragment_settings"/>
+    <fragment android:id="@+id/setupFragment" android:name="com.stavro_xhardha.pockettreasure.ui.setup.SetupFragment"
+              android:label="fragment_setup" tools:layout="@layout/fragment_setup">
+        <action android:id="@+id/action_setupFragment_to_homeFragment3" app:destination="@+id/homeFragment"
+                app:launchSingleTop="true" app:popUpTo="@+id/treasure_nav" app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>
