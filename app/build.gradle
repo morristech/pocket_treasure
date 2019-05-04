@@ -69,4 +69,12 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //material dialog
+    implementation 'com.afollestad.material-dialogs:core:2.8.1'
+
+    //room
+    implementation "android.arch.persistence.room:runtime:2.1.0-alpha04"
+    kapt "android.arch.persistence.room:compiler:2.1.0-alpha04"
+    implementation "androidx.room:room-coroutines:2.1.0-alpha04"
 }

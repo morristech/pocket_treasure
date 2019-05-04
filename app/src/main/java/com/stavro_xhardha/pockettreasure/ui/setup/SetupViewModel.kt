@@ -32,7 +32,16 @@ class SetupViewModel @Inject constructor(
         }
     }
 
+    fun onCountrySelected(country: Country) {
+        setupRepository.saveCountryToSharedPreferences(country)
+    }
+
     override fun onCleared() {
         super.onCleared()
+        completableJob.cancel()
+    }
+
+    fun onYesDialogClicked() {
+        setupRepository.saveWakingUpUser()
     }
 }

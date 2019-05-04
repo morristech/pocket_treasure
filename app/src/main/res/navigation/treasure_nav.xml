@@ -29,7 +29,7 @@
               android:name="com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment"
               android:label="Settings" tools:layout="@layout/fragment_settings"/>
     <fragment android:id="@+id/setupFragment" android:name="com.stavro_xhardha.pockettreasure.ui.setup.SetupFragment"
-              android:label="fragment_setup" tools:layout="@layout/fragment_setup">
+              android:label="Pick country" tools:layout="@layout/fragment_setup">
         <action android:id="@+id/action_setupFragment_to_homeFragment3" app:destination="@+id/homeFragment"
                 app:launchSingleTop="true" app:popUpTo="@+id/treasure_nav" app:popUpToInclusive="true"/>
     </fragment>

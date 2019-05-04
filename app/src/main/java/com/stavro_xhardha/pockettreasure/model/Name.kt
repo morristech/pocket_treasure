@@ -16,7 +16,7 @@ data class Name(
     val englishNameMeaning: EnglishNameMeaning
 )
 
-data class Namesresponse(
+data class NameResponse(
     @SerializedName("code")
     val code: Int,
     @SerializedName("status")

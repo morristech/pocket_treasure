@@ -1,6 +1,5 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
-import android.content.Context
 import com.stavro_xhardha.pockettreasure.brain.MSharedPreferences
 import com.stavro_xhardha.pockettreasure.model.CoroutineDispatcher
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
@@ -10,11 +9,7 @@ import dagger.Provides
 import javax.inject.Provider
 
 @Module
-class SetupFragmentModule(private val context: Context) {
-
-    @Provides
-    @FragmentScope
-    fun provideSetupContext(): Context = context
+class SetupFragmentModule {
 
     @Provides
     @FragmentScope
@@ -26,7 +21,7 @@ class SetupFragmentModule(private val context: Context) {
     fun provideSetupViewModel(
         setupRepository: SetupRepository,
         coroutinesDispatcher: CoroutineDispatcher
-    ): SetupViewModel = SetupViewModel(setupRepository , coroutinesDispatcher)
+    ): SetupViewModel = SetupViewModel(setupRepository, coroutinesDispatcher)
 
     @Provides
     @FragmentScope
