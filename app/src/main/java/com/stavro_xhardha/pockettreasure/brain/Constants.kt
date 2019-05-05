@@ -5,7 +5,11 @@ const val STATIC_CODE_OK = 200
 const val APPLICATION_TAG = "PocketTreasure"
 const val SHARED_PREFERENCES_TAG = "pocket_treasure_app"
 const val COUNTRIES_API_URL = "https://restcountries.eu/rest/v2/all"
-
+const val FAJR = 0
+const val DHUHR = 1
+const val ASR = 2
+const val MAGHRIB = 3
+const val ISHA = 4
 
 //SharedPreferences
 const val COUNTRY_SHARED_PREFERENCE_KEY = "app_country"

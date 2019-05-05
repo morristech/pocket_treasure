@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.stavro_xhardha.PocketTreasureApplication
@@ -62,6 +63,46 @@ class HomeFragment : BaseFragment() {
 
         homeViewModel.monthSection.observe(this, Observer {
             tvDateTime.text = it
+        })
+
+        homeViewModel.currentPrayerValue.observe(this, Observer {
+            when (it) {
+                0 -> {
+                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                }
+                1 -> {
+                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                }
+                2 -> {
+                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                }
+                3 -> {
+                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                }
+                4 -> {
+                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
+                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+                }
+            }
         })
     }
 }
