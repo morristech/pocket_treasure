@@ -64,6 +64,11 @@ class SetupFragment : BaseFragment(), SetupContract {
             countriesAdapter = CountriesAdapter(it, this)
             rvCountries.adapter = countriesAdapter
         })
+        setupViewModel.isCountryAndCapitalEmpty.observe(this, Observer {
+            if (!it)
+                findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
+
+        })
     }
 
     override fun onListItemClick(country: Country) {
@@ -86,5 +91,4 @@ class SetupFragment : BaseFragment(), SetupContract {
                 }
         }
     }
-
 }

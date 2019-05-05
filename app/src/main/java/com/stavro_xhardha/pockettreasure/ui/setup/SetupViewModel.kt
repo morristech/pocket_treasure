@@ -18,17 +18,24 @@ class SetupViewModel @Inject constructor(
     private val completableJob = Job()
     private val networkScope = CoroutineScope(coroutinesDispatcher.network + completableJob)
     val countriesList: MutableLiveData<ArrayList<Country>> = MutableLiveData()
+    val isCountryAndCapitalEmpty: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         loadListOfCountries()
     }
 
     private fun loadListOfCountries() {
-        networkScope.launch {
-            val countriesListResponse = setupRepository.makeCountryApiCallAsync().await()
-            withContext(coroutinesDispatcher.mainThread) {
-                countriesList.value = countriesListResponse
+        if (setupRepository.isCountryEmpty()) {
+            networkScope.launch {
+                val countriesListResponse = setupRepository.makeCountryApiCallAsync().await()
+                withContext(coroutinesDispatcher.mainThread) {
+                    countriesList.value = countriesListResponse
+                    isCountryAndCapitalEmpty.value = true
+                }
+                //todo handle error
             }
+        } else {
+            isCountryAndCapitalEmpty.value = false
         }
     }
 

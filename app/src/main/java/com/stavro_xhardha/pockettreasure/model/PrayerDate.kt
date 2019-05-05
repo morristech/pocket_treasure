@@ -10,14 +10,14 @@ data class PrayerDate(
     val timestamp: String,
 
     @SerializedName("hijri")
-    val hijriPrayerDate: HijriGregorianDate,
+    val hijriPrayerDate: HijriDate,
 
     @SerializedName("gregorian")
-    val gregorianPrayerDate: HijriGregorianDate
+    val gregorianDate: GregorianDate
 
 )
 
-data class HijriGregorianDate(
+data class HijriDate(
     @SerializedName("date")
     val date: String,
 
@@ -31,7 +31,29 @@ data class HijriGregorianDate(
     val year: String
 )
 
+data class GregorianDate(
+    @SerializedName("date")
+    val date: String,
+
+    @SerializedName("day")
+    val day: String,
+
+    @SerializedName("month")
+    val gregorianMonth: GregorianMonth,
+
+    @SerializedName("year")
+    val year: String
+)
+
 data class HijriMonth(
+    @SerializedName("number")
+    val number: Int,
+
+    @SerializedName("en")
+    val monthNameInEnglish: String
+)
+
+data class GregorianMonth(
     @SerializedName("number")
     val number: Int,
 
