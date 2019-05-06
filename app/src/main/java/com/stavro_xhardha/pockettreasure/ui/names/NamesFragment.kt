@@ -43,7 +43,9 @@ class NamesFragment : BaseFragment() {
 
     override fun initViewModel() {
         namesViewModel = ViewModelProviders.of(this, namesFragmentProviderFactory).get(NamesViewModel::class.java)
-        rvNames.layoutManager = layoutManager
+    }
+
+    override fun observeTheLiveData() {
         namesViewModel.allNamesList.observe(this, Observer {
             namesAdapter.setItemList(it)
             rvNames.adapter = namesAdapter
@@ -54,5 +56,9 @@ class NamesFragment : BaseFragment() {
         namesViewModel.errorLayoutVisibility.observe(this, Observer {
             llError.visibility = it
         })
+    }
+
+    override fun initializeComponent() {
+        rvNames.layoutManager = layoutManager
     }
 }

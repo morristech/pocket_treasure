@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,6 +29,11 @@ class HomeFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.loadPrayerTimes()
+    }
+
     override fun performDi() {
         DaggerHomeComponent.builder().pocketTreasureComponent(
             (activity!!.application as PocketTreasureApplication).getPocketTreasureComponent()
@@ -36,8 +42,63 @@ class HomeFragment : BaseFragment() {
 
     override fun initViewModel() {
         homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
+    }
 
-        homeViewModel.fejrTime.observe(this, Observer {
+    override fun initializeComponent() {
+
+    }
+
+    override fun observeTheLiveData() {
+
+        observeTiming()
+
+        observeColors()
+
+        homeViewModel.locationSecton.observe(this, Observer {
+            tvCurrentLocation.text = it
+        })
+
+        homeViewModel.monthSection.observe(this, Observer {
+            tvDateTime.text = it
+        })
+
+        homeViewModel.showErroToast.observe(this, Observer {
+            if (it) Toast.makeText(activity!!, R.string.error_occured, Toast.LENGTH_LONG).show()
+        })
+
+        homeViewModel.progressBarVisibility.observe(this, Observer {
+            pbHome.visibility = it
+        })
+
+        homeViewModel.contentVisibility.observe(this, Observer {
+            rlHomeContentHolder.visibility = it
+        })
+    }
+
+    private fun observeColors() {
+        homeViewModel.fajrColor.observe(this, Observer {
+            cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, it))
+        })
+
+        homeViewModel.dhuhrColor.observe(this, Observer {
+            cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, it))
+        })
+
+        homeViewModel.asrColor.observe(this, Observer {
+            cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, it))
+        })
+
+        homeViewModel.maghribColor.observe(this, Observer {
+            cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, it))
+        })
+
+        homeViewModel.ishaColor.observe(this, Observer {
+            cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, it))
+        })
+    }
+
+    private fun observeTiming() {
+        homeViewModel.fajrTime.observe(this, Observer {
             tvFajrTime.text = it
         })
 
@@ -57,52 +118,5 @@ class HomeFragment : BaseFragment() {
             tvIshaTime.text = it
         })
 
-        homeViewModel.locationSecton.observe(this, Observer {
-            tvCurrentLocation.text = it
-        })
-
-        homeViewModel.monthSection.observe(this, Observer {
-            tvDateTime.text = it
-        })
-
-        homeViewModel.currentPrayerValue.observe(this, Observer {
-            when (it) {
-                0 -> {
-                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
-                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                }
-                1 -> {
-                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
-                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                }
-                2 -> {
-                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
-                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                }
-                3 -> {
-                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
-                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                }
-                4 -> {
-                    cvFajr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvDhuhr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvAsr.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvMaghrib.setBackgroundColor(ContextCompat.getColor(context!!, R.color.md_white_1000))
-                    cvIsha.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
-                }
-            }
-        })
     }
 }

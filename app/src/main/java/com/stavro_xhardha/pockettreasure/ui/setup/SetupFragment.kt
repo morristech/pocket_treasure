@@ -34,14 +34,14 @@ class SetupFragment : BaseFragment(), SetupContract {
         return inflater.inflate(R.layout.fragment_setup, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        rvCountries.layoutManager = LinearLayoutManager(activity)
-    }
-
     override fun onStart() {
         super.onStart()
         (activity!! as MainActivity).supportActionBar?.hide()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupViewModel.loadListOfCountries()
     }
 
     override fun onStop() {
@@ -60,6 +60,18 @@ class SetupFragment : BaseFragment(), SetupContract {
 
     override fun initViewModel() {
         setupViewModel = ViewModelProviders.of(this, setupViewModelFactory).get(SetupViewModel::class.java)
+    }
+
+    override fun onListItemClick(country: Country) {
+        setupViewModel.onCountrySelected(country)
+        showFajrDialog()
+    }
+
+    override fun initializeComponent() {
+        rvCountries.layoutManager = LinearLayoutManager(activity)
+    }
+
+    override fun observeTheLiveData() {
         setupViewModel.countriesList.observe(this, Observer {
             countriesAdapter = CountriesAdapter(it, this)
             rvCountries.adapter = countriesAdapter
@@ -67,13 +79,18 @@ class SetupFragment : BaseFragment(), SetupContract {
         setupViewModel.isCountryAndCapitalEmpty.observe(this, Observer {
             if (!it)
                 findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
-
         })
-    }
+        setupViewModel.errorVisibility.observe(this, Observer {
+            llError.visibility = it
+        })
 
-    override fun onListItemClick(country: Country) {
-        setupViewModel.onCountrySelected(country)
-        showFajrDialog()
+        setupViewModel.contentVisibility.observe(this, Observer {
+            rvCountries.visibility = it
+        })
+
+        setupViewModel.pbVisibility.observe(this, Observer {
+            pbSetup.visibility = it
+        })
     }
 
     private fun showFajrDialog() {

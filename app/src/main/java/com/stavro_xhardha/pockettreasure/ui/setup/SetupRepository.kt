@@ -4,6 +4,7 @@ import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import kotlinx.coroutines.Deferred
+import retrofit2.Response
 import javax.inject.Inject
 
 class SetupRepository @Inject constructor(
@@ -11,7 +12,7 @@ class SetupRepository @Inject constructor(
     private val mSharedPreferences: MSharedPreferences
 ) {
 
-    fun makeCountryApiCallAsync(): Deferred<ArrayList<Country>> =
+    fun makeCountryApiCallAsync(): Deferred<Response<ArrayList<Country>>> =
         treasureApi.getCountriesList(COUNTRIES_API_URL)
 
     fun saveCountryToSharedPreferences(country: Country) {
