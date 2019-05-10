@@ -1,6 +1,5 @@
 package com.stavro_xhardha.pockettreasure.ui.home
 
-import com.stavro_xhardha.pockettreasure.model.CoroutineDispatcher
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.ui.FragmentScope
 import com.stavro_xhardha.rocket.Rocket
@@ -18,8 +17,7 @@ class HomeFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideHomeViewModel(homeRepository: HomeRepository, coroutineDispatcher: CoroutineDispatcher): HomeViewModel =
-        HomeViewModel(homeRepository, coroutineDispatcher)
+    fun provideHomeViewModel(homeRepository: HomeRepository): HomeViewModel = HomeViewModel(homeRepository)
 
     @Provides
     @FragmentScope

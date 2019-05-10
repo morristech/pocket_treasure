@@ -3,22 +3,16 @@ package com.stavro_xhardha.pockettreasure.ui.setup
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.stavro_xhardha.pockettreasure.model.CoroutineDispatcher
 import com.stavro_xhardha.pockettreasure.model.Country
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class SetupViewModel @Inject constructor(
-    private val setupRepository: SetupRepository,
-    private val coroutinesDispatcher: CoroutineDispatcher
-) : ViewModel() {
+class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
 
     private val completableJob = Job()
-    private val networkScope = CoroutineScope(coroutinesDispatcher.network + completableJob)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
+
     val countriesList: MutableLiveData<ArrayList<Country>> = MutableLiveData()
     val isCountryAndCapitalEmpty: MutableLiveData<Boolean> = MutableLiveData()
     val pbVisibility: MutableLiveData<Int> = MutableLiveData()
@@ -27,7 +21,7 @@ class SetupViewModel @Inject constructor(
 
     fun loadListOfCountries() {
         if (setupRepository.isCountryEmpty()) {
-            networkScope.launch {
+            coroutineScope.launch {
                 makeCountriesApiCall()
             }
             isCountryAndCapitalEmpty.value = true
@@ -37,24 +31,24 @@ class SetupViewModel @Inject constructor(
     }
 
     private suspend fun makeCountriesApiCall() {
-        withContext(coroutinesDispatcher.mainThread) {
+        withContext(Dispatchers.Main) {
             switchProgressBarOn()
         }
         try {
             val countriesListResponse = setupRepository.makeCountryApiCallAsync().await()
             if (countriesListResponse.isSuccessful) {
-                withContext(coroutinesDispatcher.mainThread) {
+                withContext(Dispatchers.Main) {
                     switchProgressOff()
                     countriesList.value = countriesListResponse.body()
                 }
             } else {
-                withContext(coroutinesDispatcher.mainThread) {
+                withContext(Dispatchers.Main) {
                     showErrorLayout()
                 }
             }
         } catch (e: UnknownHostException) {
             e.printStackTrace()
-            withContext(coroutinesDispatcher.mainThread) {
+            withContext(Dispatchers.Main) {
                 showErrorLayout()
             }
         }

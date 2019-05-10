@@ -4,22 +4,15 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.stavro_xhardha.pockettreasure.brain.STATIC_CODE_OK
-import com.stavro_xhardha.pockettreasure.model.CoroutineDispatcher
 import com.stavro_xhardha.pockettreasure.model.Name
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class NamesViewModel @Inject constructor(
-    private val repository: NamesRepository,
-    private val coroutineDispatcher: CoroutineDispatcher
-) : ViewModel() {
+class NamesViewModel @Inject constructor(private val repository: NamesRepository) : ViewModel() {
 
     private val completableJob = Job()
-    private val networkScope = CoroutineScope(coroutineDispatcher.network + completableJob)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     var allNamesList: MutableLiveData<ArrayList<Name>> = MutableLiveData()
     var progressBarVisibility: MutableLiveData<Int> = MutableLiveData()
@@ -30,13 +23,13 @@ class NamesViewModel @Inject constructor(
     }
 
     private fun loadNamesList() {
-        networkScope.launch {
-            withContext(coroutineDispatcher.mainThread) {
+        coroutineScope.launch {
+            withContext(Dispatchers.Main) {
                 progressBarVisibility.value = View.VISIBLE
             }
             try {
                 val namesResponse = repository.fetchNintyNineNamesAsync().await()
-                withContext(coroutineDispatcher.mainThread) {
+                withContext(Dispatchers.Main) {
                     if (namesResponse.code == STATIC_CODE_OK) {
                         allNamesList.value = namesResponse.data
                         progressBarVisibility.value = View.GONE
@@ -47,7 +40,7 @@ class NamesViewModel @Inject constructor(
                 }
             } catch (e: UnknownHostException) {
                 e.printStackTrace()
-                withContext(coroutineDispatcher.mainThread) {
+                withContext(Dispatchers.Main) {
                     errorLayoutVisibility.value = View.VISIBLE
                     progressBarVisibility.value = View.GONE
                 }

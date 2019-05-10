@@ -7,24 +7,17 @@ import androidx.lifecycle.ViewModel
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
-import com.stavro_xhardha.pockettreasure.model.CoroutineDispatcher
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import javax.inject.Inject
 
 
-class HomeViewModel @Inject constructor(
-    var homeRepository: HomeRepository,
-    var coroutineDispatcher: CoroutineDispatcher
-) : ViewModel() {
+class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : ViewModel() {
 
     private val completableJob = Job()
-    private val networkScope = CoroutineScope(coroutineDispatcher.network + completableJob)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     val monthSection: MutableLiveData<String> = MutableLiveData()
     val locationSecton: MutableLiveData<String> = MutableLiveData()
@@ -43,11 +36,11 @@ class HomeViewModel @Inject constructor(
     val ishaColor: MutableLiveData<Int> = MutableLiveData()
 
     fun loadPrayerTimes() {
-        networkScope.launch {
+        coroutineScope.launch {
             if (dateHasPassed()) {
                 makePrayerApiCall()
             } else {
-                withContext(coroutineDispatcher.mainThread) {
+                withContext(Dispatchers.Main) {
                     setValuesToLiveData()
                 }
             }
@@ -55,16 +48,14 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun makePrayerApiCall() {
-        withContext(coroutineDispatcher.mainThread) {
+        withContext(Dispatchers.Main) {
             switchProgressBarOn()
         }
         val todaysPrayerTime = homeRepository.makePrayerCallAsync().await()
         if (todaysPrayerTime.isSuccessful) {
-            withContext(coroutineDispatcher.disk) {
-                saveDataToShardPreferences(todaysPrayerTime.body())
-                withContext(coroutineDispatcher.mainThread) {
-                    setValuesToLiveData()
-                }
+            saveDataToShardPreferences(todaysPrayerTime.body())
+            withContext(Dispatchers.Main) {
+                setValuesToLiveData()
             }
         } else {
             showError()
