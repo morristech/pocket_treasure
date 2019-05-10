@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module(includes = [AppContextModule::class])
-class DataModule {
+class PreferencesModule {
 
     @Provides
     @ApplicationScope

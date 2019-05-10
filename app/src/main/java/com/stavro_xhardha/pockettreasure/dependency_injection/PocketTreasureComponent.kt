@@ -6,7 +6,7 @@ import com.stavro_xhardha.rocket.Rocket
 import dagger.Component
 
 @ApplicationScope
-@Component(modules = [NetworkModule::class, SchedulersModule::class, DataModule::class, AppContextModule::class])
+@Component(modules = [NetworkModule::class, SchedulersModule::class, PreferencesModule::class, AppContextModule::class])
 interface PocketTreasureComponent {
     fun getTreasureApi(): TreasureApi
 

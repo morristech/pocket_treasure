@@ -11,8 +11,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class NamesViewModel(
+class NamesViewModel @Inject constructor(
     private val repository: NamesRepository,
     private val coroutineDispatcher: CoroutineDispatcher
 ) : ViewModel() {

@@ -2,11 +2,11 @@ package com.stavro_xhardha.pockettreasure.ui.names
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.stavro_xhardha.pockettreasure.model.CoroutineDispatcher
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.ui.FragmentScope
 import dagger.Module
 import dagger.Provides
+import javax.inject.Provider
 
 @Module
 class NamesFragmentModule(private val context: Context) {
@@ -18,10 +18,9 @@ class NamesFragmentModule(private val context: Context) {
     @Provides
     @FragmentScope
     fun provideViewModelFactory(
-        repository: NamesRepository,
-        coroutineDispatcher: CoroutineDispatcher
+        provider: Provider<NamesViewModel>
     ): NamesViewModelProviderFactory {
-        return NamesViewModelProviderFactory(repository, coroutineDispatcher)
+        return NamesViewModelProviderFactory(provider)
     }
 
     @Provides
