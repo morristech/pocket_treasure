@@ -80,4 +80,7 @@ dependencies {
 
     //Joda time
     implementation 'net.danlew:android.joda:2.10.1.2'
+
+    //rocket
+    implementation 'com.github.stavro96:Rocket:1.1'
 }

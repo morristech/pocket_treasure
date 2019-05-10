@@ -1,9 +1,9 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
-import com.stavro_xhardha.pockettreasure.brain.MSharedPreferences
 import com.stavro_xhardha.pockettreasure.model.CoroutineDispatcher
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.ui.FragmentScope
+import com.stavro_xhardha.rocket.Rocket
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
@@ -25,6 +25,6 @@ class SetupFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideSetupRepository(treasureApi: TreasureApi, mSharedPreferences: MSharedPreferences): SetupRepository =
+    fun provideSetupRepository(treasureApi: TreasureApi, mSharedPreferences: Rocket): SetupRepository =
         SetupRepository(treasureApi, mSharedPreferences)
 }

@@ -3,13 +3,14 @@ package com.stavro_xhardha.pockettreasure.ui.setup
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
+import com.stavro_xhardha.rocket.Rocket
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import javax.inject.Inject
 
 class SetupRepository @Inject constructor(
     private val treasureApi: TreasureApi,
-    private val mSharedPreferences: MSharedPreferences
+    private val mSharedPreferences: Rocket
 ) {
 
     fun makeCountryApiCallAsync(): Deferred<Response<ArrayList<Country>>> =

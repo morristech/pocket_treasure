@@ -3,13 +3,14 @@ package com.stavro_xhardha.pockettreasure.ui.home
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
+import com.stavro_xhardha.rocket.Rocket
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
     val treasureApi: TreasureApi,
-    val mSharedPreferences: MSharedPreferences
+    val mSharedPreferences: Rocket
 ) {
     fun makePrayerCallAsync(): Deferred<Response<PrayerTimeResponse>> {
         val capitalCityName = mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY)
