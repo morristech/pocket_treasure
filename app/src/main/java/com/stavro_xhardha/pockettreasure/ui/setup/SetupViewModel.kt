@@ -3,15 +3,15 @@ package com.stavro_xhardha.pockettreasure.ui.setup
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.stavro_xhardha.pockettreasure.model.Country
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.UnknownHostException
 import javax.inject.Inject
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
-
-    private val completableJob = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     val countriesList: MutableLiveData<ArrayList<Country>> = MutableLiveData()
     val isCountryAndCapitalEmpty: MutableLiveData<Boolean> = MutableLiveData()
@@ -21,7 +21,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
 
     fun loadListOfCountries() {
         if (setupRepository.isCountryEmpty()) {
-            coroutineScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 makeCountriesApiCall()
             }
             isCountryAndCapitalEmpty.value = true
@@ -78,10 +78,5 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
 
     fun onYesDialogClicked() {
         setupRepository.saveWakingUpUser()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        completableJob.cancel()
     }
 }

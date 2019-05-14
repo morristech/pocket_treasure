@@ -4,20 +4,20 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import javax.inject.Inject
 
 
 class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : ViewModel() {
-
-    private val completableJob = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     val monthSection: MutableLiveData<String> = MutableLiveData()
     val locationSecton: MutableLiveData<String> = MutableLiveData()
@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : Vi
     val ishaColor: MutableLiveData<Int> = MutableLiveData()
 
     fun loadPrayerTimes() {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (dateHasPassed()) {
                 makePrayerApiCall()
             } else {
@@ -231,10 +231,5 @@ class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : Vi
                 e.printStackTrace()
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        completableJob.cancel()
     }
 }

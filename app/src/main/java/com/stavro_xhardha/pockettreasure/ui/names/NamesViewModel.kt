@@ -3,16 +3,16 @@ package com.stavro_xhardha.pockettreasure.ui.names
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.stavro_xhardha.pockettreasure.brain.STATIC_CODE_OK
 import com.stavro_xhardha.pockettreasure.model.Name
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.UnknownHostException
 import javax.inject.Inject
 
 class NamesViewModel @Inject constructor(private val repository: NamesRepository) : ViewModel() {
-
-    private val completableJob = Job()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     var allNamesList: MutableLiveData<ArrayList<Name>> = MutableLiveData()
     var progressBarVisibility: MutableLiveData<Int> = MutableLiveData()
@@ -23,7 +23,7 @@ class NamesViewModel @Inject constructor(private val repository: NamesRepository
     }
 
     private fun loadNamesList() {
-        coroutineScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 progressBarVisibility.value = View.VISIBLE
             }
@@ -46,10 +46,5 @@ class NamesViewModel @Inject constructor(private val repository: NamesRepository
                 }
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        completableJob.cancel()
     }
 }
