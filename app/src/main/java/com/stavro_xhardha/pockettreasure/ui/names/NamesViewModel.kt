@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.brain.STATIC_CODE_OK
 import com.stavro_xhardha.pockettreasure.model.Name
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,8 +29,8 @@ class NamesViewModel @Inject constructor(private val repository: NamesRepository
             try {
                 val namesResponse = repository.fetchNintyNineNamesAsync().await()
                 withContext(Dispatchers.Main) {
-                    if (namesResponse.code == STATIC_CODE_OK) {
-                        allNamesList.value = namesResponse.data
+                    if (namesResponse.isSuccessful) {
+                        allNamesList.value = namesResponse.body()?.data
                         progressBarVisibility.value = View.GONE
                     } else {
                         errorLayoutVisibility.value = View.VISIBLE
