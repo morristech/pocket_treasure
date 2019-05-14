@@ -10,16 +10,22 @@
               android:label="Home"
               tools:layout="@layout/fragment_home">
         <action android:id="@+id/action_home_fragment_to_namesFragment2"
+                app:clearTask="true"
                 app:destination="@id/namesFragment"/>
         <action android:id="@+id/action_home_fragment_to_quranFragment"
+                app:clearTask="true"
                 app:destination="@id/quranFragment"/>
         <action android:id="@+id/action_homeFragment_to_tasbeehFragment"
+                app:clearTask="true"
                 app:destination="@id/tasbeehFragment"/>
         <action android:id="@+id/action_homeFragment_to_galleryFragment"
+                app:clearTask="true"
                 app:destination="@id/galleryFragment"/>
         <action android:id="@+id/action_homeFragment_to_newsFragment"
+                app:clearTask="true"
                 app:destination="@id/newsFragment"/>
         <action android:id="@+id/action_homeFragment_to_settingsFragment"
+                app:clearTask="true"
                 app:destination="@id/settingsFragment"/>
     </fragment>
     <fragment
