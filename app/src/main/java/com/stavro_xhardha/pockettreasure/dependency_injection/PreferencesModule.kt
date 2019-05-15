@@ -6,7 +6,7 @@ import com.stavro_xhardha.rocket.Rocket
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = [AppContextModule::class])
+@Module
 class PreferencesModule {
 
     @Provides

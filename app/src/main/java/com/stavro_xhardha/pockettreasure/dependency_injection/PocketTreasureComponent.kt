@@ -1,7 +1,9 @@
 package com.stavro_xhardha.pockettreasure.dependency_injection
 
+import android.app.Application
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.rocket.Rocket
+import dagger.BindsInstance
 import dagger.Component
 
 @ApplicationScope
@@ -10,4 +12,12 @@ interface PocketTreasureComponent {
     fun getTreasureApi(): TreasureApi
 
     fun getSharedPreferences(): Rocket
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun appContextModule(pocketTreasureApplication: Application): Builder
+
+        fun build(): PocketTreasureComponent
+    }
 }

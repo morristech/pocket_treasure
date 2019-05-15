@@ -17,7 +17,6 @@ import org.joda.time.DateTime
 import org.joda.time.LocalTime
 import javax.inject.Inject
 
-
 class HomeViewModel @Inject constructor(
     val homeRepository: HomeRepository
 ) : ViewModel() {
@@ -63,8 +62,6 @@ class HomeViewModel @Inject constructor(
                 }
             } else {
                 showError()
-                if (isDebugMode)
-                    Log.d(APPLICATION_TAG, "WRONG IMPLEMENTED")
             }
         } catch (e: Exception) {
             showError()
