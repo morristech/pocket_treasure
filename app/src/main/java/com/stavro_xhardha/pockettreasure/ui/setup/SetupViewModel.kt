@@ -8,7 +8,6 @@ import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
@@ -46,7 +45,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
                     showErrorLayout()
                 }
             }
-        } catch (e: UnknownHostException) {
+        } catch (e: Exception) {
             e.printStackTrace()
             withContext(Dispatchers.Main) {
                 showErrorLayout()

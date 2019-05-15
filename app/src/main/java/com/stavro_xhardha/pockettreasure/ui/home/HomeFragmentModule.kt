@@ -17,7 +17,8 @@ class HomeFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideHomeViewModel(homeRepository: HomeRepository): HomeViewModel = HomeViewModel(homeRepository)
+    fun provideHomeViewModel(homeRepository: HomeRepository): HomeViewModel =
+        HomeViewModel(homeRepository)
 
     @Provides
     @FragmentScope

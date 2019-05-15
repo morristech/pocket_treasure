@@ -5,8 +5,9 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.ACCENT_BACKGROUND
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
+import com.stavro_xhardha.pockettreasure.brain.WHITE_BACKGROUND
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,9 @@ import org.joda.time.LocalTime
 import javax.inject.Inject
 
 
-class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    val homeRepository: HomeRepository
+) : ViewModel() {
 
     val monthSection: MutableLiveData<String> = MutableLiveData()
     val locationSecton: MutableLiveData<String> = MutableLiveData()
@@ -51,16 +54,21 @@ class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : Vi
         withContext(Dispatchers.Main) {
             switchProgressBarOn()
         }
-        val todaysPrayerTime = homeRepository.makePrayerCallAsync().await()
-        if (todaysPrayerTime.isSuccessful) {
-            saveDataToShardPreferences(todaysPrayerTime.body())
-            withContext(Dispatchers.Main) {
-                setValuesToLiveData()
+        try {
+            val todaysPrayerTime = homeRepository.makePrayerCallAsync().await()
+            if (todaysPrayerTime.isSuccessful) {
+                saveDataToShardPreferences(todaysPrayerTime.body())
+                withContext(Dispatchers.Main) {
+                    setValuesToLiveData()
+                }
+            } else {
+                showError()
+                if (isDebugMode)
+                    Log.d(APPLICATION_TAG, "WRONG IMPLEMENTED")
             }
-        } else {
+        } catch (e: Exception) {
             showError()
-            if (isDebugMode)
-                Log.d(APPLICATION_TAG, "WRONG IMPLEMENTED")
+            e.printStackTrace()
         }
     }
 
@@ -83,6 +91,12 @@ class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : Vi
     }
 
     private fun setValuesToLiveData() {
+        putValues()
+        findCurrentTime()
+        switchProgressBarOff()
+    }
+
+    private fun putValues() {
         monthSection.value = homeRepository.readMonthSection()
         locationSecton.value = homeRepository.readLocationSection()
         fajrTime.value = homeRepository.readFejrtime()
@@ -90,43 +104,45 @@ class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : Vi
         asrTime.value = homeRepository.readAsrTime()
         maghribTime.value = homeRepository.readMaghribTime()
         ishaTime.value = homeRepository.readIshaTime()
-        findCurrentTime()
-        switchProgressBarOff()
     }
 
     private fun findCurrentTime() {
         val currentTime = LocalTime()
-        val fajrTime = LocalTime(
-            (homeRepository.readFejrtime()?.substring(0, 2)!!.toInt()),
-            (homeRepository.readFejrtime()?.substring(3, 5))!!.toInt()
-        )
-        val dhuhrTime = LocalTime(
-            (homeRepository.readDhuhrTime()?.substring(0, 2)!!.toInt()),
-            (homeRepository.readDhuhrTime()?.substring(3, 5))!!.toInt()
-        )
-        val asrTime = LocalTime(
-            (homeRepository.readAsrTime()?.substring(0, 2)!!.toInt()),
-            (homeRepository.readAsrTime()?.substring(3, 5))!!.toInt()
-        )
-        val maghribTime = LocalTime(
-            (homeRepository.readMaghribTime()?.substring(0, 2)!!.toInt()),
-            (homeRepository.readMaghribTime()?.substring(3, 5))!!.toInt()
-        )
-        val ishaTime = LocalTime(
-            (homeRepository.readIshaTime()?.substring(0, 2)!!.toInt()),
-            (homeRepository.readIshaTime()?.substring(3, 5))!!.toInt()
-        )
+        try {
+            val fajrTime = LocalTime(
+                (homeRepository.readFejrtime()?.substring(0, 2)!!.toInt()),
+                (homeRepository.readFejrtime()?.substring(3, 5))!!.toInt()
+            )
+            val dhuhrTime = LocalTime(
+                (homeRepository.readDhuhrTime()?.substring(0, 2)!!.toInt()),
+                (homeRepository.readDhuhrTime()?.substring(3, 5))!!.toInt()
+            )
+            val asrTime = LocalTime(
+                (homeRepository.readAsrTime()?.substring(0, 2)!!.toInt()),
+                (homeRepository.readAsrTime()?.substring(3, 5))!!.toInt()
+            )
+            val maghribTime = LocalTime(
+                (homeRepository.readMaghribTime()?.substring(0, 2)!!.toInt()),
+                (homeRepository.readMaghribTime()?.substring(3, 5))!!.toInt()
+            )
+            val ishaTime = LocalTime(
+                (homeRepository.readIshaTime()?.substring(0, 2)!!.toInt()),
+                (homeRepository.readIshaTime()?.substring(3, 5))!!.toInt()
+            )
 
-        if (isDebugMode) {
-            Log.d(APPLICATION_TAG, " $currentTime")
-            Log.d(APPLICATION_TAG, " $fajrTime")
-            Log.d(APPLICATION_TAG, " $dhuhrTime")
-            Log.d(APPLICATION_TAG, " $asrTime")
-            Log.d(APPLICATION_TAG, " $maghribTime")
-            Log.d(APPLICATION_TAG, " $ishaTime")
+            if (isDebugMode) {
+                Log.d(APPLICATION_TAG, " $currentTime")
+                Log.d(APPLICATION_TAG, " $fajrTime")
+                Log.d(APPLICATION_TAG, " $dhuhrTime")
+                Log.d(APPLICATION_TAG, " $asrTime")
+                Log.d(APPLICATION_TAG, " $maghribTime")
+                Log.d(APPLICATION_TAG, " $ishaTime")
+            }
+
+            compareTiming(currentTime, fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
+        } catch (e: NumberFormatException) {
+            e.printStackTrace()
         }
-
-        compareTiming(currentTime, fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
     }
 
     private fun compareTiming(
@@ -156,44 +172,44 @@ class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : Vi
 
     }
 
-    private fun switchIshaOn() {
-        fajrColor.value = R.color.md_white_1000
-        dhuhrColor.value = R.color.md_white_1000
-        asrColor.value = R.color.md_white_1000
-        maghribColor.value = R.color.md_white_1000
-        ishaColor.value = R.color.colorAccent
-    }
-
-    private fun switchMaghribOn() {
-        fajrColor.value = R.color.md_white_1000
-        dhuhrColor.value = R.color.md_white_1000
-        asrColor.value = R.color.md_white_1000
-        maghribColor.value = R.color.colorAccent
-        ishaColor.value = R.color.md_white_1000
-    }
-
-    private fun switchAsrOn() {
-        fajrColor.value = R.color.md_white_1000
-        dhuhrColor.value = R.color.md_white_1000
-        asrColor.value = R.color.colorAccent
-        maghribColor.value = R.color.md_white_1000
-        ishaColor.value = R.color.md_white_1000
+    private fun switchFajrOn() {
+        fajrColor.value = ACCENT_BACKGROUND
+        dhuhrColor.value = WHITE_BACKGROUND
+        asrColor.value = WHITE_BACKGROUND
+        maghribColor.value = WHITE_BACKGROUND
+        ishaColor.value = WHITE_BACKGROUND
     }
 
     private fun switchDhuhrOn() {
-        fajrColor.value = R.color.md_white_1000
-        dhuhrColor.value = R.color.colorAccent
-        asrColor.value = R.color.md_white_1000
-        maghribColor.value = R.color.md_white_1000
-        ishaColor.value = R.color.md_white_1000
+        fajrColor.value = WHITE_BACKGROUND
+        dhuhrColor.value = ACCENT_BACKGROUND
+        asrColor.value = WHITE_BACKGROUND
+        maghribColor.value = WHITE_BACKGROUND
+        ishaColor.value = WHITE_BACKGROUND
     }
 
-    private fun switchFajrOn() {
-        fajrColor.value = R.color.colorAccent
-        dhuhrColor.value = R.color.md_white_1000
-        asrColor.value = R.color.md_white_1000
-        maghribColor.value = R.color.md_white_1000
-        ishaColor.value = R.color.md_white_1000
+    private fun switchAsrOn() {
+        fajrColor.value = WHITE_BACKGROUND
+        dhuhrColor.value = WHITE_BACKGROUND
+        asrColor.value = ACCENT_BACKGROUND
+        maghribColor.value = WHITE_BACKGROUND
+        ishaColor.value = WHITE_BACKGROUND
+    }
+
+    private fun switchMaghribOn() {
+        fajrColor.value = WHITE_BACKGROUND
+        dhuhrColor.value = WHITE_BACKGROUND
+        asrColor.value = WHITE_BACKGROUND
+        maghribColor.value = ACCENT_BACKGROUND
+        ishaColor.value = WHITE_BACKGROUND
+    }
+
+    private fun switchIshaOn() {
+        fajrColor.value = WHITE_BACKGROUND
+        dhuhrColor.value = WHITE_BACKGROUND
+        asrColor.value = WHITE_BACKGROUND
+        maghribColor.value = WHITE_BACKGROUND
+        ishaColor.value = ACCENT_BACKGROUND
     }
 
     private fun dateHasPassed(): Boolean {
@@ -215,21 +231,27 @@ class HomeViewModel @Inject constructor(var homeRepository: HomeRepository) : Vi
     private fun saveDataToShardPreferences(prayerTimeResponse: PrayerTimeResponse?) {
         if (prayerTimeResponse != null) {
             try {
-                homeRepository.saveFajrTime(prayerTimeResponse.data.timings.fajr)
-                homeRepository.saveDhuhrTime(prayerTimeResponse.data.timings.dhuhr)
-                homeRepository.saveAsrTime(prayerTimeResponse.data.timings.asr)
-                homeRepository.saveMagribTime(prayerTimeResponse.data.timings.magrib)
-                homeRepository.saveIshaTime(prayerTimeResponse.data.timings.isha)
-                homeRepository.saveDayOfMonth(Integer.parseInt(prayerTimeResponse.data.date.gregorianDate.day))
-                homeRepository.saveYear(Integer.parseInt(prayerTimeResponse.data.date.gregorianDate.year))
-                homeRepository.saveMonthOfYear(prayerTimeResponse.data.date.gregorianDate.gregorianMonth.number)
-                homeRepository.saveMonthName(prayerTimeResponse.data.date.gregorianDate.gregorianMonth.monthNameInEnglish)
-                homeRepository.saveDayOfMonthHijri(prayerTimeResponse.data.date.hijriPrayerDate.day)
-                homeRepository.saveMonthOfYearHijri(prayerTimeResponse.data.date.hijriPrayerDate.hirjiMonth.monthNameInEnglish)
-                homeRepository.saveYearHijri(prayerTimeResponse.data.date.hijriPrayerDate.year)
+                saveThePrayerTimeResponseToMemory(prayerTimeResponse)
             } catch (e: NumberFormatException) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    private fun saveThePrayerTimeResponseToMemory(prayerTimeResponse: PrayerTimeResponse) {
+        prayerTimeResponse.let {
+            homeRepository.saveFajrTime(it.data.timings.fajr)
+            homeRepository.saveDhuhrTime(it.data.timings.dhuhr)
+            homeRepository.saveAsrTime(it.data.timings.asr)
+            homeRepository.saveMagribTime(it.data.timings.magrib)
+            homeRepository.saveIshaTime(it.data.timings.isha)
+            homeRepository.saveDayOfMonth(it.data.date.gregorianDate.day.toInt())
+            homeRepository.saveYear(it.data.date.gregorianDate.year.toInt())
+            homeRepository.saveMonthOfYear(it.data.date.gregorianDate.gregorianMonth.number)
+            homeRepository.saveMonthName(it.data.date.gregorianDate.gregorianMonth.monthNameInEnglish)
+            homeRepository.saveDayOfMonthHijri(it.data.date.hijriPrayerDate.day)
+            homeRepository.saveMonthOfYearHijri(it.data.date.hijriPrayerDate.hirjiMonth.monthNameInEnglish)
+            homeRepository.saveYearHijri(it.data.date.hijriPrayerDate.year)
         }
     }
 }

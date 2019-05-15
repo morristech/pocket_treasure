@@ -1,15 +1,17 @@
 package com.stavro_xhardha.pockettreasure.brain
 
-const val PRAYER_API_BASE_URL: String = "https://api.aladhan.com/v1/"
-const val STATIC_CODE_OK = 200
+import com.stavro_xhardha.pockettreasure.R
+
+//App constants
 const val APPLICATION_TAG = "PocketTreasure"
 const val SHARED_PREFERENCES_TAG = "pocket_treasure_app"
+
+const val PRAYER_API_BASE_URL: String = "https://api.aladhan.com/v1/"
 const val COUNTRIES_API_URL = "https://restcountries.eu/rest/v2/all"
-const val FAJR = 0
-const val DHUHR = 1
-const val ASR = 2
-const val MAGHRIB = 3
-const val ISHA = 4
+
+//Colors
+const val WHITE_BACKGROUND = R.color.md_white_1000
+const val ACCENT_BACKGROUND = R.color.colorAccent
 
 //SharedPreferences
 const val COUNTRY_SHARED_PREFERENCE_KEY = "app_country"
