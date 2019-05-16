@@ -1,12 +1,22 @@
 package com.stavro_xhardha.pockettreasure.ui.names
 
+import com.stavro_xhardha.pockettreasure.model.Name
 import com.stavro_xhardha.pockettreasure.model.NameResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
+import com.stavro_xhardha.pockettreasure.room_db.NamesDao
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import javax.inject.Inject
 
-class NamesRepository @Inject constructor(val treasureApi: TreasureApi) {
+class NamesRepository @Inject constructor(val treasureApi: TreasureApi, val namesDao: NamesDao) {
 
     fun fetchNintyNineNamesAsync(): Deferred<Response<NameResponse>> = treasureApi.getNintyNineNamesAsync()
+
+    suspend fun countNamesInDatabase(): Int = namesDao.selectAllNames().size
+
+    suspend fun getNamesFromDatabase(): List<Name> = namesDao.selectAllNames()
+
+    suspend fun saveToDatabase(name: Name) {
+        namesDao.insertName(name)
+    }
 }

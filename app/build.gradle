@@ -65,9 +65,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:2.8.1'
 
     //room
-    implementation "android.arch.persistence.room:runtime:2.1.0-alpha04"
-    kapt "android.arch.persistence.room:compiler:2.1.0-alpha04"
-    implementation "androidx.room:room-coroutines:2.1.0-alpha04"
+    implementation "androidx.room:room-runtime:2.1.0-beta01"
+    kapt "androidx.room:room-compiler:2.1.0-beta01"
+    implementation "androidx.room:room-ktx:2.1.0-beta01"
 
     //Joda time
     implementation 'net.danlew:android.joda:2.10.1.2'

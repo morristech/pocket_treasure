@@ -5,6 +5,7 @@ import com.stavro_xhardha.pockettreasure.R
 //App constants
 const val APPLICATION_TAG = "PocketTreasure"
 const val SHARED_PREFERENCES_TAG = "pocket_treasure_app"
+const val TREASURE_DATABASE_NAME = "pocket_treasure_db"
 
 const val PRAYER_API_BASE_URL: String = "https://api.aladhan.com/v1/"
 const val COUNTRIES_API_URL = "https://restcountries.eu/rest/v2/all"

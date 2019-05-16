@@ -1,19 +1,15 @@
 package com.stavro_xhardha.pockettreasure.ui.names
 
-import android.content.Context
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
+import com.stavro_xhardha.pockettreasure.room_db.NamesDao
+import com.stavro_xhardha.pockettreasure.room_db.TreasureDatabase
 import com.stavro_xhardha.pockettreasure.ui.FragmentScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
 
 @Module
-class NamesFragmentModule(private val context: Context) {
-
-    @Provides
-    @FragmentScope
-    fun provideNamesFragmentContext(): Context = context
+class NamesFragmentModule {
 
     @Provides
     @FragmentScope
@@ -25,13 +21,10 @@ class NamesFragmentModule(private val context: Context) {
 
     @Provides
     @FragmentScope
-    fun provideNamesRepository(treasureApi: TreasureApi): NamesRepository = NamesRepository(treasureApi)
+    fun provideNamesRepository(treasureApi: TreasureApi, namesDao: NamesDao): NamesRepository =
+        NamesRepository(treasureApi, namesDao)
 
     @Provides
     @FragmentScope
-    fun provideLayoutManager(context: Context): LinearLayoutManager = LinearLayoutManager(context)
-
-    @Provides
-    @FragmentScope
-    fun provideNamesAdapter() = NamesAdapter(ArrayList())
+    fun provideNamesDao(treasureDatabase: TreasureDatabase): NamesDao = treasureDatabase.namesDao()
 }

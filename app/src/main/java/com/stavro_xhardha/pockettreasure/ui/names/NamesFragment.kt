@@ -19,12 +19,8 @@ class NamesFragment : BaseFragment() {
     @Inject
     lateinit var namesFragmentProviderFactory: NamesViewModelProviderFactory
 
-    @Inject
-    lateinit var layoutManager: LinearLayoutManager
-    @Inject
-    lateinit var namesAdapter: NamesAdapter
-
     private lateinit var namesViewModel: NamesViewModel
+    private lateinit var namesAdapter: NamesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +32,6 @@ class NamesFragment : BaseFragment() {
 
     override fun performDi() {
         DaggerNamesFragmentComponent.builder()
-            .namesFragmentModule(NamesFragmentModule(context!!))
             .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
             .build().inject(this)
     }
@@ -47,7 +42,7 @@ class NamesFragment : BaseFragment() {
 
     override fun observeTheLiveData() {
         namesViewModel.allNamesList.observe(this, Observer {
-            namesAdapter.setItemList(it)
+            namesAdapter = NamesAdapter(it)
             rvNames.adapter = namesAdapter
         })
         namesViewModel.progressBarVisibility.observe(this, Observer {
@@ -59,6 +54,6 @@ class NamesFragment : BaseFragment() {
     }
 
     override fun initializeComponent() {
-        rvNames.layoutManager = layoutManager
+        rvNames.layoutManager = LinearLayoutManager(activity)
     }
 }

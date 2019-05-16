@@ -8,7 +8,7 @@ import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.model.Name
 import kotlinx.android.synthetic.main.single_item_name.view.*
 
-class NamesAdapter(var namesList: ArrayList<Name>) : RecyclerView.Adapter<NamesAdapter.NamesViewHolder>() {
+class NamesAdapter(var namesList: List<Name>) : RecyclerView.Adapter<NamesAdapter.NamesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NamesViewHolder =
         NamesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_name, parent, false))
@@ -19,17 +19,11 @@ class NamesAdapter(var namesList: ArrayList<Name>) : RecyclerView.Adapter<NamesA
         holder.bind(namesList[position])
     }
 
-    fun setItemList(namesArrayList: ArrayList<Name>) {
-        this.namesList = namesArrayList
-        notifyDataSetChanged()
-    }
-
     class NamesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(name: Name) = with(itemView) {
             itemView.tvArabicName.text = name.arabicName
-            itemView.tvMeaning.text = name.englishNameMeaning.meaning
+            itemView.tvMeaning.text = name.meaning
             itemView.tvTransliteration.text = name.transliteration
         }
-
     }
 }
