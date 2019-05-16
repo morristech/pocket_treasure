@@ -61,10 +61,14 @@ class HomeViewModel @Inject constructor(
                     setValuesToLiveData()
                 }
             } else {
-                showError()
+                withContext(Dispatchers.Main){
+                    showError()
+                }
             }
         } catch (e: Exception) {
-            showError()
+            withContext(Dispatchers.Main){
+                showError()
+            }
             e.printStackTrace()
         }
     }

@@ -11,9 +11,14 @@ class PocketTreasureApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         JodaTimeAndroid.init(this)
-        pocketTreasureComponent = DaggerPocketTreasureComponent.builder().appContextModule(this)
-            .build()
+        pocketTreasureComponent = DaggerPocketTreasureComponent.factory().create(this)
+        INSTANCE = pocketTreasureComponent
     }
 
-    fun getPocketTreasureComponent() = pocketTreasureComponent
+    companion object {
+        private var INSTANCE: PocketTreasureComponent? = null
+
+        @JvmStatic
+        fun getPocketTreasureComponent(): PocketTreasureComponent = INSTANCE!!
+    }
 }

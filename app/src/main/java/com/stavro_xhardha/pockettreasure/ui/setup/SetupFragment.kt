@@ -51,10 +51,7 @@ class SetupFragment : BaseFragment(), SetupContract {
 
     override fun performDi() {
         DaggerSetupComponent.builder()
-            .pocketTreasureComponent(
-                ((activity!!.application) as PocketTreasureApplication)
-                    .getPocketTreasureComponent()
-            )
+            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
             .build().inject(this)
     }
 

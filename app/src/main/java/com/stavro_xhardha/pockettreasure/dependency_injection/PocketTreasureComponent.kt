@@ -13,11 +13,8 @@ interface PocketTreasureComponent {
 
     fun getSharedPreferences(): Rocket
 
-    @Component.Builder
+    @Component.Factory
     interface Builder {
-        @BindsInstance
-        fun appContextModule(pocketTreasureApplication: Application): Builder
-
-        fun build(): PocketTreasureComponent
+        fun create(@BindsInstance pocketTreasureApplication: Application): PocketTreasureComponent
     }
 }

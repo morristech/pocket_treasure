@@ -37,7 +37,7 @@ class NamesFragment : BaseFragment() {
     override fun performDi() {
         DaggerNamesFragmentComponent.builder()
             .namesFragmentModule(NamesFragmentModule(context!!))
-            .pocketTreasureComponent((activity!!.application as PocketTreasureApplication).getPocketTreasureComponent())
+            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
             .build().inject(this)
     }
 

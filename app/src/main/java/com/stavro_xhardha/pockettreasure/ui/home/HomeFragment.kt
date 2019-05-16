@@ -35,9 +35,10 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun performDi() {
-        DaggerHomeComponent.builder().pocketTreasureComponent(
-            (activity!!.application as PocketTreasureApplication).getPocketTreasureComponent()
-        ).build().inject(this)
+        DaggerHomeComponent.builder()
+            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+            .build()
+            .inject(this)
     }
 
     override fun initViewModel() {
