@@ -20,7 +20,6 @@ import javax.inject.Inject
 
 
 class SetupFragment : BaseFragment(), SetupContract {
-
     @Inject
     lateinit var setupViewModelFactory: SetupViewModelFactory
 
@@ -105,4 +104,8 @@ class SetupFragment : BaseFragment(), SetupContract {
                 }
         }
     }
+
+    override fun handleOnBackPressed(view: View) {
+    }
+
 }

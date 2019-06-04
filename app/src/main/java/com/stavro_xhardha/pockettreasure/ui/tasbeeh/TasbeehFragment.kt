@@ -5,10 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.activity.OnBackPressedCallback
+import androidx.navigation.Navigation
+import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 
-class TasbeehFragment : Fragment() {
+class TasbeehFragment : BaseFragment() {
+
+    override fun initializeComponent() {
+    }
+
+    override fun initViewModel() {
+    }
+
+    override fun performDi() {
+    }
+
+    override fun observeTheLiveData() {
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,5 +32,13 @@ class TasbeehFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_tasbeeh, container, false)
     }
 
+    override fun handleOnBackPressed(view: View) {
+        val navController = Navigation.findNavController(view)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navController.popBackStack(R.id.homeFragment, false)
+            }
+        })
+    }
 
 }

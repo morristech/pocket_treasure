@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var menuHelper: Menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +87,6 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val retValue = super.onCreateOptionsMenu(menu)
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        menuHelper = menu
         if (navigationView == null) {
             menuInflater.inflate(R.menu.activity_main_drawer, menu)
             return true

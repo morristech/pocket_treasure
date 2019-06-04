@@ -65,9 +65,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:2.8.1'
 
     //room
-    implementation "androidx.room:room-runtime:2.1.0-beta01"
-    kapt "androidx.room:room-compiler:2.1.0-beta01"
-    implementation "androidx.room:room-ktx:2.1.0-beta01"
+    implementation "androidx.room:room-runtime:2.1.0-rc01"
+    kapt "androidx.room:room-compiler:2.1.0-rc01"
+    implementation "androidx.room:room-ktx:2.1.0-rc01"
 
     //Joda time
     implementation 'net.danlew:android.joda:2.10.1.2'
@@ -81,7 +81,7 @@ dependencies {
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
     // Optional -- Robolectric environment
-    testImplementation 'androidx.test:core:1.1.0'
+    testImplementation 'androidx.test:core:1.2.0'
     // Optional -- Mockito framework
     testImplementation 'org.mockito:mockito-core:2.23.0'
 }

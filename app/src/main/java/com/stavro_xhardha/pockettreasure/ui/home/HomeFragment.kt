@@ -120,4 +120,7 @@ class HomeFragment : BaseFragment() {
         })
 
     }
+
+    override fun handleOnBackPressed(view: View) {
+    }
 }
