@@ -14,7 +14,7 @@ class SetupRepository @Inject constructor(
 ) {
 
     fun makeCountryApiCallAsync(): Deferred<Response<ArrayList<Country>>> =
-        treasureApi.getCountriesList(COUNTRIES_API_URL)
+        treasureApi.getCountriesListAsync(COUNTRIES_API_URL)
 
     fun saveCountryToSharedPreferences(country: Country) {
         mSharedPreferences.writeString(COUNTRY_SHARED_PREFERENCE_KEY, country.name)

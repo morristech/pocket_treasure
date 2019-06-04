@@ -2,6 +2,7 @@ package com.stavro_xhardha.pockettreasure.network
 
 import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.model.NameResponse
+import com.stavro_xhardha.pockettreasure.model.NewsResponse
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
@@ -15,9 +16,16 @@ interface TreasureApi {
     fun getNintyNineNamesAsync(): Deferred<Response<NameResponse>>
 
     @GET
-    fun getCountriesList(@Url url: String): Deferred<Response<ArrayList<Country>>>
+    fun getCountriesListAsync(@Url url: String): Deferred<Response<ArrayList<Country>>>
 
     @GET("timingsByCity")
     fun getPrayerTimesTodayAsync(@Query("city") city: String?, @Query("country") country: String?):
             Deferred<Response<PrayerTimeResponse>>
+
+    @GET("v2/everything")
+    fun getLatestNewsAsync(
+        @Url baseUrl: String,
+        @Query("q") searchKeyWord: String,
+        @Query("page") pageNumber: Int
+    ): Deferred<Response<NewsResponse>>
 }

@@ -9,6 +9,8 @@ const val TREASURE_DATABASE_NAME = "pocket_treasure_db"
 
 const val PRAYER_API_BASE_URL: String = "https://api.aladhan.com/v1/"
 const val COUNTRIES_API_URL = "https://restcountries.eu/rest/v2/all"
+const val NEWS_BASE_URL = "https://newsapi.org/"
+const val SEARCH_KEY_WORD = "islam"
 
 //Colors
 const val WHITE_BACKGROUND = R.color.md_white_1000
