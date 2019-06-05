@@ -19,7 +19,7 @@ interface TreasureApi {
     fun getCountriesListAsync(@Url url: String): Deferred<Response<ArrayList<Country>>>
 
     @GET("timingsByCity")
-    fun getPrayerTimesTodayAsync(@Query("city") city: String?, @Query("country") country: String?):
+    fun getPrayerTimesTodayAsync(@Query("city") city: String?, @Query("country") country: String?, @Query("adjustment") adjustment: Int):
             Deferred<Response<PrayerTimeResponse>>
 
     @GET

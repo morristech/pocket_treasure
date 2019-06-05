@@ -15,7 +15,7 @@ class HomeRepository @Inject constructor(
     fun makePrayerCallAsync(): Deferred<Response<PrayerTimeResponse>> {
         val capitalCityName = mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY)
         val countryName = mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)
-        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName)
+        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName , 1)
     }
 
     fun getCurrentRegisteredDay(): Int = mSharedPreferences.readInt(GREGORIAN_DAY_KEY)
