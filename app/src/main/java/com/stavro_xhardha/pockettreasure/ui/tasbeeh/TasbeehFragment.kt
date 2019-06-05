@@ -12,7 +12,7 @@ import com.stavro_xhardha.pockettreasure.R
 
 class TasbeehFragment : BaseFragment() {
 
-    override fun initializeComponent() {
+    override fun initializeComponents() {
     }
 
     override fun initViewModel() {

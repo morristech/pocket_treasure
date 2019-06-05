@@ -22,10 +22,12 @@ interface TreasureApi {
     fun getPrayerTimesTodayAsync(@Query("city") city: String?, @Query("country") country: String?):
             Deferred<Response<PrayerTimeResponse>>
 
-    @GET("v2/everything")
+    @GET
     fun getLatestNewsAsync(
         @Url baseUrl: String,
         @Query("q") searchKeyWord: String,
-        @Query("page") pageNumber: Int
+        @Query("apiKey") apiKey: String,
+        @Query("page") pageNumber: Int,
+        @Query("pageSize") pageSize: Int
     ): Deferred<Response<NewsResponse>>
 }

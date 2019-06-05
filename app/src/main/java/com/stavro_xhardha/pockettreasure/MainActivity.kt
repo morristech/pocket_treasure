@@ -96,8 +96,13 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-            android.R.id.home ->
-                drawer_layout.openDrawer(GravityCompat.START)
+            android.R.id.home -> {
+                if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.articleWebViewFragment) {
+                    onBackPressed()
+                } else {
+                    drawer_layout.openDrawer(GravityCompat.START)
+                }
+            }
         }
         return item.onNavDestinationSelected(findNavController(R.id.nav_host_fragment))
                 || super.onOptionsItemSelected(item)

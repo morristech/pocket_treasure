@@ -13,7 +13,7 @@ import com.stavro_xhardha.pockettreasure.R
 
 class SettingsFragment : BaseFragment() {
 
-    override fun initializeComponent() {
+    override fun initializeComponents() {
     }
 
     override fun initViewModel() {

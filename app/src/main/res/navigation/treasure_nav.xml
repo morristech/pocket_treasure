@@ -49,7 +49,11 @@
     <fragment android:id="@+id/newsFragment"
               android:name="com.stavro_xhardha.pockettreasure.ui.news.NewsFragment"
               android:label="News"
-              tools:layout="@layout/fragment_news"/>
+              tools:layout="@layout/fragment_news">
+        <action android:id="@+id/action_newsFragment_to_articleWebViewFragment"
+                app:destination="@id/articleWebViewFragment"
+        />
+    </fragment>
     <fragment android:id="@+id/settingsFragment"
               android:name="com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment"
               android:label="Settings"
@@ -63,5 +67,10 @@
                 app:launchSingleTop="true"
                 app:popUpTo="@+id/treasure_nav"
                 app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment android:id="@+id/articleWebViewFragment"
+              android:name="com.stavro_xhardha.pockettreasure.ui.news.ArticleWebViewFragment"
+              android:label="Post Details" tools:layout="@layout/fragment_article_web_view">
+        <argument android:name="url" app:argType="string" android:defaultValue='""'/>
     </fragment>
 </navigation>

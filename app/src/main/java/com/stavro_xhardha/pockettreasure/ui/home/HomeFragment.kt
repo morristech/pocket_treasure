@@ -45,7 +45,7 @@ class HomeFragment : BaseFragment() {
         homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
     }
 
-    override fun initializeComponent() {
+    override fun initializeComponents() {
 
     }
 

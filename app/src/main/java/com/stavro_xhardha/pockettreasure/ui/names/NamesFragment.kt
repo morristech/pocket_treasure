@@ -55,7 +55,7 @@ class NamesFragment : BaseFragment() {
         })
     }
 
-    override fun initializeComponent() {
+    override fun initializeComponents() {
         rvNames.layoutManager = LinearLayoutManager(activity)
     }
 
