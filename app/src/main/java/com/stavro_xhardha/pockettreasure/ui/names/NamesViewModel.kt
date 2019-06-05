@@ -12,9 +12,9 @@ import javax.inject.Inject
 
 class NamesViewModel @Inject constructor(private val repository: NamesRepository) : ViewModel() {
 
-    var allNamesList: MutableLiveData<List<Name>> = MutableLiveData()
-    var progressBarVisibility: MutableLiveData<Int> = MutableLiveData()
-    var errorLayoutVisibility: MutableLiveData<Int> = MutableLiveData()
+    val allNamesList: MutableLiveData<List<Name>> = MutableLiveData()
+    val progressBarVisibility: MutableLiveData<Int> = MutableLiveData()
+    val errorLayoutVisibility: MutableLiveData<Int> = MutableLiveData()
 
     init {
         loadNamesList()

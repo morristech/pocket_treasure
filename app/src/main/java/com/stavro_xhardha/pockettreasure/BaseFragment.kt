@@ -2,16 +2,14 @@ package com.stavro_xhardha.pockettreasure
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 
 abstract class BaseFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         performDi()
-        initializeComponent()
+        initializeComponents()
         initViewModel()
         observeTheLiveData()
     }
@@ -23,7 +21,7 @@ abstract class BaseFragment : Fragment() {
 
     abstract fun handleOnBackPressed(view: View)
 
-    abstract fun initializeComponent()
+    abstract fun initializeComponents()
 
     abstract fun initViewModel()
 

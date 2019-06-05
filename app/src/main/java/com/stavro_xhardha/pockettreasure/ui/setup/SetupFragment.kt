@@ -63,7 +63,7 @@ class SetupFragment : BaseFragment(), SetupContract {
         showFajrDialog()
     }
 
-    override fun initializeComponent() {
+    override fun initializeComponents() {
         rvCountries.layoutManager = LinearLayoutManager(activity)
     }
 
