@@ -1,9 +1,6 @@
 package com.stavro_xhardha.pockettreasure.network
 
-import com.stavro_xhardha.pockettreasure.model.Country
-import com.stavro_xhardha.pockettreasure.model.NameResponse
-import com.stavro_xhardha.pockettreasure.model.NewsResponse
-import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
+import com.stavro_xhardha.pockettreasure.model.*
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
@@ -30,4 +27,14 @@ interface TreasureApi {
         @Query("page") pageNumber: Int,
         @Query("pageSize") pageSize: Int
     ): Response<NewsResponse>
+
+    @GET
+    suspend fun getUnsplashImagesAsync(
+        @Url baseUrl: String,
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") resultPerPage: Int,
+        @Query("client_id") clientId: String,
+        @Query("client_secret") clientSecret: String
+    ): Response<UnsplashResponse>
 }

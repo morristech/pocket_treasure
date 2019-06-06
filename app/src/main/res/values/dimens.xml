@@ -59,6 +59,8 @@
     <dimen name="image_view_width">60dp</dimen>
     <dimen name="negative_space">-35dp</dimen>
     <dimen name="hundred_height">100dp</dimen>
+    <dimen name="image_max_width">192dp</dimen>
+    <dimen name="image_max_height">246dp</dimen>
 
 
 </resources>

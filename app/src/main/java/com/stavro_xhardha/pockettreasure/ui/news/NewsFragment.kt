@@ -54,6 +54,7 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
         newsViewModel.networkNetworkStatus.observe(this, Observer {
             if (isDebugMode) {
                 when (it) {
+                    //todo fix handle the errors on the view
                     NetworkStatus.FAILED -> Log.d(APPLICATION_TAG, "FAILED")
                     NetworkStatus.SUCCESS -> Log.d(APPLICATION_TAG, "SUCCESS")
                     NetworkStatus.LOADING -> Log.d(APPLICATION_TAG, "LOADING")
