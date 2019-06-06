@@ -13,6 +13,10 @@ const val NEWS_BASE_URL = "https://newsapi.org/v2/everything/"
 const val SEARCH_KEY_WORD = "islam"
 const val SEARCH_NEWS_API_KEY = "08fef133f02f4fe898007ea05c1dcf16"
 const val INITIAL_PAGE_SIZE = 20
+const val UNSPLASH_BASE_URL = "https://api.unsplash.com/search/photos"
+const val UNPLASH_QUERY_VALUE = "islam|mosque"
+const val CLIENT_ID = "9c80ea2aa631bda7ec75798cd6f0cfc2008ea6152721d80913464c4fc2f142bc"
+const val CLIENT_SECRET = "a69a283d85e85b8a72309e50c219211ab13284c4e0190ae30199e8e1d0ac3aa3"
 
 //Colors
 const val WHITE_BACKGROUND = R.color.md_white_1000

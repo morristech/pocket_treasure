@@ -21,7 +21,6 @@ class NetworkModule {
     fun provideRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
         .baseUrl(PRAYER_API_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .client(client)
         .build()
 }

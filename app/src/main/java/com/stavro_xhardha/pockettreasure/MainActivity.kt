@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
         setupActionBar(navController, appBarConfiguration)
 
         setupNavControllerListener(navController)
+
     }
 
     private fun setupNavControllerListener(navController: NavController) {
@@ -97,7 +98,9 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             android.R.id.home -> {
-                if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.articleWebViewFragment) {
+                if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.articleWebViewFragment
+                    || findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.fullImageFragment
+                ) {
                     onBackPressed()
                 } else {
                     drawer_layout.openDrawer(GravityCompat.START)
