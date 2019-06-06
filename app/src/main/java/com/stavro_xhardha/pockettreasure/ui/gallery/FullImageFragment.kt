@@ -1,51 +1,45 @@
-package com.stavro_xhardha.pockettreasure.ui
+package com.stavro_xhardha.pockettreasure.ui.gallery
 
 
 import android.Manifest
+import android.app.WallpaperManager
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.REQUEST_STORAGE_PERMISSION
 import kotlinx.android.synthetic.main.fragment_full_image.*
-import java.lang.Exception
-import java.net.URL
-import android.graphics.BitmapFactory
+import kotlinx.coroutines.*
 import java.io.IOException
-import android.media.MediaScannerConnection
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
-import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
-
-const val REQUEST_STORAGE_PERMISSION = 355
+import java.net.URL
 
 
 class FullImageFragment : Fragment() {
 
+    //please refactor this :)
+
     val args: FullImageFragmentArgs by navArgs()
+
+    private val completableJob = Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_full_image, container, false)
     }
 
@@ -82,20 +76,60 @@ class FullImageFragment : Fragment() {
             saveImageToUrl()
         } else if (item.itemId == R.id.action_share) {
             shareImageUrl()
+        } else if (item.itemId == R.id.action_set_wallpaper) {
+            setImageAsWallPaper()
         }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setImageAsWallPaper() {
+        val wallPaperOptions = listOf("Home Screen", "Lock Screen", "Both")
+        MaterialDialog(activity!!).show {
+            title(R.string.set_as_wallpaper)
+            listItemsSingleChoice(items = wallPaperOptions, initialSelection = 0) { dialog, index, _ ->
+                setWallPaper(index)
+                dialog.dismiss()
+            }
+        }
+    }
+
+    private fun setWallPaper(index: Int) {
+        val imageUrl = args.imageUrl
+        coroutineScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                pbFullImage.visibility = View.VISIBLE
+            }
+            val result = Picasso.get().load(imageUrl).get()
+            val wallpaperManager = WallpaperManager.getInstance(activity)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                when (index) {
+                    0 -> wallpaperManager.setBitmap(result, null, true, WallpaperManager.FLAG_SYSTEM)
+                    1 -> wallpaperManager.setBitmap(result, null, true, WallpaperManager.FLAG_LOCK)
+                    else -> wallpaperManager.setBitmap(result)
+                }
+            } else {
+                wallpaperManager.setBitmap(result)
+            }
+            withContext(Dispatchers.Main) {
+                pbFullImage.visibility = View.GONE
+                Snackbar.make(rlFullImageHolder, "Wallpaper saved", Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
     private fun saveImageToUrl() {
         try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ContextCompat.checkSelfPermission(
                         activity!!.applicationContext,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                     )
                     != PackageManager.PERMISSION_GRANTED
                 ) {
-                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_STORAGE_PERMISSION)
+                    requestPermissions(
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        REQUEST_STORAGE_PERMISSION
+                    )
                 } else {
                     writeImageToFile()
                 }
@@ -122,7 +156,10 @@ class FullImageFragment : Fragment() {
     }
 
     private fun writeImageToFile() {
-        GlobalScope.launch(Dispatchers.IO) {
+        coroutineScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                pbFullImage.visibility = View.VISIBLE
+            }
             val url = URL(args.imageUrl)
             val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
             MediaStore.Images.Media.insertImage(
@@ -132,6 +169,7 @@ class FullImageFragment : Fragment() {
                 ""
             )
             withContext(Dispatchers.Main) {
+                pbFullImage.visibility = View.GONE
                 Snackbar.make(rlFullImageHolder, "Image Saved", Snackbar.LENGTH_LONG).show()
             }
         }
@@ -143,5 +181,10 @@ class FullImageFragment : Fragment() {
         sharingIntent.type = "text/plain"
         sharingIntent.putExtra(Intent.EXTRA_TEXT, image)
         startActivity(Intent.createChooser(sharingIntent, "Share via"))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        completableJob.cancel()
     }
 }

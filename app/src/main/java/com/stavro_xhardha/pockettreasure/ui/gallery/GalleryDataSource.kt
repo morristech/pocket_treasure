@@ -61,23 +61,6 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) : Page
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, UnsplashResult>) {
-        if (isDebugMode)
-            Log.d(APPLICATION_TAG, params.key.toString())
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                updateNetworkStatus(NetworkStatus.LOADING)
-                val primaryUnsplashResponse = getPhotosFromUsplashAPI(params.key)
-                if (primaryUnsplashResponse.code() == 200) {
-                    callback.onResult(primaryUnsplashResponse.body()!!.results, params.key.dec())
-                    updateNetworkStatus(NetworkStatus.SUCCESS)
-                } else {
-                    updateNetworkStatus(NetworkStatus.FAILED)
-                }
-            } catch (exception: Exception) {
-                exception.printStackTrace()
-                updateNetworkStatus(NetworkStatus.FAILED)
-            }
-        }
     }
 
     private suspend fun getPhotosFromUsplashAPI(pageNumber: Int): Response<UnsplashResponse> =

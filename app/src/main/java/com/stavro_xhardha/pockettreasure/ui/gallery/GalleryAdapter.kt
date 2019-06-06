@@ -51,15 +51,18 @@ class GalleryAdapter(val contract: GalleryContract) :
             contract: GalleryContract
         ) {
             with(itemView) {
-                Picasso.get().load(unsplashResult?.photoUrls?.thumbnailUrl)
-                    .fit()
-                    .error(R.drawable.no_img_available)
-                    .placeholder(R.drawable.img_placeholder)
-                    .into(ivUnsplashImage)
-                tvImageDescription.text = "By ${unsplashResult?.user?.userFullName ?: "Anonymous"}"
+                val currentImageView = ivUnsplashImage
+                if (currentImageView != null) {
+                    Picasso.get().load(unsplashResult?.photoUrls?.thumbnailUrl)
+                        .fit()
+                        .error(R.drawable.no_img_available)
+                        .placeholder(R.drawable.img_placeholder)
+                        .into(currentImageView)
+                    tvImageDescription.text = "By ${unsplashResult?.user?.userFullName ?: "Anonymous"}"
 
-                flImageHolder.setOnClickListener {
-                    contract.onImageHolderClicked(unsplashResult?.photoUrls?.raw!!)
+                    flImageHolder.setOnClickListener {
+                        contract.onImageHolderClicked(unsplashResult?.photoUrls?.raw!!)
+                    }
                 }
             }
         }
