@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class NamesRepository @Inject constructor(val treasureApi: TreasureApi, val namesDao: NamesDao) {
 
-    fun fetchNintyNineNamesAsync(): Deferred<Response<NameResponse>> = treasureApi.getNintyNineNamesAsync()
+    suspend fun fetchNintyNineNamesAsync(): Response<NameResponse> = treasureApi.getNintyNineNamesAsync()
 
     suspend fun countNamesInDatabase(): Int = namesDao.selectAllNames().size
 

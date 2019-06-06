@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
     val treasureApi: TreasureApi,
-    val mSharedPreferences: Rocket
+    private val mSharedPreferences: Rocket
 ) {
-    fun makePrayerCallAsync(): Deferred<Response<PrayerTimeResponse>> {
+    suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> {
         val capitalCityName = mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY)
         val countryName = mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)
         return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName , 1)
