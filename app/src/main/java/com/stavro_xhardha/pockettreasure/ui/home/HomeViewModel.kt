@@ -54,7 +54,7 @@ class HomeViewModel @Inject constructor(
             switchProgressBarOn()
         }
         try {
-            val todaysPrayerTime = homeRepository.makePrayerCallAsync().await()
+            val todaysPrayerTime = homeRepository.makePrayerCallAsync()
             if (todaysPrayerTime.isSuccessful) {
                 saveDataToShardPreferences(todaysPrayerTime.body())
                 withContext(Dispatchers.Main) {

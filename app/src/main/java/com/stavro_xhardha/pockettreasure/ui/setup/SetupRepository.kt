@@ -13,7 +13,7 @@ class SetupRepository @Inject constructor(
     private val mSharedPreferences: Rocket
 ) {
 
-    fun makeCountryApiCallAsync(): Deferred<Response<ArrayList<Country>>> =
+    suspend fun  makeCountryApiCallAsync(): Response<ArrayList<Country>> =
         treasureApi.getCountriesListAsync(COUNTRIES_API_URL)
 
     fun saveCountryToSharedPreferences(country: Country) {

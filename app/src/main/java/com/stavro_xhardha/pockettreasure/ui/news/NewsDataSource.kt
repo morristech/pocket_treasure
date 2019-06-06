@@ -22,7 +22,7 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKey
             try {
                 updateNetworkStatus(NetworkStatus.LOADING)
                 updateInitialState(InitialState.LOADING)
-                val primaryNewsResponse = callLatestNewsAsync(1).await()
+                val primaryNewsResponse = callLatestNewsAsync(1)
                 if (primaryNewsResponse.isSuccessful) {
                     callback.onResult(primaryNewsResponse.body()!!.articles, null, 2)
                     updateNetworkStatus(NetworkStatus.SUCCESS)
@@ -47,7 +47,7 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKey
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 updateNetworkStatus(NetworkStatus.LOADING)
-                val primaryNewsResponse = callLatestNewsAsync(params.key).await()
+                val primaryNewsResponse = callLatestNewsAsync(params.key)
                 if (primaryNewsResponse.isSuccessful) {
                     callback.onResult(primaryNewsResponse.body()!!.articles, params.key.inc())
                     updateNetworkStatus(NetworkStatus.SUCCESS)
@@ -65,7 +65,7 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKey
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 updateNetworkStatus(NetworkStatus.LOADING)
-                val primaryNewsResponse = callLatestNewsAsync(params.key).await()
+                val primaryNewsResponse = callLatestNewsAsync(params.key)
                 if (primaryNewsResponse.isSuccessful) {
                     callback.onResult(primaryNewsResponse.body()!!.articles, params.key.dec())
                     updateNetworkStatus(NetworkStatus.SUCCESS)
@@ -79,7 +79,7 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKey
         }
     }
 
-    private fun callLatestNewsAsync(pageNumber: Int): Deferred<Response<NewsResponse>> = treasureApi.getLatestNewsAsync(
+    private suspend fun callLatestNewsAsync(pageNumber: Int): Response<NewsResponse> = treasureApi.getLatestNewsAsync(
         NEWS_BASE_URL, SEARCH_KEY_WORD, SEARCH_NEWS_API_KEY, pageNumber, INITIAL_PAGE_SIZE
     )
 

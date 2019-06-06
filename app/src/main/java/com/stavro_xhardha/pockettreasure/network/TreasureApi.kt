@@ -13,21 +13,21 @@ import retrofit2.http.Url
 interface TreasureApi {
 
     @GET("asmaAlHusna")
-    fun getNintyNineNamesAsync(): Deferred<Response<NameResponse>>
+    suspend fun getNintyNineNamesAsync(): Response<NameResponse>
 
     @GET
-    fun getCountriesListAsync(@Url url: String): Deferred<Response<ArrayList<Country>>>
+    suspend fun getCountriesListAsync(@Url url: String): Response<ArrayList<Country>>
 
     @GET("timingsByCity")
-    fun getPrayerTimesTodayAsync(@Query("city") city: String?, @Query("country") country: String?, @Query("adjustment") adjustment: Int):
-            Deferred<Response<PrayerTimeResponse>>
+    suspend fun getPrayerTimesTodayAsync(@Query("city") city: String?, @Query("country") country: String?, @Query("adjustment") adjustment: Int):
+            Response<PrayerTimeResponse>
 
     @GET
-    fun getLatestNewsAsync(
+    suspend fun getLatestNewsAsync(
         @Url baseUrl: String,
         @Query("q") searchKeyWord: String,
         @Query("apiKey") apiKey: String,
         @Query("page") pageNumber: Int,
         @Query("pageSize") pageSize: Int
-    ): Deferred<Response<NewsResponse>>
+    ): Response<NewsResponse>
 }

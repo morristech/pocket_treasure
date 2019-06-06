@@ -51,7 +51,7 @@ class NamesViewModel @Inject constructor(private val repository: NamesRepository
     }
 
     private suspend fun makeNamesApiCall() {
-        val namesResponse = repository.fetchNintyNineNamesAsync().await()
+        val namesResponse = repository.fetchNintyNineNamesAsync()
         if (namesResponse.isSuccessful) {
             saveNameToDatabase(namesResponse.body()?.data)
             makeNamesDatabaseCall()

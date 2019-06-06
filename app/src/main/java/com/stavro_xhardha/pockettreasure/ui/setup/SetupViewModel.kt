@@ -34,7 +34,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
             switchProgressBarOn()
         }
         try {
-            val countriesListResponse = setupRepository.makeCountryApiCallAsync().await()
+            val countriesListResponse = setupRepository.makeCountryApiCallAsync()
             if (countriesListResponse.isSuccessful) {
                 withContext(Dispatchers.Main) {
                     switchProgressOff()
