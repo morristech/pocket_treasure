@@ -9,7 +9,10 @@ import com.stavro_xhardha.pockettreasure.brain.SEARCH_NEWS_API_KEY
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.pockettreasure.model.NewsResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -62,21 +65,6 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKey
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, News>) {
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                updateNetworkStatus(NetworkStatus.LOADING)
-                val primaryNewsResponse = callLatestNewsAsync(params.key)
-                if (primaryNewsResponse.isSuccessful) {
-                    callback.onResult(primaryNewsResponse.body()!!.articles, params.key.dec())
-                    updateNetworkStatus(NetworkStatus.SUCCESS)
-                } else {
-                    updateNetworkStatus(NetworkStatus.FAILED)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                updateNetworkStatus(NetworkStatus.FAILED)
-            }
-        }
     }
 
     private suspend fun callLatestNewsAsync(pageNumber: Int): Response<NewsResponse> = treasureApi.getLatestNewsAsync(

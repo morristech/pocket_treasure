@@ -1,25 +1,25 @@
 package com.stavro_xhardha.pockettreasure.ui.news
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
+import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
-import android.content.Intent
-import android.widget.Toast
-import androidx.navigation.fragment.findNavController
-import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 
 
 class NewsFragment : BaseFragment(), NewsAdapterContract {
@@ -121,7 +121,7 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
         sharingIntent.type = "text/plain"
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title)
         sharingIntent.putExtra(Intent.EXTRA_TEXT, url)
-        startActivity(Intent.createChooser(sharingIntent, "Share via"))
+        startActivity(Intent.createChooser(sharingIntent, activity!!.resources.getString(R.string.share_via)))
     }
 
     override fun showErrorMessage() {
