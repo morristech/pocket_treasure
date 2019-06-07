@@ -27,6 +27,7 @@
         <action android:id="@+id/action_homeFragment_to_settingsFragment"
                 app:popUpTo="@id/homeFragment"
                 app:destination="@id/settingsFragment"/>
+        <action android:id="@+id/action_homeFragment_to_mapFragment" app:destination="@id/mapFragment"/>
     </fragment>
     <fragment
             android:id="@+id/namesFragment"
@@ -81,4 +82,6 @@
               android:label="Image Details" tools:layout="@layout/fragment_full_image">
         <argument android:name="imageUrl" app:argType="string" android:defaultValue='""'/>
     </fragment>
+    <fragment android:id="@+id/mapFragment" android:name="com.stavro_xhardha.pockettreasure.ui.map.MapFragment"
+              android:label="Map" tools:layout="@layout/map_fragment"/>
 </navigation>

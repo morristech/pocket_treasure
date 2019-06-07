@@ -63,6 +63,7 @@ dependencies {
 
     //material dialog
     implementation 'com.afollestad.material-dialogs:core:2.8.1'
+    implementation 'com.afollestad.material-dialogs:input:3.0.0-rc2'
 
     //room
     implementation "androidx.room:room-runtime:2.1.0-rc01"
@@ -95,4 +96,5 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-android:2.24.5'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
 
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
 }

@@ -17,6 +17,7 @@ const val UNSPLASH_BASE_URL = "https://api.unsplash.com/search/photos"
 const val UNPLASH_QUERY_VALUE = "islam|mosque"
 const val CLIENT_ID = "9c80ea2aa631bda7ec75798cd6f0cfc2008ea6152721d80913464c4fc2f142bc"
 const val CLIENT_SECRET = "a69a283d85e85b8a72309e50c219211ab13284c4e0190ae30199e8e1d0ac3aa3"
+const val GOOGLE_MAP_PLACE_SEARCH = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
 const val REQUEST_STORAGE_PERMISSION = 355
 
 //Colors
