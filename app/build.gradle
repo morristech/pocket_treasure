@@ -80,11 +80,19 @@ dependencies {
 
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
-    // Optional -- Robolectric environment
-    testImplementation 'androidx.test:core:1.2.0'
     // Optional -- Mockito framework
     testImplementation 'org.mockito:mockito-core:2.27.0'
 
     //paging library
     implementation "androidx.paging:paging-runtime:2.1.0"
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+    implementation 'androidx.fragment:fragment:1.1.0-alpha01'
+    androidTestImplementation 'org.mockito:mockito-android:2.24.5'
+    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
+
 }

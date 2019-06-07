@@ -60,7 +60,7 @@ class SetupFragment : BaseFragment(), SetupContract {
 
     override fun onListItemClick(country: Country) {
         setupViewModel.onCountrySelected(country)
-        showFajrDialog()
+        findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
     }
 
     override fun initializeComponents() {
@@ -87,22 +87,6 @@ class SetupFragment : BaseFragment(), SetupContract {
         setupViewModel.pbVisibility.observe(this, Observer {
             pbSetup.visibility = it
         })
-    }
-
-    private fun showFajrDialog() {
-        MaterialDialog(context!!).show {
-            title(R.string.app_name)
-            message(R.string.wake_me_up_for_fajr)
-                .positiveButton(R.string.yes) {
-                    setupViewModel.onYesDialogClicked()
-                    it.dismiss()
-                    findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
-                }
-                .negativeButton(R.string.no) {
-                    it.dismiss()
-                    findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
-                }
-        }
     }
 
     override fun handleOnBackPressed(view: View) {

@@ -21,10 +21,6 @@ class SetupRepository @Inject constructor(
         mSharedPreferences.writeString(CAPITAL_SHARED_PREFERENCES_KEY, country.capitalCity)
     }
 
-    fun saveWakingUpUser() {
-        mSharedPreferences.writeBoolean(WAKE_UP_USER_FOR_FAJR, true)
-    }
-
     fun isCountryEmpty(): Boolean {
         return mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)!!.isEmpty()
                 || mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY)!!.isEmpty()

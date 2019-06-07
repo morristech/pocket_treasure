@@ -14,7 +14,7 @@ import com.stavro_xhardha.pockettreasure.ui.news.NetworkStatus
 import com.stavro_xhardha.pockettreasure.ui.news.ViewHolderType
 import kotlinx.android.synthetic.main.single_item_image.view.*
 
-class GalleryAdapter(val contract: GalleryContract) :
+class GalleryAdapter(private val contract: GalleryContract) :
     PagedListAdapter<UnsplashResult, GalleryAdapter.GalleryViewHolder>(DIFF_UTIL) {
     private var viewHolderType: ViewHolderType = ViewHolderType.VIEW_PROGRESS
 

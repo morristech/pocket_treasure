@@ -56,5 +56,11 @@
     <string name="can_not_save_image_need_permission">Can\'t save image, need permission</string>
     <string name="wallpaper_saved">Wallpaper saved</string>
     <string name="image_saved">Image Saved</string>
+    <string name="wake_up_fajr">Notified on Fajr time</string>
+    <string name="wake_up_dhuhr">Notified on Dhuhr time</string>
+    <string name="wake_up_asr">Notified on Asr timea</string>
+    <string name="wake_up_maghrib">Notified on Maghrib time</string>
+    <string name="wake_up_isha">Notified on Isha time</string>
     <string name="share_via">Share Via</string>
+
 </resources>
