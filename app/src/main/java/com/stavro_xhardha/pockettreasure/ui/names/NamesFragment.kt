@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 import kotlinx.android.synthetic.main.fragment_names.*
 import javax.inject.Inject
 
@@ -60,11 +61,6 @@ class NamesFragment : BaseFragment() {
     }
 
     override fun handleOnBackPressed(view: View) {
-        val navController = Navigation.findNavController(view)
-        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                navController.popBackStack(R.id.homeFragment, false)
-            }
-        })
+        getBackToHomeFragment(view, requireActivity(), this)
     }
 }
