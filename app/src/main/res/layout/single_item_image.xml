@@ -9,13 +9,6 @@
              android:id="@+id/flImageHolder"
              android:layout_height="wrap_content">
 
-    <ProgressBar
-            android:id="@+id/pbAdapterImage"
-            android:layout_gravity="center"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
     <ImageView
             android:adjustViewBounds="true"
             android:id="@+id/ivUnsplashImage"

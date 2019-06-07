@@ -74,8 +74,4 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     fun onCountrySelected(country: Country) {
         setupRepository.saveCountryToSharedPreferences(country)
     }
-
-    fun onYesDialogClicked() {
-        setupRepository.saveWakingUpUser()
-    }
 }
