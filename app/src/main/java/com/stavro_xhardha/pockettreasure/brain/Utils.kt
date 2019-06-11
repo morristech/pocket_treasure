@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.DiffUtil
 import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.model.Aya
+import com.stavro_xhardha.pockettreasure.model.News
+import com.stavro_xhardha.pockettreasure.model.UnsplashResult
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
 
@@ -27,4 +31,36 @@ fun getBackToHomeFragment(
             navController.popBackStack(R.id.homeFragment, false)
         }
     })
+}
+
+val DIFF_UTIL_AYA = object : DiffUtil.ItemCallback<Aya>() {
+    override fun areItemsTheSame(oldItem: Aya, newItem: Aya): Boolean = oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Aya, newItem: Aya): Boolean =
+        oldItem.ayatText == newItem.ayatText
+                && oldItem.audioUrl == newItem.audioUrl
+                && oldItem.id == newItem.id
+
+}
+
+val DIFF_UTIL_GALLERY = object : DiffUtil.ItemCallback<UnsplashResult>() {
+    override fun areItemsTheSame(oldItem: UnsplashResult, newItem: UnsplashResult): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: UnsplashResult, newItem: UnsplashResult): Boolean =
+        oldItem.id == newItem.id && oldItem.description == newItem.description
+                && oldItem.altDescription == newItem.description
+                && oldItem.photoUrls == newItem.photoUrls
+}
+
+val DIFF_UTIL_NEWS = object : DiffUtil.ItemCallback<News>() {
+    override fun areItemsTheSame(oldItem: News, newItem: News): Boolean = oldItem.title == newItem.title
+
+    override fun areContentsTheSame(oldItem: News, newItem: News): Boolean {
+        return oldItem.title == newItem.title
+                && oldItem.author == newItem.author
+                && oldItem.content == newItem.content
+                && oldItem.urlOfImage == newItem.urlOfImage
+                && oldItem.description == newItem.description
+    }
 }

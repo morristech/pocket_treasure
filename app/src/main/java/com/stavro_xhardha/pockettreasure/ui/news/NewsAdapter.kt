@@ -5,31 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.DIFF_UTIL_NEWS
 import com.stavro_xhardha.pockettreasure.model.News
 import kotlinx.android.synthetic.main.single_item_news.view.*
 
 class NewsAdapter(private val newsAdapterContract: NewsAdapterContract) :
-    PagedListAdapter<News, NewsAdapter.NewsViewHolder>(DiffUtilCallBack()) {
+    PagedListAdapter<News, NewsAdapter.NewsViewHolder>(DIFF_UTIL_NEWS) {
     private var viewHolderType: ViewHolderType = ViewHolderType.VIEW_PROGRESS
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        getViewType().let {
-            return when (it) {
-                ViewHolderType.VIEW_ITEMS -> {
-                    val view = LayoutInflater.from(parent.context).inflate(R.layout.single_item_news, parent, false)
-                    NewsViewHolder(view)
-                }
-                ViewHolderType.VIEW_PROGRESS -> {
-                    val view = LayoutInflater.from(parent.context).inflate(R.layout.single_item_progress, parent, false)
-                    NewsViewHolder(view)
-                }
-            }
-        }
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder =
+        NewsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_news, parent, false))
+
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         getItem(position).let { holder.bind(it, newsAdapterContract) }
@@ -66,18 +55,6 @@ class NewsAdapter(private val newsAdapterContract: NewsAdapterContract) :
             }
         }
 
-    }
-
-    class DiffUtilCallBack : DiffUtil.ItemCallback<News>() {
-        override fun areItemsTheSame(oldItem: News, newItem: News): Boolean = oldItem.title == newItem.title
-
-        override fun areContentsTheSame(oldItem: News, newItem: News): Boolean {
-            return oldItem.title == newItem.title
-                    && oldItem.author == newItem.author
-                    && oldItem.content == newItem.content
-                    && oldItem.urlOfImage == newItem.urlOfImage
-                    && oldItem.description == newItem.description
-        }
     }
 
     fun setCurrentStatus(it: NetworkStatus?) {
