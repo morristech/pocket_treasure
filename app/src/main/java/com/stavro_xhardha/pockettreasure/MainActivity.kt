@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
             android.R.id.home -> {
                 if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.articleWebViewFragment
                     || findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.fullImageFragment
+                    || findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.ayaFragment
                 ) {
                     onBackPressed()
                 } else {

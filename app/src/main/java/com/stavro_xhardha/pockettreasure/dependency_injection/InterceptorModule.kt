@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import java.util.concurrent.TimeUnit
 
 @Module
 class InterceptorModule {
@@ -12,6 +13,8 @@ class InterceptorModule {
     @ApplicationScope
     fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
             .build()
     }

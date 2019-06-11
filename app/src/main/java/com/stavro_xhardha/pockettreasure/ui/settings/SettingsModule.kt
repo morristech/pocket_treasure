@@ -1,7 +1,6 @@
 package com.stavro_xhardha.pockettreasure.ui.settings
 
-import com.stavro_xhardha.pockettreasure.ui.FragmentScope
-import com.stavro_xhardha.rocket.Rocket
+import com.stavro_xhardha.pockettreasure.dependency_injection.FragmentScope
 import dagger.Module
 import dagger.Provides
 

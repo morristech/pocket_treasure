@@ -18,7 +18,7 @@ import org.joda.time.LocalTime
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
     val monthSection: MutableLiveData<String> = MutableLiveData()

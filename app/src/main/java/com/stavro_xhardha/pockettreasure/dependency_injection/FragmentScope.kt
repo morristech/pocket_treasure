@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure.ui
+package com.stavro_xhardha.pockettreasure.dependency_injection
 
 import javax.inject.Scope
 

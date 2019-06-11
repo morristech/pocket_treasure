@@ -97,4 +97,9 @@ dependencies {
     implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
 
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+
+    testImplementation("com.squareup.okhttp3:mockwebserver:3.14.2")
+
+    //mockito kotlin
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 }

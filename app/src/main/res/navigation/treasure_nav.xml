@@ -38,7 +38,9 @@
             android:id="@+id/quranFragment"
             android:name="com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment"
             android:label="Quran"
-            tools:layout="@layout/fragment_quran"/>
+            tools:layout="@layout/fragment_quran">
+        <action android:id="@+id/action_quranFragment_to_ayaFragment" app:destination="@id/ayaFragment"/>
+    </fragment>
     <fragment android:id="@+id/tasbeehFragment"
               android:name="com.stavro_xhardha.pockettreasure.ui.tasbeeh.TasbeehFragment"
               android:label="Tasbeeh"
@@ -84,4 +86,8 @@
     </fragment>
     <fragment android:id="@+id/mapFragment" android:name="com.stavro_xhardha.pockettreasure.ui.map.MapFragment"
               android:label="Map" tools:layout="@layout/map_fragment"/>
+    <fragment android:id="@+id/ayaFragment" android:name="com.stavro_xhardha.pockettreasure.ui.quran.aya.AyaFragment"
+              android:label="fragment_aya" tools:layout="@layout/fragment_aya">
+        <argument android:name="ayasNumber" app:argType="integer" android:defaultValue="0"/>
+    </fragment>
 </navigation>
