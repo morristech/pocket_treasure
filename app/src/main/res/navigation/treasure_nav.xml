@@ -87,7 +87,7 @@
     <fragment android:id="@+id/mapFragment" android:name="com.stavro_xhardha.pockettreasure.ui.map.MapFragment"
               android:label="Map" tools:layout="@layout/map_fragment"/>
     <fragment android:id="@+id/ayaFragment" android:name="com.stavro_xhardha.pockettreasure.ui.quran.aya.AyaFragment"
-              android:label="fragment_aya" tools:layout="@layout/fragment_aya">
+              android:label="بسم الله الرحمن الرحيم" tools:layout="@layout/fragment_aya">
         <argument android:name="ayasNumber" app:argType="integer" android:defaultValue="0"/>
     </fragment>
 </navigation>

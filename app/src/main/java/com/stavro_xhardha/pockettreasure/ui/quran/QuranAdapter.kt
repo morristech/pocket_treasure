@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.DIFF_UTIL_QURAN
 import com.stavro_xhardha.pockettreasure.model.Surah
 import kotlinx.android.synthetic.main.single_item_surah.view.*
 
 class QuranAdapter(val quranAdapterContract: QuranAdapterContract) :
-    ListAdapter<Surah, QuranAdapter.QuranViewHolder>(DIFF_UTIL) {
+    ListAdapter<Surah, QuranAdapter.QuranViewHolder>(DIFF_UTIL_QURAN) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuranViewHolder =
         QuranViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_surah, parent, false))
 
@@ -39,16 +39,4 @@ class QuranAdapter(val quranAdapterContract: QuranAdapterContract) :
             }
         }
     }
-}
-
-val DIFF_UTIL = object : DiffUtil.ItemCallback<Surah>() {
-    override fun areItemsTheSame(oldItem: Surah, newItem: Surah): Boolean = oldItem.surahNumber == newItem.surahNumber
-
-    override fun areContentsTheSame(oldItem: Surah, newItem: Surah): Boolean =
-        oldItem.englishName == newItem.englishName
-                && oldItem.englishTranslation == newItem.englishTranslation
-                && oldItem.surahArabicName == newItem.surahArabicName
-                && oldItem.revelationType == newItem.revelationType
-                && oldItem.surahNumber == newItem.surahNumber
-
 }

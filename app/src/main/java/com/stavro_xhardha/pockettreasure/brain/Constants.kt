@@ -20,6 +20,7 @@ const val CLIENT_SECRET = "a69a283d85e85b8a72309e50c219211ab13284c4e0190ae30199e
 const val GOOGLE_MAP_PLACE_SEARCH = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
 const val REQUEST_STORAGE_PERMISSION = 355
 const val QURAN_API_CALL_BASE_URL = "https://api.alquran.cloud/v1/quran/ar.alafasy"
+const val FIRST_SURAH_SENTENCE = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
 
 //Colors
 const val WHITE_BACKGROUND = R.color.md_white_1000
