@@ -4,18 +4,16 @@ import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.rocket.Rocket
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
-import javax.inject.Inject
 
-class HomeRepository @Inject constructor(
+class HomeRepository(
     val treasureApi: TreasureApi,
     private val mSharedPreferences: Rocket
 ) {
     suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> {
         val capitalCityName = mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY)
         val countryName = mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)
-        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName , 1)
+        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName, 1)
     }
 
     fun getCurrentRegisteredDay(): Int = mSharedPreferences.readInt(GREGORIAN_DAY_KEY)

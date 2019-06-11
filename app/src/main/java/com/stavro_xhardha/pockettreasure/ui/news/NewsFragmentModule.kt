@@ -1,7 +1,7 @@
 package com.stavro_xhardha.pockettreasure.ui.news
 
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
-import com.stavro_xhardha.pockettreasure.ui.FragmentScope
+import com.stavro_xhardha.pockettreasure.dependency_injection.FragmentScope
 import dagger.Module
 import dagger.Provides
 

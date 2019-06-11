@@ -5,31 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.navigation.Navigation
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
+import kotlinx.android.synthetic.main.fragment_quran.*
+import javax.inject.Inject
 
-class QuranFragment : BaseFragment() {
+class QuranFragment : BaseFragment(), QuranAdapterContract {
 
-    override fun initializeComponents() {
-    }
+    @Inject
+    lateinit var quranFragmentFactory: QuranFragmentFactory
 
-    override fun initViewModel() {
-    }
-
-    override fun performDi() {
-    }
-
-    override fun observeTheLiveData() {
-    }
+    private lateinit var quranViewModel: QuranViewModel
+    private lateinit var quranAdapter: QuranAdapter
+    private lateinit var componentHelper: QuranComponent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_quran, container, false)
     }
 
@@ -37,4 +35,52 @@ class QuranFragment : BaseFragment() {
         getBackToHomeFragment(view, requireActivity(), this)
     }
 
+    override fun initializeComponents() {
+        quranAdapter = QuranAdapter(this)
+        rvSuras.adapter = quranAdapter
+    }
+
+    override fun initViewModel() {
+        quranViewModel = ViewModelProviders.of(this, quranFragmentFactory).get(QuranViewModel::class.java)
+    }
+
+    override fun performDi() {
+        componentHelper = DaggerQuranComponent.builder()
+            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+            .build()
+
+        componentHelper.inject(this)
+
+        component = componentHelper
+    }
+
+    override fun observeTheLiveData() {
+        quranViewModel.surahs.observe(this, Observer {
+            quranAdapter.submitList(it)
+        })
+
+        quranViewModel.errorVisibility.observe(this, Observer {
+            llError.visibility = it
+        })
+
+        quranViewModel.progressVisibility.observe(this, Observer {
+            pbQuran.visibility = it
+        })
+
+        quranViewModel.listVisibility.observe(this, Observer {
+            rvSuras.visibility = it
+        })
+    }
+
+    override fun onSurahClicked(surahsNumber: Int) {
+        val action = QuranFragmentDirections.actionQuranFragmentToAyaFragment(surahsNumber)
+        findNavController().navigate(action)
+    }
+
+    companion object {
+        private var component: QuranComponent? = null
+
+        @JvmStatic
+        fun getComponent(): QuranComponent? = component
+    }
 }

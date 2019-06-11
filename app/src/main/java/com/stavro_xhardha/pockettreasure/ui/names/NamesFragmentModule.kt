@@ -3,7 +3,7 @@ package com.stavro_xhardha.pockettreasure.ui.names
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.NamesDao
 import com.stavro_xhardha.pockettreasure.room_db.TreasureDatabase
-import com.stavro_xhardha.pockettreasure.ui.FragmentScope
+import com.stavro_xhardha.pockettreasure.dependency_injection.FragmentScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
