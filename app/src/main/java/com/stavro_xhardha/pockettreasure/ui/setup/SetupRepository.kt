@@ -8,12 +8,12 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import javax.inject.Inject
 
-class SetupRepository @Inject constructor(
+class SetupRepository(
     private val treasureApi: TreasureApi,
     private val mSharedPreferences: Rocket
 ) {
 
-    suspend fun  makeCountryApiCallAsync(): Response<ArrayList<Country>> =
+    suspend fun makeCountryApiCallAsync(): Response<ArrayList<Country>> =
         treasureApi.getCountriesListAsync(COUNTRIES_API_URL)
 
     fun saveCountryToSharedPreferences(country: Country) {
@@ -21,7 +21,7 @@ class SetupRepository @Inject constructor(
         mSharedPreferences.writeString(CAPITAL_SHARED_PREFERENCES_KEY, country.capitalCity)
     }
 
-    fun isCountryEmpty(): Boolean {
+    fun isCountryOrCapitalEmpty(): Boolean {
         return mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)!!.isEmpty()
                 || mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY)!!.isEmpty()
     }

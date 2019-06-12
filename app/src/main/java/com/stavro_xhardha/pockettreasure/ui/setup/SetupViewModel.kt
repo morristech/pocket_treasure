@@ -1,9 +1,7 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
 import android.view.View
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +17,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     val contentVisibility: MutableLiveData<Int> = MutableLiveData()
 
     fun loadListOfCountries() {
-        if (setupRepository.isCountryEmpty()) {
+        if (setupRepository.isCountryOrCapitalEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
                 makeCountriesApiCall()
             }
@@ -29,7 +27,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
         }
     }
 
-    private suspend fun makeCountriesApiCall() {
+    suspend fun makeCountriesApiCall() {
         withContext(Dispatchers.Main) {
             switchProgressBarOn()
         }
@@ -37,7 +35,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
             val countriesListResponse = setupRepository.makeCountryApiCallAsync()
             if (countriesListResponse.isSuccessful) {
                 withContext(Dispatchers.Main) {
-                    switchProgressOff()
+                    showContent()
                     countriesList.value = countriesListResponse.body()
                 }
             } else {
@@ -53,19 +51,19 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
         }
     }
 
-    private fun switchProgressBarOn() {
+    fun switchProgressBarOn() {
         pbVisibility.value = View.VISIBLE
         contentVisibility.value = View.GONE
         errorVisibility.value = View.GONE
     }
 
-    private fun switchProgressOff() {
+    fun showContent() {
         pbVisibility.value = View.GONE
         contentVisibility.value = View.VISIBLE
         errorVisibility.value = View.GONE
     }
 
-    private fun showErrorLayout() {
+    fun showErrorLayout() {
         pbVisibility.value = View.GONE
         contentVisibility.value = View.GONE
         errorVisibility.value = View.VISIBLE
@@ -73,5 +71,20 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
 
     fun onCountrySelected(country: Country) {
         setupRepository.saveCountryToSharedPreferences(country)
+    }
+
+    class OneTimeObserver<T>(private val handler: (T) -> Unit) : Observer<T>, LifecycleOwner {
+        private val lifecycle = LifecycleRegistry(this)
+
+        init {
+            lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        }
+
+        override fun getLifecycle(): Lifecycle = lifecycle
+
+        override fun onChanged(t: T) {
+            handler(t)
+            lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        }
     }
 }

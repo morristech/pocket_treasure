@@ -4,6 +4,7 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
@@ -13,6 +14,7 @@ import com.stavro_xhardha.pockettreasure.model.Aya
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.pockettreasure.model.Surah
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
+import com.stavro_xhardha.pockettreasure.ui.setup.SetupViewModel
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
 
@@ -76,4 +78,9 @@ val DIFF_UTIL_QURAN = object : DiffUtil.ItemCallback<Surah>() {
                 && oldItem.revelationType == newItem.revelationType
                 && oldItem.surahNumber == newItem.surahNumber
 
+}
+
+fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
+    val observer = SetupViewModel.OneTimeObserver(handler = onChangeHandler)
+    observe(observer, observer)
 }

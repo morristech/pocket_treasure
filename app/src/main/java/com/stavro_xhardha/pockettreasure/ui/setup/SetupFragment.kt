@@ -64,7 +64,7 @@ class SetupFragment : BaseFragment(), SetupContract {
     }
 
     override fun initializeComponents() {
-        rvCountries.layoutManager = LinearLayoutManager(activity)
+
     }
 
     override fun observeTheLiveData() {
