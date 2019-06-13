@@ -5,17 +5,23 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
+import androidx.work.PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS
+import com.stavro_xhardha.pockettreasure.PrayerWorkerFactory
 import com.stavro_xhardha.pockettreasure.brain.ACCENT_BACKGROUND
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.WHITE_BACKGROUND
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
+import com.stavro_xhardha.pockettreasure.worker.PrayerWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+
 
 class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository
@@ -61,12 +67,12 @@ class HomeViewModel @Inject constructor(
                     setValuesToLiveData()
                 }
             } else {
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     showError()
                 }
             }
         } catch (e: Exception) {
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 showError()
             }
             e.printStackTrace()
