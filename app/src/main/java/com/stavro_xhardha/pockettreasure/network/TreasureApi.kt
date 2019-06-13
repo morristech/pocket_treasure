@@ -16,8 +16,11 @@ interface TreasureApi {
     suspend fun getCountriesListAsync(@Url url: String): Response<ArrayList<Country>>
 
     @GET("timingsByCity")
-    suspend fun getPrayerTimesTodayAsync(@Query("city") city: String?, @Query("country") country: String?, @Query("adjustment") adjustment: Int):
-            Response<PrayerTimeResponse>
+    suspend fun getPrayerTimesTodayAsync(
+        @Query("city") city: String?,
+        @Query("country") country: String?,
+        @Query("adjustment") adjustment: Int
+    ): Response<PrayerTimeResponse>
 
     @GET
     suspend fun getLatestNewsAsync(
