@@ -50,3 +50,5 @@ const val NOTIFY_USER_FOR_DHUHR = "app_notify_dhuhr"
 const val NOTIFY_USER_FOR_ASR = "app_notify_asr"
 const val NOTIFY_USER_FOR_MAGHRIB = "app_notify_maghrib"
 const val NOTIFY_USER_FOR_ISHA = "app_notify_isha"
+
+const val PENDING_INTENT_CODE = 1001

@@ -66,7 +66,7 @@ class SetupFragment : BaseFragment(), SetupContract {
 
     override fun onListItemClick(country: Country) {
         setupViewModel.onCountrySelected(country)
-        initPrayerWorker()
+        //initPrayerWorker()
         findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
     }
 

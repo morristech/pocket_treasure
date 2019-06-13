@@ -5,21 +5,16 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.*
-import androidx.work.PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS
-import com.stavro_xhardha.pockettreasure.PrayerWorkerFactory
 import com.stavro_xhardha.pockettreasure.brain.ACCENT_BACKGROUND
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.WHITE_BACKGROUND
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
-import com.stavro_xhardha.pockettreasure.worker.PrayerWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -42,6 +37,8 @@ class HomeViewModel @Inject constructor(
     val asrColor: MutableLiveData<Int> = MutableLiveData()
     val maghribColor: MutableLiveData<Int> = MutableLiveData()
     val ishaColor: MutableLiveData<Int> = MutableLiveData()
+    val midnightHourValue: MutableLiveData<String> = MutableLiveData()
+    val midnightTime: MutableLiveData<LocalTime> = MutableLiveData()
 
     fun loadPrayerTimes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -137,6 +134,11 @@ class HomeViewModel @Inject constructor(
                 (homeRepository.readIshaTime()?.substring(3, 5))!!.toInt()
             )
 
+            val midnigtTime = LocalTime(
+                (homeRepository.readMidnightTime()?.substring(0, 2)!!.toInt()),
+                (homeRepository.readMidnightTime()?.substring(3, 5))!!.toInt()
+            )
+
             if (isDebugMode) {
                 Log.d(APPLICATION_TAG, " $currentTime")
                 Log.d(APPLICATION_TAG, " $fajrTime")
@@ -144,9 +146,15 @@ class HomeViewModel @Inject constructor(
                 Log.d(APPLICATION_TAG, " $asrTime")
                 Log.d(APPLICATION_TAG, " $maghribTime")
                 Log.d(APPLICATION_TAG, " $ishaTime")
+                Log.d(APPLICATION_TAG, " MIDNIGHT: ${midnigtTime.hourOfDay.toString()} : ${midnigtTime.minuteOfHour.toString()}")
             }
 
             compareTiming(currentTime, fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
+
+//            midnightHourValue.value = midnigtTime.hourOfDay.toString()
+//            midnightTime.value = midnigtTime.minuteOfHour.toString()
+            midnightTime.value = midnigtTime
+
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
@@ -259,6 +267,7 @@ class HomeViewModel @Inject constructor(
             homeRepository.saveDayOfMonthHijri(it.data.date.hijriPrayerDate.day)
             homeRepository.saveMonthOfYearHijri(it.data.date.hijriPrayerDate.hirjiMonth.monthNameInEnglish)
             homeRepository.saveYearHijri(it.data.date.hijriPrayerDate.year)
+            homeRepository.saveMidnight(it.data.timings.midnight)
         }
     }
 }

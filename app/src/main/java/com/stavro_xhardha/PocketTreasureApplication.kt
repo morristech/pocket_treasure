@@ -16,7 +16,7 @@ class PocketTreasureApplication : Application() {
         pocketTreasureComponent = DaggerPocketTreasureComponent.factory().create(this)
         INSTANCE = pocketTreasureComponent
 
-        initWorkManagerConfiguration()
+        //initWorkManagerConfiguration()
     }
 
     private fun initWorkManagerConfiguration() {

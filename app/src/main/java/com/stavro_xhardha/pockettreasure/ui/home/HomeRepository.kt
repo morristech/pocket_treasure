@@ -98,4 +98,10 @@ class HomeRepository(
 
     fun readIshaTime(): String? = mSharedPreferences.readString(ISHA_KEY)
 
+    fun saveMidnight(midnight: String) {
+        mSharedPreferences.writeString(MIDNIGHT_KEY, midnight)
+    }
+
+    fun readMidnightTime(): String? = mSharedPreferences.readString(MIDNIGHT_KEY, "")
+
 }
