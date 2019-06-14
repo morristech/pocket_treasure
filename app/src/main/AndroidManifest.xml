@@ -16,12 +16,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <receiver android:name=".PrayerAlarmReceiver"/>
         <provider
                 android:name="androidx.work.impl.WorkManagerInitializer"
                 android:authorities="com.stavro_xhardha.pockettreasure.workmanager-init"
                 android:enabled="false"
                 android:exported="false"
                 tools:replace="android:authorities"/>
+
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyDkcEAwVu6GfRJOMug6iFzzIkO2Q96PyxY"/>

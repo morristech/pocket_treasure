@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "889957319694",
+    "firebase_url": "https://pocket-treasure.firebaseio.com",
+    "project_id": "pocket-treasure",
+    "storage_bucket": "pocket-treasure.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889957319694:android:9225718025c03bfe",
+        "android_client_info": {
+          "package_name": "com.stavro_xhardha.pockettreasure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "889957319694-t6sbhq8njj830sq3qt9mbgcishefd04j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stavro_xhardha.pockettreasure",
+            "certificate_hash": "b1a3c645a022455b92f0d5eefa8439864a55039e"
+          }
+        },
+        {
+          "client_id": "889957319694-eodq6b2gau43ql9p9mhn6o1tq93hsksn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8aUCRA_6zktzXlE-kMb8HEG9YhJKx1aU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "889957319694-eodq6b2gau43ql9p9mhn6o1tq93hsksn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

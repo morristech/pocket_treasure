@@ -1,32 +1,18 @@
 package com.stavro_xhardha.pockettreasure.ui.home
 
-
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context.ALARM_SERVICE
-import android.content.Intent
-import android.icu.text.SimpleDateFormat
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
-import com.stavro_xhardha.pockettreasure.PrayerAlarmReceiver
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
-import com.stavro_xhardha.pockettreasure.brain.PENDING_INTENT_CODE
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.joda.time.LocalTime
 import javax.inject.Inject
-
 
 class HomeFragment : BaseFragment() {
 
@@ -59,37 +45,6 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initializeComponents() {
-    }
-
-    //@RequiresApi(Build.VERSION_CODES.N)
-    private fun startSchedulingNotifications(midnight: LocalTime) {
-
-        //todo go tomorrow 
-//        val intent = Intent(activity, PrayerAlarmReceiver::class.java)
-//        val pendingIntent =
-//            PendingIntent.getBroadcast(activity, PENDING_INTENT_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//        val alarmManager = activity!!.getSystemService(ALARM_SERVICE) as AlarmManager
-//
-//        val midnightHour = "${midnight.hourOfDay} : ${midnight.minuteOfHour}"
-//
-//        if (midnight.hourOfDay.toString().length > 1) {
-//            val time = "${midnight.hourOfDay}:${midnight.minuteOfHour}:00"
-//            val sdf = SimpleDateFormat("hh:mm:ss")
-//            val date = sdf.parse(time)
-//            Log.d(APPLICATION_TAG, "${date.getTime()}")
-//        }else{
-//            val time = "0${midnight.hourOfDay}:${midnight.minuteOfHour}:00"
-//            val sdf = SimpleDateFormat("hh:mm:ss")
-//            val date = sdf.parse(time)
-//            Log.d(APPLICATION_TAG, "${date.getTime()}")
-//        }
-
-//        alarmManager.setRepeating(
-//            AlarmManager.RTC,
-//            ,
-//            AlarmManager.INTERVAL_DAY,
-//            pendingIntent
-//        )
     }
 
     override fun observeTheLiveData() {
@@ -160,10 +115,6 @@ class HomeFragment : BaseFragment() {
 
         homeViewModel.ishaTime.observe(this, Observer {
             tvIshaTime.text = it
-        })
-
-        homeViewModel.midnightTime.observe(this, Observer {
-            startSchedulingNotifications(it)
         })
     }
 

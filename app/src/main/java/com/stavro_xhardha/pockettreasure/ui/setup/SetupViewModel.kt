@@ -2,11 +2,18 @@ package com.stavro_xhardha.pockettreasure.ui.setup
 
 import android.view.View
 import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import com.stavro_xhardha.pockettreasure.brain.getDefaultMidnightImplementation
+import com.stavro_xhardha.pockettreasure.brain.getMidnightImplementation
 import com.stavro_xhardha.pockettreasure.model.Country
+import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
 
@@ -15,6 +22,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     val pbVisibility: MutableLiveData<Int> = MutableLiveData()
     val errorVisibility: MutableLiveData<Int> = MutableLiveData()
     val contentVisibility: MutableLiveData<Int> = MutableLiveData()
+    val calendar: MutableLiveData<Calendar> = MutableLiveData()
 
     fun loadListOfCountries() {
         if (setupRepository.isCountryOrCapitalEmpty()) {
@@ -71,6 +79,38 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
 
     fun onCountrySelected(country: Country) {
         setupRepository.saveCountryToSharedPreferences(country)
+    }
+
+    fun updateNotificationFlags() {
+        viewModelScope.launch(Dispatchers.IO) {
+            setupRepository.switchNotificationFlags()
+        }
+    }
+
+    fun scheduleSynchronisationTime() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val prayerCallResponse = setupRepository.makePrayerCallAsync()
+                if (prayerCallResponse.isSuccessful) {
+                    invokeMidnightCall(prayerCallResponse.body())
+                } else {
+                    invokeMidnightCall(null)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                invokeMidnightCall(null)
+            }
+        }
+    }
+
+    private suspend fun invokeMidnightCall(body: PrayerTimeResponse?) {
+        withContext(Dispatchers.Main) {
+            if (body != null) {
+                calendar.value = getMidnightImplementation(body.data.timings.midnight)
+            } else {
+                calendar.value = getDefaultMidnightImplementation()
+            }
+        }
     }
 
     class OneTimeObserver<T>(private val handler: (T) -> Unit) : Observer<T>, LifecycleOwner {
