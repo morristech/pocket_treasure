@@ -1,7 +1,6 @@
 package com.stavro_xhardha.pockettreasure.network
 
 import com.stavro_xhardha.pockettreasure.model.*
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

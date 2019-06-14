@@ -15,6 +15,7 @@ import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.pockettreasure.model.Surah
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
 import com.stavro_xhardha.pockettreasure.ui.setup.SetupViewModel
+import java.util.*
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
 
@@ -83,4 +84,22 @@ val DIFF_UTIL_QURAN = object : DiffUtil.ItemCallback<Surah>() {
 fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
     val observer = SetupViewModel.OneTimeObserver(handler = onChangeHandler)
     observe(observer, observer)
+}
+
+fun getDefaultMidnightImplementation(): Calendar = Calendar.getInstance().apply {
+    add(Calendar.DATE, 1)
+    set(Calendar.HOUR_OF_DAY, 0)
+    set(Calendar.MINUTE, 30)
+    set(Calendar.SECOND, 0)
+}
+
+fun getMidnightImplementation(midnightInput: String): Calendar = Calendar.getInstance().apply {
+    val actualHour = if (midnightInput.startsWith("0"))
+        midnightInput.substring(1, 2).toInt()
+    else
+        midnightInput.substring(0, 2).toInt()
+    add(Calendar.DATE, 1)
+    set(Calendar.HOUR_OF_DAY, actualHour)
+    set(Calendar.MINUTE, midnightInput.substring(3, 5).toInt())
+    set(Calendar.SECOND, 0)
 }
