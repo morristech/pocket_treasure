@@ -137,10 +137,6 @@ class SetupFragment : BaseFragment(), SetupContract {
             midnightTime.timeInMillis,
             pendingIntent
         )
-
-        Crashlytics.log("Alarm started at: ${midnightTime.timeInMillis}")
-        Log.d(APPLICATION_TAG, " ALARM SET AT ${midnightTime.timeInMillis}")
-
     }
 
     override fun handleOnBackPressed(view: View) {

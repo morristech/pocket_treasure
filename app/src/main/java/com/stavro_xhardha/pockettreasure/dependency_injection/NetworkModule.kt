@@ -1,6 +1,5 @@
 package com.stavro_xhardha.pockettreasure.dependency_injection
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.stavro_xhardha.pockettreasure.brain.PRAYER_API_BASE_URL
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import dagger.Module
