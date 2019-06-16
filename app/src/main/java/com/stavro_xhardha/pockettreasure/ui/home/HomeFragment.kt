@@ -45,6 +45,23 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initializeComponents() {
+//        val intent = Intent(activity, PrayerAlarmReceiver::class.java)
+        //todo drop this and please refactor now or latter is gonna get worse
+//        val pendingIntent =
+//            PendingIntent.getBroadcast(activity, PENDING_INTENT_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//        val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//
+//        val calendar = Calendar.getInstance().apply {
+//            set(Calendar.HOUR_OF_DAY, 20)
+//            set(Calendar.MINUTE, 53)
+//            set(Calendar.SECOND, 0)
+//        }
+//
+//        alarmManager.setExact(
+//            AlarmManager.RTC,
+//            calendar.timeInMillis,
+//            pendingIntent
+//        )
     }
 
     override fun observeTheLiveData() {

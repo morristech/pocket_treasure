@@ -98,8 +98,28 @@ fun getMidnightImplementation(midnightInput: String): Calendar = Calendar.getIns
         midnightInput.substring(1, 2).toInt()
     else
         midnightInput.substring(0, 2).toInt()
+
+    val actualminute = if (midnightInput.substring(3, 5).startsWith("0"))
+        midnightInput.substring(4, 5)
+    else
+        midnightInput.substring(3, 5)
     add(Calendar.DATE, 1)
     set(Calendar.HOUR_OF_DAY, actualHour)
-    set(Calendar.MINUTE, midnightInput.substring(3, 5).toInt())
+    set(Calendar.MINUTE, actualminute.toInt())
+    set(Calendar.SECOND, 0)
+}
+
+fun getCurrentDayPrayerImplementation(prayerTime: String): Calendar = Calendar.getInstance().apply {
+    val actualHour = if (prayerTime.startsWith("0"))
+        prayerTime.substring(1, 2).toInt()
+    else
+        prayerTime.substring(0, 2).toInt()
+
+    val actualminute = if (prayerTime.substring(3, 5).startsWith("0"))
+        prayerTime.substring(4, 5)
+    else
+        prayerTime.substring(3, 5)
+    set(Calendar.HOUR_OF_DAY, actualHour)
+    set(Calendar.MINUTE, actualminute.toInt())
     set(Calendar.SECOND, 0)
 }
