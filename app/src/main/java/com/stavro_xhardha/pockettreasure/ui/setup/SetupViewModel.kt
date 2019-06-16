@@ -10,10 +10,8 @@ import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
 

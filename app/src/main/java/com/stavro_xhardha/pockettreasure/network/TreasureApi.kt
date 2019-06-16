@@ -40,14 +40,6 @@ interface TreasureApi {
         @Query("client_secret") clientSecret: String
     ): Response<UnsplashResponse>
 
-//    @GET
-//    suspend fun getLocations(
-//        @Url baseUrl: String,
-//        @Query("input") input: String,
-//        @Query("inputtype") inputType: String,
-//        @Query("key") key: String
-//    ): Response<>
-
     @GET
     suspend fun getQuranDataAsync(@Url baseUrl: String): Response<QuranResponse>
 }

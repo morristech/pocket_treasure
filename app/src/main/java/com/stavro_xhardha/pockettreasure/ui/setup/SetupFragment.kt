@@ -1,6 +1,5 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
-
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -12,10 +11,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequest
-import androidx.work.WorkManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
@@ -24,10 +19,8 @@ import com.stavro_xhardha.pockettreasure.PrayerAlarmReceiver
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.PENDING_INTENT_CODE
 import com.stavro_xhardha.pockettreasure.model.Country
-import com.stavro_xhardha.pockettreasure.worker.PrayerWorker
 import kotlinx.android.synthetic.main.fragment_setup.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -138,21 +131,4 @@ class SetupFragment : BaseFragment(), SetupContract {
 
     override fun handleOnBackPressed(view: View) {
     }
-
-    private fun initPrayerWorker() {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-
-        val periodicWork =
-            PeriodicWorkRequest.Builder(
-                PrayerWorker::class.java,
-                PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.SECONDS
-            )
-                .setConstraints(constraints)
-                .build()
-
-        WorkManager.getInstance().enqueue(periodicWork)
-    }
-
 }

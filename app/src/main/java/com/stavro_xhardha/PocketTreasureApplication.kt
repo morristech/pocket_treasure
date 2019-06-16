@@ -17,16 +17,6 @@ class PocketTreasureApplication : Application() {
         INSTANCE = pocketTreasureComponent
     }
 
-//    private fun initWorkManagerConfiguration() {
-//        val prayerWorkerFactory = pocketTreasureComponent.prayerWorkerFactory()
-//
-//        val config = Configuration.Builder()
-//            .setWorkerFactory(prayerWorkerFactory)
-//            .build()
-//
-//        WorkManager.initialize(this, config)
-//    }
-
     companion object {
         private var INSTANCE: PocketTreasureComponent? = null
 

@@ -37,8 +37,6 @@ class HomeViewModel @Inject constructor(
     val asrColor: MutableLiveData<Int> = MutableLiveData()
     val maghribColor: MutableLiveData<Int> = MutableLiveData()
     val ishaColor: MutableLiveData<Int> = MutableLiveData()
-    val midnightHourValue: MutableLiveData<String> = MutableLiveData()
-    val midnightTime: MutableLiveData<LocalTime> = MutableLiveData()
 
     fun loadPrayerTimes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -150,10 +148,6 @@ class HomeViewModel @Inject constructor(
             }
 
             compareTiming(currentTime, fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
-
-//            midnightHourValue.value = midnigtTime.hourOfDay.toString()
-//            midnightTime.value = midnigtTime.minuteOfHour.toString()
-            midnightTime.value = midnigtTime
 
         } catch (e: NumberFormatException) {
             e.printStackTrace()
