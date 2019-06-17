@@ -1,5 +1,7 @@
 package com.stavro_xhardha.pockettreasure.brain
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -15,7 +17,6 @@ import com.stavro_xhardha.pockettreasure.model.Aya
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.pockettreasure.model.Surah
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
-import com.stavro_xhardha.pockettreasure.ui.setup.SetupViewModel
 import java.util.*
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
@@ -123,4 +124,16 @@ fun getCurrentDayPrayerImplementation(prayerTime: String): Calendar = Calendar.g
     set(Calendar.HOUR_OF_DAY, actualHour)
     set(Calendar.MINUTE, actualminute.toInt())
     set(Calendar.SECOND, 0)
+}
+
+fun scheduleAlarm(
+    time: Calendar,
+    alarmManager: AlarmManager,
+    pendingIntent: PendingIntent
+) {
+    alarmManager.setExact(
+        AlarmManager.RTC,
+        time.timeInMillis,
+        pendingIntent
+    )
 }

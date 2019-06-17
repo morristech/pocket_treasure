@@ -13,11 +13,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.stavro_xhardha.PocketTreasureApplication
-import com.stavro_xhardha.pockettreasure.BaseFragment
-import com.stavro_xhardha.pockettreasure.MainActivity
-import com.stavro_xhardha.pockettreasure.PrayerAlarmReceiver
-import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.PENDING_INTENT_SYNC
+import com.stavro_xhardha.pockettreasure.*
+import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.android.synthetic.main.fragment_setup.*
 import java.util.*
@@ -109,24 +106,58 @@ class SetupFragment : BaseFragment(), SetupContract {
             pbSetup.visibility = it
         })
 
-        setupViewModel.calendar.observe(this, Observer {
+        setupViewModel.tomorowsTime.observe(this, Observer {
             startSchedulingNotifications(it)
             findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
         })
+
+        setupViewModel.fajrTime.observe(this, Observer {
+            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_FAJR)
+        })
+
+        setupViewModel.dhuhrTime.observe(this, Observer {
+            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_DHUHR)
+        })
+
+        setupViewModel.asrTime.observe(this, Observer {
+            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_ASR)
+        })
+
+        setupViewModel.maghribTime.observe(this, Observer {
+            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB)
+        })
+
+        setupViewModel.ishaTime.observe(this, Observer {
+            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_ISHA)
+        })
     }
 
-    private fun startSchedulingNotifications(midnightTime: Calendar) {
-
+    private fun startSchedulingNotifications(time: Calendar) {
         val intent = Intent(activity, PrayerAlarmReceiver::class.java)
         val pendingIntent =
-            PendingIntent.getBroadcast(activity, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getBroadcast(
+                activity,
+                PENDING_INTENT_SYNC,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
         val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        alarmManager.setExact(
-            AlarmManager.RTC,
-            midnightTime.timeInMillis,
-            pendingIntent
-        )
+        scheduleAlarm(time, alarmManager, pendingIntent)
+    }
+
+    private fun setAlarm(fajrTime: Calendar?, intentKey: Int) {
+        val intent = Intent(activity, PrayerTimeAlarm::class.java)
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                activity,
+                intentKey,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        scheduleAlarm(fajrTime!!, alarmManager, pendingIntent)
     }
 
     override fun handleOnBackPressed(view: View) {

@@ -38,4 +38,14 @@ class SetupRepository(
         val countryName = rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)
         return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName, 1)
     }
+
+    fun notifyUserForFajr(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_FAJR)
+
+    fun notifyUserForDhuhr(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_DHUHR)
+
+    fun notifyUserForAsr(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_ASR)
+
+    fun notifyUserForMaghrib(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB)
+
+    fun notifyUserForIsha(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_ISHA)
 }
