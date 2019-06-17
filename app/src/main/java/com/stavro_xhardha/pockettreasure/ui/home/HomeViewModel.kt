@@ -34,11 +34,6 @@ class HomeViewModel @Inject constructor(
     val asrColor: MutableLiveData<Int> = MutableLiveData()
     val maghribColor: MutableLiveData<Int> = MutableLiveData()
     val ishaColor: MutableLiveData<Int> = MutableLiveData()
-    val notifyForFajr: MutableLiveData<Boolean> = MutableLiveData()
-    val notifyUserForDhuhr: MutableLiveData<Boolean> = MutableLiveData()
-    val notifyUserForAsr: MutableLiveData<Boolean> = MutableLiveData()
-    val notifyUserForMaghrib: MutableLiveData<Boolean> = MutableLiveData()
-    val notifyUserForIsha: MutableLiveData<Boolean> = MutableLiveData()
 
     fun loadPrayerTimes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -136,19 +131,9 @@ class HomeViewModel @Inject constructor(
 
             compareTiming(currentTime, fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
 
-            checkForNotificationPreference()
-
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
-    }
-
-    private fun checkForNotificationPreference() {
-        notifyForFajr.value = homeRepository.notifyUserForFajr()
-        notifyUserForDhuhr.value = homeRepository.notifyUserForDhuhr()
-        notifyUserForAsr.value = homeRepository.notifyUserForAsr()
-        notifyUserForMaghrib.value = homeRepository.notifyUserForMaghrib()
-        notifyUserForIsha.value = homeRepository.notifyUserForIsha()
     }
 
     private fun compareTiming(

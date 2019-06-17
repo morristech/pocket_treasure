@@ -2,7 +2,7 @@ package com.stavro_xhardha.pockettreasure.ui.setup
 
 import android.view.View
 import androidx.lifecycle.*
-import androidx.lifecycle.Observer
+import com.stavro_xhardha.pockettreasure.brain.getCurrentDayPrayerImplementation
 import com.stavro_xhardha.pockettreasure.brain.getDefaultMidnightImplementation
 import com.stavro_xhardha.pockettreasure.brain.getMidnightImplementation
 import com.stavro_xhardha.pockettreasure.model.Country
@@ -20,7 +20,12 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     val pbVisibility: MutableLiveData<Int> = MutableLiveData()
     val errorVisibility: MutableLiveData<Int> = MutableLiveData()
     val contentVisibility: MutableLiveData<Int> = MutableLiveData()
-    val calendar: MutableLiveData<Calendar> = MutableLiveData()
+    val tomorowsTime: MutableLiveData<Calendar> = MutableLiveData()
+    val fajrTime: MutableLiveData<Calendar> = MutableLiveData()
+    val dhuhrTime: MutableLiveData<Calendar> = MutableLiveData()
+    val asrTime: MutableLiveData<Calendar> = MutableLiveData()
+    val maghribTime: MutableLiveData<Calendar> = MutableLiveData()
+    val ishaTime: MutableLiveData<Calendar> = MutableLiveData()
 
     fun loadListOfCountries() {
         if (setupRepository.isCountryOrCapitalEmpty()) {
@@ -90,6 +95,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
             try {
                 val prayerCallResponse = setupRepository.makePrayerCallAsync()
                 if (prayerCallResponse.isSuccessful) {
+                    invokeTodaysPrayerTimes(prayerCallResponse.body())
                     invokeMidnightCall(prayerCallResponse.body())
                 } else {
                     invokeMidnightCall(null)
@@ -101,12 +107,29 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
         }
     }
 
+    private suspend fun invokeTodaysPrayerTimes(body: PrayerTimeResponse?) {
+        withContext(Dispatchers.Main) {
+            if (body != null) {
+                if (setupRepository.notifyUserForFajr())
+                    fajrTime.value = getCurrentDayPrayerImplementation(body.data.timings.fajr)
+                if (setupRepository.notifyUserForDhuhr())
+                    dhuhrTime.value = getCurrentDayPrayerImplementation(body.data.timings.dhuhr)
+                if (setupRepository.notifyUserForAsr())
+                    asrTime.value = getCurrentDayPrayerImplementation(body.data.timings.asr)
+                if (setupRepository.notifyUserForMaghrib())
+                    maghribTime.value = getCurrentDayPrayerImplementation(body.data.timings.magrib)
+                if (setupRepository.notifyUserForIsha())
+                    ishaTime.value = getCurrentDayPrayerImplementation(body.data.timings.isha)
+            }
+        }
+    }
+
     private suspend fun invokeMidnightCall(body: PrayerTimeResponse?) {
         withContext(Dispatchers.Main) {
             if (body != null) {
-                calendar.value = getMidnightImplementation(body.data.timings.midnight)
+                tomorowsTime.value = getMidnightImplementation(body.data.timings.midnight)
             } else {
-                calendar.value = getDefaultMidnightImplementation()
+                tomorowsTime.value = getDefaultMidnightImplementation()
             }
         }
     }
