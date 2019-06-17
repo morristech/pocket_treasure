@@ -16,8 +16,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <receiver android:name=".PrayerAlarmReceiver"/>
-        <receiver android:name=".PrayerTimeAlarm"/>
+        <receiver android:name=".alarm.PrayerAlarmReceiver"/>
+        <receiver android:name=".alarm.PrayerTimeAlarm"/>
         <provider
                 android:name="androidx.work.impl.WorkManagerInitializer"
                 android:authorities="com.stavro_xhardha.pockettreasure.workmanager-init"

@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure
+package com.stavro_xhardha.pockettreasure.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent

@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure
+package com.stavro_xhardha.pockettreasure.brain
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner

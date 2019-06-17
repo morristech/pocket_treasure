@@ -14,6 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.*
+import com.stavro_xhardha.pockettreasure.alarm.PrayerAlarmReceiver
+import com.stavro_xhardha.pockettreasure.alarm.PrayerTimeAlarm
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.android.synthetic.main.fragment_setup.*

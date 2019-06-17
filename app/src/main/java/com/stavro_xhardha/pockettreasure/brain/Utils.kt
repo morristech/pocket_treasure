@@ -11,7 +11,6 @@ import androidx.navigation.Navigation
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
 import com.stavro_xhardha.pockettreasure.BuildConfig
-import com.stavro_xhardha.pockettreasure.OneTimeObserver
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.model.Aya
 import com.stavro_xhardha.pockettreasure.model.News
