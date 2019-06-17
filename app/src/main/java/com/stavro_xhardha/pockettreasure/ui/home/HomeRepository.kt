@@ -102,6 +102,14 @@ class HomeRepository(
         mSharedPreferences.writeString(MIDNIGHT_KEY, midnight)
     }
 
-    fun readMidnightTime(): String? = mSharedPreferences.readString(MIDNIGHT_KEY, "")
+    fun notifyUserForFajr(): Boolean = mSharedPreferences.readBoolean(NOTIFY_USER_FOR_FAJR)
+
+    fun notifyUserForDhuhr(): Boolean = mSharedPreferences.readBoolean(NOTIFY_USER_FOR_DHUHR)
+
+    fun notifyUserForAsr(): Boolean = mSharedPreferences.readBoolean(NOTIFY_USER_FOR_ASR)
+
+    fun notifyUserForMaghrib(): Boolean = mSharedPreferences.readBoolean(NOTIFY_USER_FOR_MAGHRIB)
+
+    fun notifyUserForIsha(): Boolean = mSharedPreferences.readBoolean(NOTIFY_USER_FOR_ISHA)
 
 }

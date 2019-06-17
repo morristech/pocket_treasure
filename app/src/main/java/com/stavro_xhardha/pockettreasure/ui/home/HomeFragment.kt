@@ -1,6 +1,11 @@
 package com.stavro_xhardha.pockettreasure.ui.home
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +15,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
+import com.stavro_xhardha.pockettreasure.PrayerTimeAlarm
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -48,7 +55,7 @@ class HomeFragment : BaseFragment() {
 //        val intent = Intent(activity, PrayerAlarmReceiver::class.java)
         //todo drop this and please refactor now or latter is gonna get worse
 //        val pendingIntent =
-//            PendingIntent.getBroadcast(activity, PENDING_INTENT_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+//            PendingIntent.getBroadcast(activity, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 //        val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 //
 //        val calendar = Calendar.getInstance().apply {
@@ -133,6 +140,57 @@ class HomeFragment : BaseFragment() {
         homeViewModel.ishaTime.observe(this, Observer {
             tvIshaTime.text = it
         })
+
+        homeViewModel.notifyUserForIsha.observe(this, Observer { notify ->
+            if (notify)
+                scheduleTodaysNotifications(tvFajrTime.text.toString())
+        })
+
+        homeViewModel.notifyUserForIsha.observe(this, Observer { notify ->
+            if (notify)
+                scheduleTodaysNotifications(tvDhuhrTime.text.toString())
+        })
+
+        homeViewModel.notifyUserForIsha.observe(this, Observer { notify ->
+            if (notify)
+                scheduleTodaysNotifications(tvAsrTime.text.toString())
+        })
+
+        homeViewModel.notifyUserForIsha.observe(this, Observer { notify ->
+            if (notify)
+                scheduleTodaysNotifications(tvMagribTime.text.toString())
+        })
+
+        homeViewModel.notifyUserForIsha.observe(this, Observer { notify ->
+            if (notify)
+                scheduleTodaysNotifications(tvIshaTime.text.toString())
+        })
+    }
+
+    private fun scheduleTodaysNotifications(prayerTime: String?) {
+        val timeToSetUp = getCurrentDayPrayerImplementation(prayerTime!!)
+
+        val intent = Intent(activity, PrayerTimeAlarm::class.java)
+
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                activity,
+                PENDING_INTENT_FIRE_TODAYS_NOTIFICATION,
+                intent,
+                PendingIntent.FLAG_ONE_SHOT
+            )
+
+        val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        alarmManager.setExact(
+            AlarmManager.RTC,
+            timeToSetUp.timeInMillis,
+            pendingIntent
+        )
+
+        if (isDebugMode) {
+            Log.d(APPLICATION_TAG, "Alarm set at: ${timeToSetUp.timeInMillis}")
+        }
     }
 
     override fun handleOnBackPressed(view: View) {

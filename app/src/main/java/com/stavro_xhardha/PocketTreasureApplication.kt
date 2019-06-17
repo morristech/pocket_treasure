@@ -5,8 +5,6 @@ import com.stavro_xhardha.pockettreasure.dependency_injection.DaggerPocketTreasu
 import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureComponent
 import net.danlew.android.joda.JodaTimeAndroid
 
-
-
 class PocketTreasureApplication : Application() {
     private lateinit var pocketTreasureComponent: PocketTreasureComponent
 

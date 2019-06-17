@@ -1,14 +1,11 @@
 package com.stavro_xhardha.pockettreasure.ui.home
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stavro_xhardha.pockettreasure.brain.ACCENT_BACKGROUND
-import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.WHITE_BACKGROUND
-import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +34,11 @@ class HomeViewModel @Inject constructor(
     val asrColor: MutableLiveData<Int> = MutableLiveData()
     val maghribColor: MutableLiveData<Int> = MutableLiveData()
     val ishaColor: MutableLiveData<Int> = MutableLiveData()
+    val notifyForFajr: MutableLiveData<Boolean> = MutableLiveData()
+    val notifyUserForDhuhr: MutableLiveData<Boolean> = MutableLiveData()
+    val notifyUserForAsr: MutableLiveData<Boolean> = MutableLiveData()
+    val notifyUserForMaghrib: MutableLiveData<Boolean> = MutableLiveData()
+    val notifyUserForIsha: MutableLiveData<Boolean> = MutableLiveData()
 
     fun loadPrayerTimes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -132,26 +134,21 @@ class HomeViewModel @Inject constructor(
                 (homeRepository.readIshaTime()?.substring(3, 5))!!.toInt()
             )
 
-            val midnigtTime = LocalTime(
-                (homeRepository.readMidnightTime()?.substring(0, 2)!!.toInt()),
-                (homeRepository.readMidnightTime()?.substring(3, 5))!!.toInt()
-            )
-
-            if (isDebugMode) {
-                Log.d(APPLICATION_TAG, " $currentTime")
-                Log.d(APPLICATION_TAG, " $fajrTime")
-                Log.d(APPLICATION_TAG, " $dhuhrTime")
-                Log.d(APPLICATION_TAG, " $asrTime")
-                Log.d(APPLICATION_TAG, " $maghribTime")
-                Log.d(APPLICATION_TAG, " $ishaTime")
-                Log.d(APPLICATION_TAG, " MIDNIGHT: ${midnigtTime.hourOfDay.toString()} : ${midnigtTime.minuteOfHour.toString()}")
-            }
-
             compareTiming(currentTime, fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
+
+            checkForNotificationPreference()
 
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
+    }
+
+    private fun checkForNotificationPreference() {
+        notifyForFajr.value = homeRepository.notifyUserForFajr()
+        notifyUserForDhuhr.value = homeRepository.notifyUserForDhuhr()
+        notifyUserForAsr.value = homeRepository.notifyUserForAsr()
+        notifyUserForMaghrib.value = homeRepository.notifyUserForMaghrib()
+        notifyUserForIsha.value = homeRepository.notifyUserForIsha()
     }
 
     private fun compareTiming(
