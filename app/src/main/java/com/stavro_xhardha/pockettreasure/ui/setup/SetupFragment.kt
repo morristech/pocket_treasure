@@ -17,7 +17,7 @@ import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.MainActivity
 import com.stavro_xhardha.pockettreasure.PrayerAlarmReceiver
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.PENDING_INTENT_CODE
+import com.stavro_xhardha.pockettreasure.brain.PENDING_INTENT_SYNC
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.android.synthetic.main.fragment_setup.*
 import java.util.*
@@ -119,7 +119,7 @@ class SetupFragment : BaseFragment(), SetupContract {
 
         val intent = Intent(activity, PrayerAlarmReceiver::class.java)
         val pendingIntent =
-            PendingIntent.getBroadcast(activity, PENDING_INTENT_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getBroadcast(activity, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         alarmManager.setExact(

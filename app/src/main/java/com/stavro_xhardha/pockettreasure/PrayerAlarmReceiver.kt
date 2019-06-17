@@ -78,7 +78,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
 
         val intent = Intent(mContext, PrayerTimeAlarm::class.java)
         val pendingIntent =
-            PendingIntent.getBroadcast(mContext, PENDING_INTENT_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getBroadcast(mContext, PENDING_INTENT_FIRE_NOTIFICATION, intent, PendingIntent.FLAG_ONE_SHOT)
         val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         alarmManager.setExact(

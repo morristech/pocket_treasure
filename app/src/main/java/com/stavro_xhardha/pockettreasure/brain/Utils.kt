@@ -9,6 +9,7 @@ import androidx.navigation.Navigation
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
 import com.stavro_xhardha.pockettreasure.BuildConfig
+import com.stavro_xhardha.pockettreasure.OneTimeObserver
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.model.Aya
 import com.stavro_xhardha.pockettreasure.model.News
@@ -82,7 +83,7 @@ val DIFF_UTIL_QURAN = object : DiffUtil.ItemCallback<Surah>() {
 }
 
 fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
-    val observer = SetupViewModel.OneTimeObserver(handler = onChangeHandler)
+    val observer = OneTimeObserver(handler = onChangeHandler)
     observe(observer, observer)
 }
 

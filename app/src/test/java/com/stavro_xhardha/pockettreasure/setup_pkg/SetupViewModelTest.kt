@@ -37,6 +37,7 @@ class SetupViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @ObsoleteCoroutinesApi
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {

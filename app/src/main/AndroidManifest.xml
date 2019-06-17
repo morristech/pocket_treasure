@@ -17,6 +17,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <receiver android:name=".PrayerAlarmReceiver"/>
+        <receiver android:name=".PrayerTimeAlarm"/>
         <provider
                 android:name="androidx.work.impl.WorkManagerInitializer"
                 android:authorities="com.stavro_xhardha.pockettreasure.workmanager-init"
