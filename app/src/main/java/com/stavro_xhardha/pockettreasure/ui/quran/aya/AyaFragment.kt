@@ -21,7 +21,7 @@ class AyaFragment : BaseFragment() {
     private lateinit var ayaViewModel: AyaViewModel
     private lateinit var ayasAdapter: AyasAdapter
 
-    val args: AyaFragmentArgs by navArgs()
+    private val args: AyaFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
