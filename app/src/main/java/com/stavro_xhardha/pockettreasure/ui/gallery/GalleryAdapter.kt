@@ -10,31 +10,32 @@ import com.squareup.picasso.Picasso
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.DIFF_UTIL_GALLERY
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
-import com.stavro_xhardha.pockettreasure.ui.news.NetworkStatus
-import com.stavro_xhardha.pockettreasure.ui.news.ViewHolderType
 import kotlinx.android.synthetic.main.single_item_image.view.*
 
-class GalleryAdapter(private val contract: GalleryContract) :
+class GalleryAdapter(
+    private val contract: GalleryContract,
+    private val picasso: Picasso
+) :
     PagedListAdapter<UnsplashResult, GalleryAdapter.GalleryViewHolder>(DIFF_UTIL_GALLERY) {
-    private var viewHolderType: ViewHolderType = ViewHolderType.VIEW_PROGRESS
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GalleryViewHolder =
         GalleryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_image, parent, false))
 
     override fun onBindViewHolder(holder: GalleryViewHolder, position: Int) {
-        getItem(position).let { holder.bind(it, contract) }
+        getItem(position).let { holder.bind(it, contract, picasso) }
     }
 
     class GalleryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         fun bind(
             unsplashResult: UnsplashResult?,
-            contract: GalleryContract
+            contract: GalleryContract,
+            picasso: Picasso
         ) {
             with(itemView) {
                 val currentImageView = ivUnsplashImage
                 if (currentImageView != null) {
-                    Picasso.get().load(unsplashResult?.photoUrls?.thumbnailUrl)
+                    picasso.load(unsplashResult?.photoUrls?.thumbnailUrl)
                         .fit()
                         .error(R.drawable.no_img_available)
                         .placeholder(R.drawable.img_placeholder)
@@ -48,19 +49,4 @@ class GalleryAdapter(private val contract: GalleryContract) :
             }
         }
     }
-
-    fun setCurrentStatus(it: NetworkStatus?) {
-        if (it != null) {
-            when (it) {
-                NetworkStatus.LOADING -> setViewType(ViewHolderType.VIEW_PROGRESS)
-                NetworkStatus.SUCCESS -> setViewType(ViewHolderType.VIEW_ITEMS)
-            }
-        }
-    }
-
-    private fun setViewType(viewHolderType: ViewHolderType) {
-        this.viewHolderType = viewHolderType
-    }
-
-    private fun getViewType(): ViewHolderType = viewHolderType
 }

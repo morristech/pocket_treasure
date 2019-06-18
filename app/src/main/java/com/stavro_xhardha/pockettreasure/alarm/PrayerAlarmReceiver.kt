@@ -1,7 +1,5 @@
 package com.stavro_xhardha.pockettreasure.alarm
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -35,26 +33,13 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 if (prayerTimesResponse.isSuccessful) {
                     setPrayerAlarms(prayerTimesResponse.body())
                 } else {
-                    tryInOneHour()
+                    scheduleAlarmAfterOneHour(mContext)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                tryInOneHour()
+                scheduleAlarmAfterOneHour(mContext)
             }
         }
-    }
-
-    private fun tryInOneHour() {
-        val intent = Intent(mContext, PrayerAlarmReceiver::class.java)
-        val pendingIntent =
-            PendingIntent.getBroadcast(mContext, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        alarmManager.setExact(
-            AlarmManager.RTC,
-            System.currentTimeMillis() + ((60 * 1000) * 60),
-            pendingIntent
-        )
     }
 
     private fun giveValuesToDependencies() {
@@ -66,19 +51,44 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
     private fun setPrayerAlarms(prayerTimeResponse: PrayerTimeResponse?) {
         prayerTimeResponse.let {
             if (rocket.readBoolean(NOTIFY_USER_FOR_FAJR)) {
-                setAlarm(prayerTimeResponse?.data?.timings?.fajr!!, PENDING_INTENT_FIRE_NOTIFICATION_FAJR)
+                scheduleAlarm(
+                    mContext,
+                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
+                    PENDING_INTENT_FIRE_NOTIFICATION_FAJR,
+                    PrayerTimeAlarm::class.java
+                )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_DHUHR)) {
-                setAlarm(prayerTimeResponse?.data?.timings?.dhuhr!!, PENDING_INTENT_FIRE_NOTIFICATION_DHUHR)
+                scheduleAlarm(
+                    mContext,
+                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
+                    PENDING_INTENT_FIRE_NOTIFICATION_DHUHR,
+                    PrayerTimeAlarm::class.java
+                )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_ASR)) {
-                setAlarm(prayerTimeResponse?.data?.timings?.asr!!, PENDING_INTENT_FIRE_NOTIFICATION_ASR)
+                scheduleAlarm(
+                    mContext,
+                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
+                    PENDING_INTENT_FIRE_NOTIFICATION_ASR,
+                    PrayerTimeAlarm::class.java
+                )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB)) {
-                setAlarm(prayerTimeResponse?.data?.timings?.magrib!!, PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB)
+                scheduleAlarm(
+                    mContext,
+                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
+                    PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB,
+                    PrayerTimeAlarm::class.java
+                )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_ISHA)) {
-                setAlarm(prayerTimeResponse?.data?.timings?.isha!!, PENDING_INTENT_FIRE_NOTIFICATION_ISHA)
+                scheduleAlarm(
+                    mContext,
+                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
+                    PENDING_INTENT_FIRE_NOTIFICATION_ISHA,
+                    PrayerTimeAlarm::class.java
+                )
             }
 
             invokeTomorowAlarm(prayerTimeResponse!!.data.timings.midnight)
@@ -86,35 +96,11 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
     }
 
     private fun invokeTomorowAlarm(midnight: String) {
-        val midnightTime = getMidnightImplementation(midnight)
-
-        val intent = Intent(mContext, PrayerAlarmReceiver::class.java)
-        val pendingIntent =
-            PendingIntent.getBroadcast(mContext, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-        val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        alarmManager.setExact(
-            AlarmManager.RTC,
-            midnightTime.timeInMillis,
-            pendingIntent
+        scheduleAlarm(
+            mContext,
+            getMidnightImplementation(midnight),
+            PENDING_INTENT_SYNC,
+            PrayerTimeAlarm::class.java
         )
-    }
-
-    private fun setAlarm(prayerTime: String, pendingIntentKey: Int) {
-        val prayerTimeCalendar = getCurrentDayPrayerImplementation(prayerTime)
-
-        val intent = Intent(mContext, PrayerTimeAlarm::class.java)
-
-        val pendingIntent =
-            PendingIntent.getBroadcast(
-                mContext,
-                pendingIntentKey,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-
-        val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        scheduleAlarm(prayerTimeCalendar, alarmManager, pendingIntent)
     }
 }

@@ -6,10 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.stavro_xhardha.PocketTreasureApplication
@@ -18,8 +16,8 @@ import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
-import com.stavro_xhardha.pockettreasure.ui.news.InitialState
-import com.stavro_xhardha.pockettreasure.ui.news.NetworkStatus
+import com.stavro_xhardha.pockettreasure.brain.InitialNetworkState
+import com.stavro_xhardha.pockettreasure.brain.CurrentNetworkStatus
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
 
@@ -27,9 +25,10 @@ class GalleryFragment : BaseFragment(), GalleryContract {
 
     @Inject
     lateinit var galleryViewModelFactory: GalleryViewModelFactory
+    @Inject
+    lateinit var galleryAdapter: GalleryAdapter
 
     private lateinit var galleryViewModel: GalleryViewModel
-    private lateinit var galleryAdapter: GalleryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +42,6 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     }
 
     override fun initializeComponents() {
-        galleryAdapter = GalleryAdapter(this)
         rvGallery.layoutManager = GridLayoutManager(activity, 3)
         rvGallery.adapter = galleryAdapter
     }
@@ -54,27 +52,28 @@ class GalleryFragment : BaseFragment(), GalleryContract {
 
     override fun performDi() {
         DaggerGalleryComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+            .galleryModule(GalleryModule(this))
             .build().inject(this)
     }
 
     override fun observeTheLiveData() {
         galleryViewModel.primaryNetworkStatus.observe(this, Observer {
             when (it) {
-                InitialState.ERROR -> {
+                InitialNetworkState.ERROR -> {
                     llError.visibility = View.VISIBLE
                     rvGallery.visibility = View.GONE
                     pbGallery.visibility = View.GONE
                     if (isDebugMode)
                         Log.d(APPLICATION_TAG, "INITIAL_FAILED")
                 }
-                InitialState.SUCCESS -> {
+                InitialNetworkState.SUCCESS -> {
                     llError.visibility = View.GONE
                     rvGallery.visibility = View.VISIBLE
                     pbGallery.visibility = View.GONE
                     if (isDebugMode)
                         Log.d(APPLICATION_TAG, "INITIAL_SUCCESS")
                 }
-                InitialState.LOADING -> {
+                InitialNetworkState.LOADING -> {
                     llError.visibility = View.GONE
                     rvGallery.visibility = View.GONE
                     pbGallery.visibility = View.VISIBLE
@@ -88,17 +87,16 @@ class GalleryFragment : BaseFragment(), GalleryContract {
             galleryAdapter.submitList(it)
         })
 
-        galleryViewModel.networkStatus.observe(this, Observer {
+        galleryViewModel.currentNetworkStatus.observe(this, Observer {
             if (isDebugMode) {
                 when (it) {
                     //todo fix handle the errors on the view
-                    NetworkStatus.FAILED -> Log.d(APPLICATION_TAG, "FAILED")
-                    NetworkStatus.SUCCESS -> Log.d(APPLICATION_TAG, "SUCCESS")
-                    NetworkStatus.LOADING -> Log.d(APPLICATION_TAG, "LOADING")
+                    CurrentNetworkStatus.FAILED -> Log.d(APPLICATION_TAG, "FAILED")
+                    CurrentNetworkStatus.SUCCESS -> Log.d(APPLICATION_TAG, "SUCCESS")
+                    CurrentNetworkStatus.LOADING -> Log.d(APPLICATION_TAG, "LOADING")
                     else -> Log.d(APPLICATION_TAG, "TOTAL ERROR")
                 }
             }
-            galleryAdapter.setCurrentStatus(it)
         })
     }
 

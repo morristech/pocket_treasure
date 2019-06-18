@@ -2,10 +2,7 @@ package com.stavro_xhardha.pockettreasure.ui.news
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.stavro_xhardha.pockettreasure.brain.INITIAL_PAGE_SIZE
-import com.stavro_xhardha.pockettreasure.brain.NEWS_BASE_URL
-import com.stavro_xhardha.pockettreasure.brain.SEARCH_KEY_WORD
-import com.stavro_xhardha.pockettreasure.brain.SEARCH_NEWS_API_KEY
+import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.pockettreasure.model.NewsResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
@@ -17,48 +14,48 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKeyedDataSource<Int, News>() {
-    private val networkNetworkStatus: MutableLiveData<NetworkStatus> = MutableLiveData()
-    private val initialState: MutableLiveData<InitialState> = MutableLiveData()
+    private val networkCurrentNetworkStatus: MutableLiveData<CurrentNetworkStatus> = MutableLiveData()
+    private val initialNetworkState: MutableLiveData<InitialNetworkState> = MutableLiveData()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, News>) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                updateNetworkStatus(NetworkStatus.LOADING)
-                updateInitialState(InitialState.LOADING)
+                updateNetworkStatus(CurrentNetworkStatus.LOADING)
+                updateInitialState(InitialNetworkState.LOADING)
                 val primaryNewsResponse = callLatestNewsAsync(1)
                 if (primaryNewsResponse.isSuccessful) {
                     callback.onResult(primaryNewsResponse.body()!!.articles, null, 2)
-                    updateNetworkStatus(NetworkStatus.SUCCESS)
-                    updateInitialState(InitialState.SUCCESS)
+                    updateNetworkStatus(CurrentNetworkStatus.SUCCESS)
+                    updateInitialState(InitialNetworkState.SUCCESS)
                 } else {
-                    updateInitialState(InitialState.ERROR)
+                    updateInitialState(InitialNetworkState.ERROR)
                 }
             } catch (e: Exception) {
-                updateInitialState(InitialState.ERROR)
+                updateInitialState(InitialNetworkState.ERROR)
                 e.printStackTrace()
             }
         }
     }
 
-    private suspend fun updateInitialState(networkStatus: InitialState) {
+    private suspend fun updateInitialState(networkStatus: InitialNetworkState) {
         withContext(Dispatchers.Main) {
-            initialState.value = networkStatus
+            initialNetworkState.value = networkStatus
         }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, News>) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                updateNetworkStatus(NetworkStatus.LOADING)
+                updateNetworkStatus(CurrentNetworkStatus.LOADING)
                 val primaryNewsResponse = callLatestNewsAsync(params.key)
                 if (primaryNewsResponse.isSuccessful) {
                     callback.onResult(primaryNewsResponse.body()!!.articles, params.key.inc())
-                    updateNetworkStatus(NetworkStatus.SUCCESS)
+                    updateNetworkStatus(CurrentNetworkStatus.SUCCESS)
                 } else {
-                    updateNetworkStatus(NetworkStatus.FAILED)
+                    updateNetworkStatus(CurrentNetworkStatus.FAILED)
                 }
             } catch (e: Exception) {
-                updateNetworkStatus(NetworkStatus.FAILED)
+                updateNetworkStatus(CurrentNetworkStatus.FAILED)
                 e.printStackTrace()
             }
         }
@@ -71,13 +68,13 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKey
         NEWS_BASE_URL, SEARCH_KEY_WORD, SEARCH_NEWS_API_KEY, pageNumber, INITIAL_PAGE_SIZE
     )
 
-    private suspend fun updateNetworkStatus(networkNetworkStatus: NetworkStatus) {
+    private suspend fun updateNetworkStatus(networkCurrentNetworkStatus: CurrentNetworkStatus) {
         withContext(Dispatchers.Main) {
-            this@NewsDataSource.networkNetworkStatus.value = networkNetworkStatus
+            this@NewsDataSource.networkCurrentNetworkStatus.value = networkCurrentNetworkStatus
         }
     }
 
-    fun getNetworkStatus(): MutableLiveData<NetworkStatus> = networkNetworkStatus
+    fun getNetworkStatus(): MutableLiveData<CurrentNetworkStatus> = networkCurrentNetworkStatus
 
-    fun getInitialState(): MutableLiveData<InitialState> = initialState
+    fun getInitialState(): MutableLiveData<InitialNetworkState> = initialNetworkState
 }

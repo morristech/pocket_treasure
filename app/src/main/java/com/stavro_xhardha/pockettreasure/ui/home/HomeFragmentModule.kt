@@ -12,13 +12,8 @@ class HomeFragmentModule {
 
     @Provides
     @FragmentScope
-    fun provideHomeViewModelFactory(provider: Provider<HomeViewModel>): HomeViewModelFactory =
-        HomeViewModelFactory(provider)
-
-    @Provides
-    @FragmentScope
-    fun provideHomeViewModel(homeRepository: HomeRepository): HomeViewModel =
-        HomeViewModel(homeRepository)
+    fun provideHomeViewModelFactory(homeRepository: HomeRepository): HomeViewModelFactory =
+        HomeViewModelFactory(homeRepository)
 
     @Provides
     @FragmentScope

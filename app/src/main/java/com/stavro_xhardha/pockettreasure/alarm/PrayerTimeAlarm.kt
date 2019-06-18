@@ -9,23 +9,31 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.PRAYER_DESCRIPTION
+import com.stavro_xhardha.pockettreasure.brain.PRAYER_TITLE
 
 class PrayerTimeAlarm : BroadcastReceiver() {
 
     private val CHANNEL_ID = "Some Channel Id"
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        showSomeNotification(context)
+        val title = intent?.getStringExtra(PRAYER_TITLE)
+        val description = intent?.getStringExtra(PRAYER_DESCRIPTION)
+        showSomeNotification(context, title, description)
     }
 
-    private fun showSomeNotification(context: Context?) {
+    private fun showSomeNotification(
+        context: Context?,
+        title: String?,
+        notificationDescription: String?
+    ) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
 
         val builder = NotificationCompat.Builder(context!!, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_home_grey_24dp)
-            .setContentTitle(context.resources.getString(R.string.app_name))
-            .setContentText("Test description")
+            .setContentTitle(title)
+            .setContentText(notificationDescription)
             .setStyle(
                 NotificationCompat.BigTextStyle()
                     .bigText("Much longer text that cannot fit one line...")

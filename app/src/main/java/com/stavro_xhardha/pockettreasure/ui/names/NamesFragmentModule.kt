@@ -14,9 +14,9 @@ class NamesFragmentModule {
     @Provides
     @FragmentScope
     fun provideViewModelFactory(
-        provider: Provider<NamesViewModel>
+        namesRepository: NamesRepository
     ): NamesViewModelProviderFactory {
-        return NamesViewModelProviderFactory(provider)
+        return NamesViewModelProviderFactory(namesRepository)
     }
 
     @Provides

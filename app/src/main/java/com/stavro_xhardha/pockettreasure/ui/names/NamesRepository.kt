@@ -8,7 +8,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import javax.inject.Inject
 
-class NamesRepository @Inject constructor(val treasureApi: TreasureApi, val namesDao: NamesDao) {
+class NamesRepository @Inject constructor(private val treasureApi: TreasureApi, private val namesDao: NamesDao) {
 
     suspend fun fetchNintyNineNamesAsync(): Response<NameResponse> = treasureApi.getNintyNineNamesAsync()
 
