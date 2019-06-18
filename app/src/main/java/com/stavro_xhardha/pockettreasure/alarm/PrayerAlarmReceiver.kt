@@ -11,6 +11,7 @@ import com.stavro_xhardha.rocket.Rocket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 class PrayerAlarmReceiver : BroadcastReceiver() {
 
@@ -49,46 +50,54 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
     }
 
     private fun setPrayerAlarms(prayerTimeResponse: PrayerTimeResponse?) {
+        val currentTime = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+        }
         prayerTimeResponse.let {
             if (rocket.readBoolean(NOTIFY_USER_FOR_FAJR)) {
-                scheduleAlarm(
-                    mContext,
-                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
-                    PENDING_INTENT_FIRE_NOTIFICATION_FAJR,
-                    PrayerTimeAlarm::class.java
-                )
+                if (currentTime.before(getCurrentDayPrayerImplementation(it?.data?.timings?.fajr!!)))
+                    scheduleAlarm(
+                        mContext,
+                        getCurrentDayPrayerImplementation(it.data.timings.fajr),
+                        PENDING_INTENT_FIRE_NOTIFICATION_FAJR,
+                        PrayerTimeAlarm::class.java
+                    )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_DHUHR)) {
-                scheduleAlarm(
-                    mContext,
-                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
-                    PENDING_INTENT_FIRE_NOTIFICATION_DHUHR,
-                    PrayerTimeAlarm::class.java
-                )
+                if (currentTime.before(getCurrentDayPrayerImplementation(it?.data?.timings?.dhuhr!!)))
+                    scheduleAlarm(
+                        mContext,
+                        getCurrentDayPrayerImplementation(it.data.timings.dhuhr),
+                        PENDING_INTENT_FIRE_NOTIFICATION_DHUHR,
+                        PrayerTimeAlarm::class.java
+                    )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_ASR)) {
-                scheduleAlarm(
-                    mContext,
-                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
-                    PENDING_INTENT_FIRE_NOTIFICATION_ASR,
-                    PrayerTimeAlarm::class.java
-                )
+                if (currentTime.before(getCurrentDayPrayerImplementation(it?.data?.timings?.asr!!)))
+                    scheduleAlarm(
+                        mContext,
+                        getCurrentDayPrayerImplementation(it.data.timings.asr),
+                        PENDING_INTENT_FIRE_NOTIFICATION_ASR,
+                        PrayerTimeAlarm::class.java
+                    )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB)) {
-                scheduleAlarm(
-                    mContext,
-                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
-                    PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB,
-                    PrayerTimeAlarm::class.java
-                )
+                if (currentTime.before(getCurrentDayPrayerImplementation(it?.data?.timings?.magrib!!)))
+                    scheduleAlarm(
+                        mContext,
+                        getCurrentDayPrayerImplementation(it.data.timings.magrib),
+                        PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB,
+                        PrayerTimeAlarm::class.java
+                    )
             }
             if (rocket.readBoolean(NOTIFY_USER_FOR_ISHA)) {
-                scheduleAlarm(
-                    mContext,
-                    getCurrentDayPrayerImplementation(prayerTimeResponse?.data?.timings?.fajr!!),
-                    PENDING_INTENT_FIRE_NOTIFICATION_ISHA,
-                    PrayerTimeAlarm::class.java
-                )
+                if (currentTime.before(getCurrentDayPrayerImplementation(it?.data?.timings?.isha!!)))
+                    scheduleAlarm(
+                        mContext,
+                        getCurrentDayPrayerImplementation(it.data.timings.isha),
+                        PENDING_INTENT_FIRE_NOTIFICATION_ISHA,
+                        PrayerTimeAlarm::class.java
+                    )
             }
 
             invokeTomorowAlarm(prayerTimeResponse!!.data.timings.midnight)
@@ -100,7 +109,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
             mContext,
             getMidnightImplementation(midnight),
             PENDING_INTENT_SYNC,
-            PrayerTimeAlarm::class.java
+            PrayerAlarmReceiver::class.java
         )
     }
 }
