@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stavro_xhardha.pockettreasure.brain.Smoothie
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
-import com.sxhardha.smoothie.Smoothie
+//import com.sxhardha.smoothie.Smoothie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

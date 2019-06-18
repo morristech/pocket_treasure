@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
+import androidx.test.espresso.IdlingResource
 import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.alarm.PrayerAlarmReceiver
@@ -21,6 +22,7 @@ import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.pockettreasure.model.Surah
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
 
@@ -196,4 +198,51 @@ fun scheduleAlarmAfterOneHour(context: Context) {
         System.currentTimeMillis() + ((60 * 1000) * 60),
         pendingIntent
     )
+}
+
+class SmoothieThermometer(private val resourceName: String): IdlingResource {
+
+    private val counter = AtomicInteger(0)
+
+    @Volatile
+    private var resourceCallback: IdlingResource.ResourceCallback? = null
+
+    override fun getName() = resourceName
+
+    override fun isIdleNow() = counter.get() == 0
+
+    override fun registerIdleTransitionCallback(resourceCallback: IdlingResource.ResourceCallback) {
+        this.resourceCallback = resourceCallback
+    }
+
+    fun increment() {
+        counter.getAndIncrement()
+    }
+
+    fun decrement() {
+        val counterVal = counter.decrementAndGet()
+        if (counterVal == 0) {
+            resourceCallback?.onTransitionToIdle()
+        } else if (counterVal < 0) {
+            throw IllegalStateException("Your counter has been used wrong")
+        }
+    }
+
+}
+
+object Smoothie {
+    private const val RESOURCE = "SMOOTHIE"
+
+    @JvmField
+    val countingIdlingResource = SmoothieThermometer(RESOURCE)
+
+    fun startProcess() {
+        countingIdlingResource.increment()
+    }
+
+    fun endProcess() {
+        if (!countingIdlingResource.isIdleNow) {
+            countingIdlingResource.decrement()
+        }
+    }
 }

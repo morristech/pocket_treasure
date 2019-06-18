@@ -1,5 +1,6 @@
 package com.stavro_xhardha.pockettreasure.settings
 
+import android.content.Intent
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
@@ -10,11 +11,15 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
+import com.stavro_xhardha.pockettreasure.MainActivity
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.Smoothie
 import com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment
-import com.sxhardha.smoothie.Smoothie
+//import com.sxhardha.smoothie.Smoothie
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
