@@ -8,17 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
-import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
-import com.stavro_xhardha.pockettreasure.brain.isDebugMode
+import com.stavro_xhardha.pockettreasure.brain.*
 import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
 
@@ -52,35 +48,34 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
     }
 
     override fun observeTheLiveData() {
-        newsViewModel.networkNetworkStatus.observe(this, Observer {
+        newsViewModel.networkCurrentNetworkStatus.observe(this, Observer {
             if (isDebugMode) {
                 when (it) {
                     //todo fix handle the errors on the view
-                    NetworkStatus.FAILED -> Log.d(APPLICATION_TAG, "FAILED")
-                    NetworkStatus.SUCCESS -> Log.d(APPLICATION_TAG, "SUCCESS")
-                    NetworkStatus.LOADING -> Log.d(APPLICATION_TAG, "LOADING")
+                    CurrentNetworkStatus.FAILED -> Log.d(APPLICATION_TAG, "FAILED")
+                    CurrentNetworkStatus.SUCCESS -> Log.d(APPLICATION_TAG, "SUCCESS")
+                    CurrentNetworkStatus.LOADING -> Log.d(APPLICATION_TAG, "LOADING")
                     else -> Log.d(APPLICATION_TAG, "TOTAL ERROR")
                 }
             }
-            newsAdapter.setCurrentStatus(it)
         })
         newsViewModel.primaryNetworkStatus.observe(this, Observer {
             when (it) {
-                InitialState.ERROR -> {
+                InitialNetworkState.ERROR -> {
                     llError.visibility = View.VISIBLE
                     rvNews.visibility = View.GONE
                     pbNews.visibility = View.GONE
                     if (isDebugMode)
                         Log.d(APPLICATION_TAG, "INITIAL_FAILED")
                 }
-                InitialState.SUCCESS -> {
+                InitialNetworkState.SUCCESS -> {
                     llError.visibility = View.GONE
                     rvNews.visibility = View.VISIBLE
                     pbNews.visibility = View.GONE
                     if (isDebugMode)
                         Log.d(APPLICATION_TAG, "INITIAL_SUCCESS")
                 }
-                InitialState.LOADING -> {
+                InitialNetworkState.LOADING -> {
                     llError.visibility = View.GONE
                     rvNews.visibility = View.GONE
                     pbNews.visibility = View.VISIBLE

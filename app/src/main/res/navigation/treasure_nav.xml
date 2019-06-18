@@ -80,7 +80,7 @@
               android:label="Post Details" tools:layout="@layout/fragment_article_web_view">
         <argument android:name="url" app:argType="string" android:defaultValue='""'/>
     </fragment>
-    <fragment android:id="@+id/fullImageFragment" android:name="com.stavro_xhardha.pockettreasure.ui.gallery.FullImageFragment"
+    <fragment android:id="@+id/fullImageFragment" android:name="com.stavro_xhardha.pockettreasure.ui.gallery.full_image.FullImageFragment"
               android:label="Image Details" tools:layout="@layout/fragment_full_image">
         <argument android:name="imageUrl" app:argType="string" android:defaultValue='""'/>
     </fragment>

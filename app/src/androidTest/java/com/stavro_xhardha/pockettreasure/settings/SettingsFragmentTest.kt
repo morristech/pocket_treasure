@@ -11,8 +11,8 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.EspressoIdlingResource
 import com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment
+import com.sxhardha.smoothie.Smoothie
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -26,7 +26,7 @@ class SettingsFragmentTest {
 
     @Before
     fun setUp() {
-        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+        IdlingRegistry.getInstance().register(Smoothie.countingIdlingResource)
         val mockNavController = mock(NavController::class.java)
         settingsFragmentScenario = launchFragmentInContainer<SettingsFragment>()
         settingsFragmentScenario.onFragment {
@@ -36,7 +36,7 @@ class SettingsFragmentTest {
 
     @After
     fun finish() {
-        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
+        IdlingRegistry.getInstance().unregister(Smoothie.countingIdlingResource)
     }
 
     @Test

@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import javax.inject.Provider
 
 class NamesViewModelProviderFactory(
-    private val provider: Provider<NamesViewModel>
+    private val repository: NamesRepository
 ) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = provider.get() as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = NamesViewModel(repository) as T
 }

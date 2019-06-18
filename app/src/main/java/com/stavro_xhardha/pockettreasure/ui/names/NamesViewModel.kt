@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class NamesViewModel @Inject constructor(private val repository: NamesRepository) : ViewModel() {
+class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
 
     val allNamesList: MutableLiveData<List<Name>> = MutableLiveData()
     val progressBarVisibility: MutableLiveData<Int> = MutableLiveData()

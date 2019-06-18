@@ -5,9 +5,10 @@ import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.rocket.Rocket
 import retrofit2.Response
+import javax.inject.Inject
 
-class HomeRepository(
-    val treasureApi: TreasureApi,
+class HomeRepository @Inject constructor(
+    private val treasureApi: TreasureApi,
     private val mSharedPreferences: Rocket
 ) {
     suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> {

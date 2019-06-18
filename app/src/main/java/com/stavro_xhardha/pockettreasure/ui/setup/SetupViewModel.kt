@@ -8,9 +8,11 @@ import com.stavro_xhardha.pockettreasure.brain.getMidnightImplementation
 import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import java.util.Calendar.getInstance
 import javax.inject.Inject
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
@@ -110,16 +112,29 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     private suspend fun invokeTodaysPrayerTimes(body: PrayerTimeResponse?) {
         withContext(Dispatchers.Main) {
             if (body != null) {
-                if (setupRepository.notifyUserForFajr())
-                    fajrTime.value = getCurrentDayPrayerImplementation(body.data.timings.fajr)
-                if (setupRepository.notifyUserForDhuhr())
-                    dhuhrTime.value = getCurrentDayPrayerImplementation(body.data.timings.dhuhr)
-                if (setupRepository.notifyUserForAsr())
-                    asrTime.value = getCurrentDayPrayerImplementation(body.data.timings.asr)
-                if (setupRepository.notifyUserForMaghrib())
-                    maghribTime.value = getCurrentDayPrayerImplementation(body.data.timings.magrib)
-                if (setupRepository.notifyUserForIsha())
-                    ishaTime.value = getCurrentDayPrayerImplementation(body.data.timings.isha)
+                val currentTime = getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                }
+                if (setupRepository.notifyUserForFajr()) {
+                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.fajr)))
+                        fajrTime.value = getCurrentDayPrayerImplementation(body.data.timings.fajr)
+                }
+                if (setupRepository.notifyUserForDhuhr()) {
+                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.dhuhr)))
+                        dhuhrTime.value = getCurrentDayPrayerImplementation(body.data.timings.dhuhr)
+                }
+                if (setupRepository.notifyUserForAsr()) {
+                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.asr)))
+                        asrTime.value = getCurrentDayPrayerImplementation(body.data.timings.asr)
+                }
+                if (setupRepository.notifyUserForMaghrib()) {
+                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.magrib)))
+                        maghribTime.value = getCurrentDayPrayerImplementation(body.data.timings.magrib)
+                }
+                if (setupRepository.notifyUserForIsha()) {
+                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.isha)))
+                        ishaTime.value = getCurrentDayPrayerImplementation(body.data.timings.isha)
+                }
             }
         }
     }

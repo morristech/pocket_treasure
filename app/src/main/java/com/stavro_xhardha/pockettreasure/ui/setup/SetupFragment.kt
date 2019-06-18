@@ -1,9 +1,5 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +15,6 @@ import com.stavro_xhardha.pockettreasure.alarm.PrayerTimeAlarm
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.android.synthetic.main.fragment_setup.*
-import java.util.*
 import javax.inject.Inject
 
 
@@ -83,9 +78,7 @@ class SetupFragment : BaseFragment(), SetupContract {
         }
     }
 
-    override fun initializeComponents() {
-
-    }
+    override fun initializeComponents() {}
 
     override fun observeTheLiveData() {
         setupViewModel.countriesList.observe(this, Observer {
@@ -109,57 +102,29 @@ class SetupFragment : BaseFragment(), SetupContract {
         })
 
         setupViewModel.tomorowsTime.observe(this, Observer {
-            startSchedulingNotifications(it)
+            scheduleAlarm(activity!!, it, PENDING_INTENT_SYNC, PrayerAlarmReceiver::class.java)
             findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
         })
 
         setupViewModel.fajrTime.observe(this, Observer {
-            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_FAJR)
+            scheduleAlarm(activity!!, it, PENDING_INTENT_FIRE_NOTIFICATION_FAJR, PrayerTimeAlarm::class.java)
         })
 
         setupViewModel.dhuhrTime.observe(this, Observer {
-            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_DHUHR)
+            scheduleAlarm(activity!!, it, PENDING_INTENT_FIRE_NOTIFICATION_DHUHR, PrayerTimeAlarm::class.java)
         })
 
         setupViewModel.asrTime.observe(this, Observer {
-            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_ASR)
+            scheduleAlarm(activity!!, it, PENDING_INTENT_FIRE_NOTIFICATION_ASR, PrayerTimeAlarm::class.java)
         })
 
         setupViewModel.maghribTime.observe(this, Observer {
-            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB)
+            scheduleAlarm(activity!!, it, PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB, PrayerTimeAlarm::class.java)
         })
 
         setupViewModel.ishaTime.observe(this, Observer {
-            setAlarm(it, PENDING_INTENT_FIRE_NOTIFICATION_ISHA)
+            scheduleAlarm(activity!!, it, PENDING_INTENT_FIRE_NOTIFICATION_ISHA, PrayerTimeAlarm::class.java)
         })
-    }
-
-    private fun startSchedulingNotifications(time: Calendar) {
-        val intent = Intent(activity, PrayerAlarmReceiver::class.java)
-        val pendingIntent =
-            PendingIntent.getBroadcast(
-                activity,
-                PENDING_INTENT_SYNC,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        scheduleAlarm(time, alarmManager, pendingIntent)
-    }
-
-    private fun setAlarm(fajrTime: Calendar?, intentKey: Int) {
-        val intent = Intent(activity, PrayerTimeAlarm::class.java)
-        val pendingIntent =
-            PendingIntent.getBroadcast(
-                activity,
-                intentKey,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        val alarmManager = activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        scheduleAlarm(fajrTime!!, alarmManager, pendingIntent)
     }
 
     override fun handleOnBackPressed(view: View) {

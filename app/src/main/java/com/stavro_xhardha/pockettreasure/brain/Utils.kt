@@ -2,6 +2,9 @@ package com.stavro_xhardha.pockettreasure.brain
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -12,6 +15,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
 import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.alarm.PrayerAlarmReceiver
 import com.stavro_xhardha.pockettreasure.model.Aya
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.pockettreasure.model.Surah
@@ -117,11 +121,11 @@ fun getCurrentDayPrayerImplementation(prayerTime: String): Calendar = Calendar.g
         prayerTime.substring(0, 2).toInt()
 
     val actualminute = if (prayerTime.substring(3, 5).startsWith("0"))
-        prayerTime.substring(4, 5)
+        prayerTime.substring(4, 5).toInt()
     else
-        prayerTime.substring(3, 5)
+        prayerTime.substring(3, 5).toInt()
     set(Calendar.HOUR_OF_DAY, actualHour)
-    set(Calendar.MINUTE, actualminute.toInt())
+    set(Calendar.MINUTE, actualminute)
     set(Calendar.SECOND, 0)
 }
 
@@ -133,6 +137,63 @@ fun scheduleAlarm(
     alarmManager.setExact(
         AlarmManager.RTC,
         time.timeInMillis,
+        pendingIntent
+    )
+}
+
+fun scheduleAlarm(mContext: Context, time: Calendar, pendingIntentKey: Int, desiredClass: Class<*>) {
+    val intent = Intent(mContext, desiredClass)
+    checkIntentVariables(pendingIntentKey, intent)
+    val pendingIntent =
+        PendingIntent.getBroadcast(
+            mContext,
+            pendingIntentKey,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+    val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+    scheduleAlarm(time, alarmManager, pendingIntent)
+
+    if (isDebugMode)
+        Log.d(APPLICATION_TAG, "Alarm set at ${time.timeInMillis}")
+}
+
+fun checkIntentVariables(intentKey: Int, intent: Intent) {
+    when (intentKey) {
+        PENDING_INTENT_FIRE_NOTIFICATION_FAJR -> {
+            intent.putExtra(PRAYER_TITLE, "Fajr")
+            intent.putExtra(PRAYER_DESCRIPTION, "Fajr time has arrived")
+        }
+        PENDING_INTENT_FIRE_NOTIFICATION_DHUHR -> {
+            intent.putExtra(PRAYER_TITLE, "Dhuhr")
+            intent.putExtra(PRAYER_DESCRIPTION, "Dhuhr time has arrived")
+        }
+        PENDING_INTENT_FIRE_NOTIFICATION_ASR -> {
+            intent.putExtra(PRAYER_TITLE, "Asr")
+            intent.putExtra(PRAYER_DESCRIPTION, "Asr time has arrived")
+        }
+        PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB -> {
+            intent.putExtra(PRAYER_TITLE, "Maghrib")
+            intent.putExtra(PRAYER_DESCRIPTION, "Maghrib time has arrived")
+        }
+        PENDING_INTENT_FIRE_NOTIFICATION_ISHA -> {
+            intent.putExtra(PRAYER_TITLE, "Isha")
+            intent.putExtra(PRAYER_DESCRIPTION, "Isha time has arrived")
+        }
+    }
+}
+
+fun scheduleAlarmAfterOneHour(context: Context) {
+    val intent = Intent(context, PrayerAlarmReceiver::class.java)
+    val pendingIntent =
+        PendingIntent.getBroadcast(context, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+    alarmManager.setExact(
+        AlarmManager.RTC,
+        System.currentTimeMillis() + ((60 * 1000) * 60),
         pendingIntent
     )
 }

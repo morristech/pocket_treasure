@@ -6,8 +6,9 @@ import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.rocket.Rocket
 import retrofit2.Response
+import javax.inject.Inject
 
-class SetupRepository(
+class SetupRepository @Inject constructor(
     private val treasureApi: TreasureApi,
     private val rocket: Rocket
 ) {
