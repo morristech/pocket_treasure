@@ -1,5 +1,4 @@
-package com.stavro_xhardha.pockettreasure.ui.gallery
-
+package com.stavro_xhardha.pockettreasure.ui.gallery.full_image
 
 import android.Manifest
 import android.app.WallpaperManager
@@ -101,20 +100,18 @@ class FullImageFragment : Fragment() {
         when {
             item.itemId == R.id.action_download -> saveImageToUrl()
             item.itemId == R.id.action_share -> shareImageUrl()
-            item.itemId == R.id.action_set_wallpaper -> setImageAsWallPaper()
+            item.itemId == R.id.action_set_wallpaper -> showWallpapaerDialog()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun setImageAsWallPaper() {
-        val wallPaperOptions = listOf("Home Screen", "Lock Screen", "Both")
-        showWallpapaerDialog(wallPaperOptions)
-    }
-
-    private fun showWallpapaerDialog(wallPaperOptions: List<String>) {
+    private fun showWallpapaerDialog() {
         MaterialDialog(activity!!).show {
             title(R.string.set_as_wallpaper)
-            listItemsSingleChoice(items = wallPaperOptions, initialSelection = 0) { dialog, index, _ ->
+            listItemsSingleChoice(
+                items = listOf("Home Screen", "Lock Screen", "Both"),
+                initialSelection = 0
+            ) { dialog, index, _ ->
                 setWallPaper(index)
                 dialog.dismiss()
             }
@@ -152,18 +149,13 @@ class FullImageFragment : Fragment() {
 
     private fun saveImageToUrl() {
         try {
-            trySavingImage()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkForPermission()
+            } else {
+                writeImageToFile()
+            }
         } catch (e: IOException) {
             e.printStackTrace()
-        }
-    }
-
-    @Throws(IOException::class)
-    private fun trySavingImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkForPermission()
-        } else {
-            writeImageToFile()
         }
     }
 

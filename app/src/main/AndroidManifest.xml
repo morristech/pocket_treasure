@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-
     <application
             android:name="com.stavro_xhardha.PocketTreasureApplication"
             android:allowBackup="true"
@@ -16,6 +15,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <uses-library android:name="android.test.runner"
+                      android:required="false"/>
         <receiver android:name=".alarm.PrayerAlarmReceiver"/>
         <receiver android:name=".alarm.PrayerTimeAlarm"/>
         <provider

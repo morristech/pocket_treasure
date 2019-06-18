@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.single_item_news.view.*
 
 class NewsAdapter(private val newsAdapterContract: NewsAdapterContract) :
     PagedListAdapter<News, NewsAdapter.NewsViewHolder>(DIFF_UTIL_NEWS) {
-    private var viewHolderType: ViewHolderType = ViewHolderType.VIEW_PROGRESS
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder =
         NewsViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_news, parent, false))
@@ -56,18 +55,4 @@ class NewsAdapter(private val newsAdapterContract: NewsAdapterContract) :
         }
 
     }
-
-    fun setCurrentStatus(it: NetworkStatus?) {
-        when (it) {
-            NetworkStatus.FAILED -> newsAdapterContract.showErrorMessage()
-            NetworkStatus.LOADING -> setViewType(ViewHolderType.VIEW_PROGRESS)
-            NetworkStatus.SUCCESS -> setViewType(ViewHolderType.VIEW_ITEMS)
-        }
-    }
-
-    private fun setViewType(viewHolderType: ViewHolderType) {
-        this.viewHolderType = viewHolderType
-    }
-
-    private fun getViewType(): ViewHolderType = viewHolderType
 }

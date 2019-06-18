@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.brain.EspressoIdlingResource
+import com.stavro_xhardha.pockettreasure.brain.isDebugMode
+import com.sxhardha.smoothie.Smoothie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -33,7 +34,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
     }
 
     private fun listenToRepository() {
-        EspressoIdlingResource.increment()
+        incrementIdlingResource()
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.let {
                 fajrCheckHelper = it.getFajrChecked()
@@ -48,63 +49,73 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
                 this@SettingsViewModel._asrCheck.value = asrCheckCheckHelper
                 this@SettingsViewModel._maghribCheck.value = mahgribCheckCheckHelper
                 this@SettingsViewModel._ishaCheck.value = ishaCheckCheckHelper
-                EspressoIdlingResource.decrement()
+               decrementIdlingResource()
             }
         }
     }
 
     fun onSwFajrClick(checked: Boolean) {
-        EspressoIdlingResource.increment()
+        incrementIdlingResource()
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putFajrNotification(checked)
             withContext(Dispatchers.Main) {
-                EspressoIdlingResource.decrement()
+               decrementIdlingResource()
                 _fajrCheck.value = settingsRepository.getFajrChecked()
             }
         }
     }
 
     fun onSwDhuhrClick(checked: Boolean) {
-        EspressoIdlingResource.increment()
+        incrementIdlingResource()
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putDhuhrNotification(checked)
             withContext(Dispatchers.Main) {
-                EspressoIdlingResource.decrement()
+               decrementIdlingResource()
                 _dhuhrCheck.value = settingsRepository.getDhuhrChecked()
             }
         }
     }
 
     fun onSwAsrClick(checked: Boolean) {
-        EspressoIdlingResource.increment()
+        incrementIdlingResource()
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putAsrNotification(checked)
             withContext(Dispatchers.Main) {
-                EspressoIdlingResource.decrement()
+               decrementIdlingResource()
                 _asrCheck.value = settingsRepository.getAsrChecked()
             }
         }
     }
 
     fun onSwMaghribClick(checked: Boolean) {
-        EspressoIdlingResource.increment()
+        incrementIdlingResource()
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putMaghribNotification(checked)
             withContext(Dispatchers.Main) {
-                EspressoIdlingResource.decrement()
+               decrementIdlingResource()
                 _maghribCheck.value = settingsRepository.getMaghribChecked()
             }
         }
     }
 
     fun onSwIshaClick(checked: Boolean) {
-        EspressoIdlingResource.increment()
+        incrementIdlingResource()
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putIshaNotification(checked)
             withContext(Dispatchers.Main) {
-                EspressoIdlingResource.decrement()
+               decrementIdlingResource()
                 _ishaCheck.value = settingsRepository.getIshaChecked()
             }
         }
+    }
+
+    private fun incrementIdlingResource() {
+        if (isDebugMode)
+            Smoothie.startProcess()
+    }
+
+    private fun decrementIdlingResource() {
+        if (isDebugMode)
+           Smoothie.endProcess()
     }
 }

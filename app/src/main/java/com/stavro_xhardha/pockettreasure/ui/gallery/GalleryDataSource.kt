@@ -7,8 +7,8 @@ import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.UnsplashResponse
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
-import com.stavro_xhardha.pockettreasure.ui.news.InitialState
-import com.stavro_xhardha.pockettreasure.ui.news.NetworkStatus
+import com.stavro_xhardha.pockettreasure.brain.InitialNetworkState
+import com.stavro_xhardha.pockettreasure.brain.CurrentNetworkStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,24 +17,24 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKeyedDataSource<Int, UnsplashResult>() {
-    private val networkNetworkStatus: MutableLiveData<NetworkStatus> = MutableLiveData()
-    private val initialState: MutableLiveData<InitialState> = MutableLiveData()
+    private val networkCurrentNetworkStatus: MutableLiveData<CurrentNetworkStatus> = MutableLiveData()
+    private val initialNetworkState: MutableLiveData<InitialNetworkState> = MutableLiveData()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, UnsplashResult>) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                updateNetworkStatus(NetworkStatus.LOADING)
-                updateInitialState(InitialState.LOADING)
+                updateNetworkStatus(CurrentNetworkStatus.LOADING)
+                updateInitialState(InitialNetworkState.LOADING)
                 val primaryUnsplashResponse = getPhotosFromUsplashAPI(1)
                 if (primaryUnsplashResponse.code() == 200) {
                     callback.onResult(primaryUnsplashResponse.body()!!.results, null, 2)
-                    updateNetworkStatus(NetworkStatus.SUCCESS)
-                    updateInitialState(InitialState.SUCCESS)
+                    updateNetworkStatus(CurrentNetworkStatus.SUCCESS)
+                    updateInitialState(InitialNetworkState.SUCCESS)
                 } else {
-                    updateInitialState(InitialState.ERROR)
+                    updateInitialState(InitialNetworkState.ERROR)
                 }
             } catch (exception: Exception) {
-                updateInitialState(InitialState.ERROR)
+                updateInitialState(InitialNetworkState.ERROR)
                 exception.printStackTrace()
             }
         }
@@ -45,17 +45,17 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) : Page
             Log.d(APPLICATION_TAG, params.key.toString())
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                updateNetworkStatus(NetworkStatus.LOADING)
+                updateNetworkStatus(CurrentNetworkStatus.LOADING)
                 val primaryUnsplashResponse = getPhotosFromUsplashAPI(params.key)
                 if (primaryUnsplashResponse.code() == 200) {
                     callback.onResult(primaryUnsplashResponse.body()!!.results, params.key.inc())
-                    updateNetworkStatus(NetworkStatus.SUCCESS)
+                    updateNetworkStatus(CurrentNetworkStatus.SUCCESS)
                 } else {
-                    updateNetworkStatus(NetworkStatus.FAILED)
+                    updateNetworkStatus(CurrentNetworkStatus.FAILED)
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
-                updateNetworkStatus(NetworkStatus.FAILED)
+                updateNetworkStatus(CurrentNetworkStatus.FAILED)
             }
         }
     }
@@ -69,19 +69,19 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) : Page
             CLIENT_ID, CLIENT_SECRET
         )
 
-    private suspend fun updateNetworkStatus(networkNetworkStatus: NetworkStatus) {
+    private suspend fun updateNetworkStatus(networkCurrentNetworkStatus: CurrentNetworkStatus) {
         withContext(Dispatchers.Main) {
-            this@GalleryDataSource.networkNetworkStatus.value = networkNetworkStatus
+            this@GalleryDataSource.networkCurrentNetworkStatus.value = networkCurrentNetworkStatus
         }
     }
 
-    private suspend fun updateInitialState(networkStatus: InitialState) {
+    private suspend fun updateInitialState(networkStatus: InitialNetworkState) {
         withContext(Dispatchers.Main) {
-            initialState.value = networkStatus
+            initialNetworkState.value = networkStatus
         }
     }
 
-    fun getNetworkStatus(): MutableLiveData<NetworkStatus> = networkNetworkStatus
+    fun getNetworkStatus(): MutableLiveData<CurrentNetworkStatus> = networkCurrentNetworkStatus
 
-    fun getInitialState(): MutableLiveData<InitialState> = initialState
+    fun getInitialState(): MutableLiveData<InitialNetworkState> = initialNetworkState
 }

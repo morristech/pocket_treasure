@@ -5,7 +5,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.stavro_xhardha.pockettreasure.brain.INITIAL_PAGE_SIZE
+import com.stavro_xhardha.pockettreasure.brain.InitialNetworkState
+import com.stavro_xhardha.pockettreasure.brain.CurrentNetworkStatus
 import com.stavro_xhardha.pockettreasure.brain.buildPagedList
 import com.stavro_xhardha.pockettreasure.model.News
 import java.util.concurrent.Executors
@@ -14,14 +15,14 @@ class NewsViewModel(
     dataSourceFactory: NewsDataSourceFactory
 ) : ViewModel() {
     private var newsLiveData: LiveData<PagedList<News>>
-    var networkNetworkStatus: LiveData<NetworkStatus>
-    var primaryNetworkStatus: LiveData<InitialState>
+    var networkCurrentNetworkStatus: LiveData<CurrentNetworkStatus>
+    var primaryNetworkStatus: LiveData<InitialNetworkState>
 
     init {
         val executor = Executors.newFixedThreadPool(5)
         val config = buildPagedList()
 
-        networkNetworkStatus =
+        networkCurrentNetworkStatus =
             Transformations.switchMap(dataSourceFactory.mutableDataSource) {
                 it.getNetworkStatus()
             }

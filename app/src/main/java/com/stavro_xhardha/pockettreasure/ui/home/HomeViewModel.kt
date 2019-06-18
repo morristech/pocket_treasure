@@ -12,10 +12,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
-import javax.inject.Inject
 
 
-class HomeViewModel @Inject constructor(
+class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 

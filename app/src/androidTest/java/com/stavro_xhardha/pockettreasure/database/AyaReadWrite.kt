@@ -39,7 +39,7 @@ class AyaReadWrite {
     @Test
     fun writeAyaAndReadIt() = runBlocking {
         //Arrange
-        val aya = Aya("empty", "no need for that", 2, 1, 5)
+        val aya = Aya(1,"empty", "no need for that", 2, 1, 5)
         val surah = Surah(5, "Abc", "Def", "Ghi", "Jkl", listOf())
         //Act
         surahsDao.insertSurah(surah)

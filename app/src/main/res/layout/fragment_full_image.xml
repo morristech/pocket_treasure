@@ -5,7 +5,7 @@
                 android:background="@color/md_black_1000"
                 android:layout_height="match_parent"
                 android:id="@+id/rlFullImageHolder"
-                tools:context=".ui.gallery.FullImageFragment">
+                tools:context=".ui.gallery.full_image.FullImageFragment">
     <ImageView
             android:layout_gravity="center"
             android:foregroundGravity="center"
