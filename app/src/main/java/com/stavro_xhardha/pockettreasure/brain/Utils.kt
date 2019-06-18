@@ -17,10 +17,7 @@ import androidx.test.espresso.IdlingResource
 import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.alarm.PrayerAlarmReceiver
-import com.stavro_xhardha.pockettreasure.model.Aya
-import com.stavro_xhardha.pockettreasure.model.News
-import com.stavro_xhardha.pockettreasure.model.Surah
-import com.stavro_xhardha.pockettreasure.model.UnsplashResult
+import com.stavro_xhardha.pockettreasure.model.*
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -85,6 +82,17 @@ val DIFF_UTIL_QURAN = object : DiffUtil.ItemCallback<Surah>() {
                 && oldItem.surahArabicName == newItem.surahArabicName
                 && oldItem.revelationType == newItem.revelationType
                 && oldItem.surahNumber == newItem.surahNumber
+
+}
+
+val DIFF_UTIL_TASBEEH = object : DiffUtil.ItemCallback<Tasbeeh>() {
+    override fun areItemsTheSame(oldItem: Tasbeeh, newItem: Tasbeeh): Boolean =
+        oldItem.arabicPhrase == newItem.arabicPhrase
+
+    override fun areContentsTheSame(oldItem: Tasbeeh, newItem: Tasbeeh): Boolean =
+        oldItem.arabicPhrase == newItem.arabicPhrase
+                && oldItem.translation == newItem.translation
+                && oldItem.transliteration == newItem.transliteration
 
 }
 
@@ -200,7 +208,7 @@ fun scheduleAlarmAfterOneHour(context: Context) {
     )
 }
 
-class SmoothieThermometer(private val resourceName: String): IdlingResource {
+class SmoothieThermometer(private val resourceName: String) : IdlingResource {
 
     private val counter = AtomicInteger(0)
 

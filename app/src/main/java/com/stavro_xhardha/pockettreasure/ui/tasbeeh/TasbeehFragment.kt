@@ -5,18 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.navigation.Navigation
+import androidx.lifecycle.ViewModelProviders
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 
 class TasbeehFragment : BaseFragment() {
 
+    private lateinit var tasbeehViewModel: TasbeehViewModel
+
     override fun initializeComponents() {
     }
 
     override fun initViewModel() {
+        tasbeehViewModel = ViewModelProviders.of(this).get(TasbeehViewModel::class.java)
     }
 
     override fun performDi() {
