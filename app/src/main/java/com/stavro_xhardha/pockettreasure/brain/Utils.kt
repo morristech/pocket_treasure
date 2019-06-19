@@ -173,23 +173,23 @@ fun scheduleAlarm(mContext: Context, time: Calendar, pendingIntentKey: Int, desi
 fun checkIntentVariables(intentKey: Int, intent: Intent) {
     when (intentKey) {
         PENDING_INTENT_FIRE_NOTIFICATION_FAJR -> {
-            intent.putExtra(PRAYER_TITLE, "Fajr")
+            intent.putExtra(PRAYER_TITLE, FAJR)
             intent.putExtra(PRAYER_DESCRIPTION, "Fajr time has arrived")
         }
         PENDING_INTENT_FIRE_NOTIFICATION_DHUHR -> {
-            intent.putExtra(PRAYER_TITLE, "Dhuhr")
+            intent.putExtra(PRAYER_TITLE, DHUHR)
             intent.putExtra(PRAYER_DESCRIPTION, "Dhuhr time has arrived")
         }
         PENDING_INTENT_FIRE_NOTIFICATION_ASR -> {
-            intent.putExtra(PRAYER_TITLE, "Asr")
+            intent.putExtra(PRAYER_TITLE, ASR)
             intent.putExtra(PRAYER_DESCRIPTION, "Asr time has arrived")
         }
         PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB -> {
-            intent.putExtra(PRAYER_TITLE, "Maghrib")
+            intent.putExtra(PRAYER_TITLE, MAGHRIB)
             intent.putExtra(PRAYER_DESCRIPTION, "Maghrib time has arrived")
         }
         PENDING_INTENT_FIRE_NOTIFICATION_ISHA -> {
-            intent.putExtra(PRAYER_TITLE, "Isha")
+            intent.putExtra(PRAYER_TITLE, ISHA)
             intent.putExtra(PRAYER_DESCRIPTION, "Isha time has arrived")
         }
     }

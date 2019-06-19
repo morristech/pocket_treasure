@@ -10,19 +10,22 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
+import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.MainActivity
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.PENDING_INTENT_FIRE_MAIN_ACTIVITY
-import com.stavro_xhardha.pockettreasure.brain.PRAYER_DESCRIPTION
-import com.stavro_xhardha.pockettreasure.brain.PRAYER_TITLE
+import com.stavro_xhardha.pockettreasure.brain.*
+import com.stavro_xhardha.rocket.Rocket
 
 class PrayerTimeAlarm : BroadcastReceiver() {
 
     private val CHANNEL_ID = "Some Channel Id"
+    private lateinit var rocket: Rocket
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        rocket = PocketTreasureApplication.getPocketTreasureComponent().getSharedPreferences()
         val title = intent?.getStringExtra(PRAYER_TITLE)
         val description = intent?.getStringExtra(PRAYER_DESCRIPTION)
+        checkSharedPreferences(title)
         showSomeNotification(context, title, description)
     }
 
@@ -67,5 +70,18 @@ class PrayerTimeAlarm : BroadcastReceiver() {
         with(NotificationManagerCompat.from(context)) {
             notify(1, builder.build())
         }
+    }
+
+    private fun checkSharedPreferences(title: String?) {
+        if (title.equals(FAJR) && !rocket.readBoolean(NOTIFY_USER_FOR_FAJR))
+            return
+        if (title.equals(DHUHR) && !rocket.readBoolean(NOTIFY_USER_FOR_DHUHR))
+            return
+        if (title.equals(ASR) && !rocket.readBoolean(NOTIFY_USER_FOR_ASR))
+            return
+        if (title.equals(MAGHRIB) && !rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB))
+            return
+        if (title.equals(ISHA) && !rocket.readBoolean(NOTIFY_USER_FOR_ISHA))
+            return
     }
 }

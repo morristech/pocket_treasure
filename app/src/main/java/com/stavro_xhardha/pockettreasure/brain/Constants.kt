@@ -61,3 +61,8 @@ const val PENDING_INTENT_FIRE_MAIN_ACTIVITY = 2007
 
 const val PRAYER_TITLE = "prayer_title"
 const val PRAYER_DESCRIPTION = "prayer_description"
+const val FAJR = "Fajr"
+const val DHUHR = "Dhuhr"
+const val ASR = "Asr"
+const val MAGHRIB = "Maghrib"
+const val ISHA = "Isha"

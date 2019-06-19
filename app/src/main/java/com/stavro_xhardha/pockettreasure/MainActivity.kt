@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment? ?: return
         val navController = host.navController
 
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-
         setupNavigation(navController)
 
         setupActionBar(navController, appBarConfiguration)
