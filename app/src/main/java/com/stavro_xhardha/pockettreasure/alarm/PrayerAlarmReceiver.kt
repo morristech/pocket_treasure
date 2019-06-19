@@ -29,16 +29,16 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 val country = rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)
                 val prayerTimesResponse = treasureApi.getPrayerTimesTodayAsync(
                     city,
-                    country, 1
+                    country
                 )
                 if (prayerTimesResponse.isSuccessful) {
                     setPrayerAlarms(prayerTimesResponse.body())
                 } else {
-                    scheduleAlarmAfterOneHour(mContext)
+                    scheduleAlarmInAQuarter(mContext)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                scheduleAlarmAfterOneHour(mContext)
+                scheduleAlarmInAQuarter(mContext)
             }
         }
     }

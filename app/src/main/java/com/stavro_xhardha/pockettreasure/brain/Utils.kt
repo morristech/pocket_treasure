@@ -195,7 +195,7 @@ fun checkIntentVariables(intentKey: Int, intent: Intent) {
     }
 }
 
-fun scheduleAlarmAfterOneHour(context: Context) {
+fun scheduleAlarmInAQuarter(context: Context) {
     val intent = Intent(context, PrayerAlarmReceiver::class.java)
     val pendingIntent =
         PendingIntent.getBroadcast(context, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -203,7 +203,7 @@ fun scheduleAlarmAfterOneHour(context: Context) {
 
     alarmManager.setExact(
         AlarmManager.RTC,
-        System.currentTimeMillis() + ((60 * 1000) * 60),
+        System.currentTimeMillis() + ((60 * 1000) * 16),
         pendingIntent
     )
 }

@@ -37,7 +37,7 @@ class SetupRepository @Inject constructor(
     suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> {
         val capitalCityName = rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)
         val countryName = rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)
-        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName, 1)
+        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName)
     }
 
     fun notifyUserForFajr(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_FAJR)

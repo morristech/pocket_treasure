@@ -18,7 +18,8 @@ interface TreasureApi {
     suspend fun getPrayerTimesTodayAsync(
         @Query("city") city: String?,
         @Query("country") country: String?,
-        @Query("adjustment") adjustment: Int
+        @Query("adjustment") adjustment: Int = 1,
+        @Query("method") method: Int = 3
     ): Response<PrayerTimeResponse>
 
     @GET
