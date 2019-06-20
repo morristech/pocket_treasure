@@ -42,7 +42,7 @@ class SetupRepositoryTest {
     }
 
     @Test
-    fun `on country and capital empty method should return true`() {
+    fun `SetupRepository on given empty country and capital city, invoked method should return true`() {
         countryAndCapitalEmpty()
 
         val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
@@ -79,6 +79,7 @@ class SetupRepositoryTest {
 
     @Test
     fun `when writing country execution should go fine`() {
+        val country = Country("Albania", "Tirana", "no need")
         setupRepository.saveCountryToSharedPreferences(country)
 
         verify(rocket).writeString(COUNTRY_SHARED_PREFERENCE_KEY, country.name)
@@ -86,7 +87,7 @@ class SetupRepositoryTest {
     }
 
     @Test
-    fun `on api error response method should return the same response 400`() = runBlocking {
+    fun `on api error response method should return response code 400`() = runBlocking {
         `when`(treasureApi.getCountriesListAsync(COUNTRIES_API_URL)).thenReturn(
             Response.error(
                 400, ResponseBody.create(

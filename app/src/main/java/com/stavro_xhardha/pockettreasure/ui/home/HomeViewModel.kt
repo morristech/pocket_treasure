@@ -13,7 +13,6 @@ import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import org.joda.time.LocalTime
 
-
 class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
@@ -107,33 +106,23 @@ class HomeViewModel(
     private fun findCurrentTime() {
         val currentTime = LocalTime()
         try {
-            val fajrTime = LocalTime(
-                (homeRepository.readFejrtime()?.substring(0, 2)!!.toInt()),
-                (homeRepository.readFejrtime()?.substring(3, 5))!!.toInt()
+            compareTiming(
+                currentTime,
+                localTime(homeRepository.readFejrtime()!!),
+                localTime(homeRepository.readDhuhrTime()!!),
+                localTime(homeRepository.readAsrTime()!!),
+                localTime(homeRepository.readMaghribTime()!!),
+                localTime(homeRepository.readIshaTime()!!)
             )
-            val dhuhrTime = LocalTime(
-                (homeRepository.readDhuhrTime()?.substring(0, 2)!!.toInt()),
-                (homeRepository.readDhuhrTime()?.substring(3, 5))!!.toInt()
-            )
-            val asrTime = LocalTime(
-                (homeRepository.readAsrTime()?.substring(0, 2)!!.toInt()),
-                (homeRepository.readAsrTime()?.substring(3, 5))!!.toInt()
-            )
-            val maghribTime = LocalTime(
-                (homeRepository.readMaghribTime()?.substring(0, 2)!!.toInt()),
-                (homeRepository.readMaghribTime()?.substring(3, 5))!!.toInt()
-            )
-            val ishaTime = LocalTime(
-                (homeRepository.readIshaTime()?.substring(0, 2)!!.toInt()),
-                (homeRepository.readIshaTime()?.substring(3, 5))!!.toInt()
-            )
-
-            compareTiming(currentTime, fajrTime, dhuhrTime, asrTime, maghribTime, ishaTime)
-
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
     }
+
+    private fun localTime(timeOfPrayer: String): LocalTime = LocalTime(
+        (timeOfPrayer.substring(0, 2).toInt()),
+        (timeOfPrayer.substring(3, 5)).toInt()
+    )
 
     private fun compareTiming(
         currentTime: LocalTime,
@@ -148,7 +137,7 @@ class HomeViewModel(
                 if (currentTime.isAfter(asrTime))
                     if (currentTime.isAfter(maghribTime))
                         if (currentTime.isAfter(ishaTime))
-                            switchFajrOn()
+                            switcheverythingOff()
                         else
                             switchIshaOn()
                     else
@@ -160,6 +149,14 @@ class HomeViewModel(
         else
             switchFajrOn()
 
+    }
+
+    private fun switcheverythingOff() {
+        fajrColor.value = WHITE_BACKGROUND
+        dhuhrColor.value = WHITE_BACKGROUND
+        asrColor.value = WHITE_BACKGROUND
+        maghribColor.value = WHITE_BACKGROUND
+        ishaColor.value = WHITE_BACKGROUND
     }
 
     private fun switchFajrOn() {
@@ -204,18 +201,9 @@ class HomeViewModel(
 
     private fun dateHasPassed(): Boolean {
         val date = DateTime()
-
-        val currentDay = date.dayOfMonth
-        val currentMonth = date.monthOfYear
-        val currentYear = date.year
-
-        val currentRegisteredDay = homeRepository.getCurrentRegisteredDay()
-        val currentRegisteredMonth = homeRepository.getCurrentRegisteredMonth()
-        val currentRegisteredYear = homeRepository.getCurrentRegisteredYear()
-
-        return !(currentDay == currentRegisteredDay &&
-                currentMonth == currentRegisteredMonth &&
-                currentYear == currentRegisteredYear)
+        return !(date.dayOfMonth == homeRepository.getCurrentRegisteredDay() &&
+                date.monthOfYear == homeRepository.getCurrentRegisteredMonth() &&
+                date.year == homeRepository.getCurrentRegisteredYear())
     }
 
     private fun saveDataToShardPreferences(prayerTimeResponse: PrayerTimeResponse?) {
