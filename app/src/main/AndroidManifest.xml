@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
             android:name="com.stavro_xhardha.PocketTreasureApplication"
@@ -17,8 +18,11 @@
             android:theme="@style/AppTheme">
         <uses-library android:name="android.test.runner"
                       android:required="false"/>
-        <receiver android:name=".alarm.PrayerAlarmReceiver"/>
+        <receiver android:name=".alarm.PrayerMidnightReceiver"/>
         <receiver android:name=".alarm.PrayerTimeAlarm"/>
+        <receiver android:name=".alarm.AlarmRebootReceiver"
+                  android:enabled="true"
+                  android:permission="android.permission.RECEIVE_BOOT_COMPLETED"/>
         <provider
                 android:name="androidx.work.impl.WorkManagerInitializer"
                 android:authorities="com.stavro_xhardha.pockettreasure.workmanager-init"

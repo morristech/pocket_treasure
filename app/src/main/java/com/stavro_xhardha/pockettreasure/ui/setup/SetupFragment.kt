@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.*
-import com.stavro_xhardha.pockettreasure.alarm.PrayerAlarmReceiver
+import com.stavro_xhardha.pockettreasure.alarm.PrayerMidnightReceiver
 import com.stavro_xhardha.pockettreasure.alarm.PrayerTimeAlarm
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
@@ -73,6 +73,7 @@ class SetupFragment : BaseFragment(), SetupContract {
                 it.dismiss()
             }
             negativeButton(text = activity!!.resources.getString(R.string.no)) {
+                setupViewModel.scheduleSynchronisationTime()
                 it.dismiss()
             }
         }
@@ -102,7 +103,7 @@ class SetupFragment : BaseFragment(), SetupContract {
         })
 
         setupViewModel.tomorowsTime.observe(this, Observer {
-            scheduleAlarm(activity!!, it, PENDING_INTENT_SYNC, PrayerAlarmReceiver::class.java)
+            scheduleAlarm(activity!!, it, PENDING_INTENT_SYNC, PrayerMidnightReceiver::class.java)
             findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
         })
 

@@ -110,31 +110,21 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     }
 
     private suspend fun invokeTodaysPrayerTimes(body: PrayerTimeResponse?) {
+        val currentTime = getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+        }
         withContext(Dispatchers.Main) {
             if (body != null) {
-                val currentTime = getInstance().apply {
-                    timeInMillis = System.currentTimeMillis()
-                }
-                if (setupRepository.notifyUserForFajr()) {
-                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.fajr)))
-                        fajrTime.value = getCurrentDayPrayerImplementation(body.data.timings.fajr)
-                }
-                if (setupRepository.notifyUserForDhuhr()) {
-                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.dhuhr)))
-                        dhuhrTime.value = getCurrentDayPrayerImplementation(body.data.timings.dhuhr)
-                }
-                if (setupRepository.notifyUserForAsr()) {
-                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.asr)))
-                        asrTime.value = getCurrentDayPrayerImplementation(body.data.timings.asr)
-                }
-                if (setupRepository.notifyUserForMaghrib()) {
-                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.magrib)))
-                        maghribTime.value = getCurrentDayPrayerImplementation(body.data.timings.magrib)
-                }
-                if (setupRepository.notifyUserForIsha()) {
-                    if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.isha)))
-                        ishaTime.value = getCurrentDayPrayerImplementation(body.data.timings.isha)
-                }
+                if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.fajr)))
+                    fajrTime.value = getCurrentDayPrayerImplementation(body.data.timings.fajr)
+                if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.dhuhr)))
+                    dhuhrTime.value = getCurrentDayPrayerImplementation(body.data.timings.dhuhr)
+                if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.asr)))
+                    asrTime.value = getCurrentDayPrayerImplementation(body.data.timings.asr)
+                if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.magrib)))
+                    maghribTime.value = getCurrentDayPrayerImplementation(body.data.timings.magrib)
+                if (currentTime.before(getCurrentDayPrayerImplementation(body.data.timings.isha)))
+                    ishaTime.value = getCurrentDayPrayerImplementation(body.data.timings.isha)
             }
         }
     }

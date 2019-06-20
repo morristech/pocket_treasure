@@ -13,7 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-class PrayerAlarmReceiver : BroadcastReceiver() {
+class PrayerMidnightReceiver : BroadcastReceiver() {
 
     private lateinit var treasureApi: TreasureApi
     private lateinit var rocket: Rocket
@@ -34,11 +34,13 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
                 if (prayerTimesResponse.isSuccessful) {
                     setPrayerAlarms(prayerTimesResponse.body())
                 } else {
-                    scheduleAlarmInAQuarter(mContext)
+                    //try in a quarter of hour
+                    rescheduleMidnighReceiver(mContext, System.currentTimeMillis() + ((60 * 1000) * 16))
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                scheduleAlarmInAQuarter(mContext)
+                //try in a quarter of hour
+                rescheduleMidnighReceiver(mContext, System.currentTimeMillis() + ((60 * 1000) * 16))
             }
         }
     }
@@ -109,7 +111,7 @@ class PrayerAlarmReceiver : BroadcastReceiver() {
             mContext,
             getMidnightImplementation(midnight),
             PENDING_INTENT_SYNC,
-            PrayerAlarmReceiver::class.java
+            PrayerMidnightReceiver::class.java
         )
     }
 }

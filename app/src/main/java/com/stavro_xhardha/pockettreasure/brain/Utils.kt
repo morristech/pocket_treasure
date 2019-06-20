@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.test.espresso.IdlingResource
 import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.alarm.PrayerAlarmReceiver
+import com.stavro_xhardha.pockettreasure.alarm.PrayerMidnightReceiver
 import com.stavro_xhardha.pockettreasure.model.*
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -195,15 +195,15 @@ fun checkIntentVariables(intentKey: Int, intent: Intent) {
     }
 }
 
-fun scheduleAlarmInAQuarter(context: Context) {
-    val intent = Intent(context, PrayerAlarmReceiver::class.java)
+fun rescheduleMidnighReceiver(context: Context, time: Long = System.currentTimeMillis()) {
+    val intent = Intent(context, PrayerMidnightReceiver::class.java)
     val pendingIntent =
         PendingIntent.getBroadcast(context, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     alarmManager.setExact(
         AlarmManager.RTC,
-        System.currentTimeMillis() + ((60 * 1000) * 16),
+        time,
         pendingIntent
     )
 }

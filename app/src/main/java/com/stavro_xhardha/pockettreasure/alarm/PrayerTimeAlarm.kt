@@ -25,8 +25,16 @@ class PrayerTimeAlarm : BroadcastReceiver() {
         rocket = PocketTreasureApplication.getPocketTreasureComponent().getSharedPreferences()
         val title = intent?.getStringExtra(PRAYER_TITLE)
         val description = intent?.getStringExtra(PRAYER_DESCRIPTION)
-        checkSharedPreferences(title)
-        showSomeNotification(context, title, description)
+        if (title.equals(FAJR) && rocket.readBoolean(NOTIFY_USER_FOR_FAJR))
+            showSomeNotification(context, title, description)
+        if (title.equals(DHUHR) && rocket.readBoolean(NOTIFY_USER_FOR_DHUHR))
+            showSomeNotification(context, title, description)
+        if (title.equals(ASR) && rocket.readBoolean(NOTIFY_USER_FOR_ASR))
+            showSomeNotification(context, title, description)
+        if (title.equals(MAGHRIB) && rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB))
+            showSomeNotification(context, title, description)
+        if (title.equals(ISHA) && rocket.readBoolean(NOTIFY_USER_FOR_ISHA))
+            showSomeNotification(context, title, description)
     }
 
     private fun showSomeNotification(
@@ -70,18 +78,5 @@ class PrayerTimeAlarm : BroadcastReceiver() {
         with(NotificationManagerCompat.from(context)) {
             notify(1, builder.build())
         }
-    }
-
-    private fun checkSharedPreferences(title: String?) {
-        if (title.equals(FAJR) && !rocket.readBoolean(NOTIFY_USER_FOR_FAJR))
-            return
-        if (title.equals(DHUHR) && !rocket.readBoolean(NOTIFY_USER_FOR_DHUHR))
-            return
-        if (title.equals(ASR) && !rocket.readBoolean(NOTIFY_USER_FOR_ASR))
-            return
-        if (title.equals(MAGHRIB) && !rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB))
-            return
-        if (title.equals(ISHA) && !rocket.readBoolean(NOTIFY_USER_FOR_ISHA))
-            return
     }
 }
