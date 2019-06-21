@@ -30,12 +30,3 @@ data class Name(
 ){
     public constructor(): this("" , "", 0, null, "")
 }
-
-data class NameResponse(
-    @SerializedName("code")
-    val code: Int,
-    @SerializedName("status")
-    val status: String,
-    @SerializedName("data")
-    val data: ArrayList<Name>
-)

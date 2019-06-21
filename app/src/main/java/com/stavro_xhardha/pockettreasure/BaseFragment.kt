@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 
 abstract class BaseFragment : Fragment() {
+    //started from the bottom
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -28,4 +29,6 @@ abstract class BaseFragment : Fragment() {
     abstract fun performDi()
 
     abstract fun observeTheLiveData()
+
+    //just kidding, this is the bottom :)
 }
