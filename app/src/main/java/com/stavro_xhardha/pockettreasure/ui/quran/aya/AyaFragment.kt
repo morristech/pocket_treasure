@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment
+import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_aya.*
 import javax.inject.Inject
 

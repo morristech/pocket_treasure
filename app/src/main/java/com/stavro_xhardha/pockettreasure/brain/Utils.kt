@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.test.espresso.IdlingResource
 import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.alarm.PrayerMidnightReceiver
+import com.stavro_xhardha.pockettreasure.alarm.PrayerTimeScheduler
 import com.stavro_xhardha.pockettreasure.model.*
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -101,13 +101,6 @@ fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
     observe(observer, observer)
 }
 
-fun getDefaultMidnightImplementation(): Calendar = Calendar.getInstance().apply {
-    add(Calendar.DATE, 1)
-    set(Calendar.HOUR_OF_DAY, 0)
-    set(Calendar.MINUTE, 30)
-    set(Calendar.SECOND, 0)
-}
-
 fun getMidnightImplementation(midnightInput: String): Calendar = Calendar.getInstance().apply {
     val actualHour = if (midnightInput.startsWith("0"))
         midnightInput.substring(1, 2).toInt()
@@ -139,19 +132,7 @@ fun getCurrentDayPrayerImplementation(prayerTime: String): Calendar = Calendar.g
     set(Calendar.SECOND, 0)
 }
 
-fun scheduleAlarm(
-    time: Calendar,
-    alarmManager: AlarmManager,
-    pendingIntent: PendingIntent
-) {
-    alarmManager.setExact(
-        AlarmManager.RTC,
-        time.timeInMillis,
-        pendingIntent
-    )
-}
-
-fun scheduleAlarm(mContext: Context, time: Calendar, pendingIntentKey: Int, desiredClass: Class<*>) {
+fun schedulePrayingAlarm(mContext: Context, time: Calendar, pendingIntentKey: Int, desiredClass: Class<*>) {
     val intent = Intent(mContext, desiredClass)
     checkIntentVariables(pendingIntentKey, intent)
     val pendingIntent =
@@ -164,7 +145,7 @@ fun scheduleAlarm(mContext: Context, time: Calendar, pendingIntentKey: Int, desi
 
     val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-    scheduleAlarm(time, alarmManager, pendingIntent)
+    alarmManager.setExact(AlarmManager.RTC, time.timeInMillis, pendingIntent)
 
     if (isDebugMode)
         Log.d(APPLICATION_TAG, "Alarm set at ${time.timeInMillis}")
@@ -195,8 +176,8 @@ fun checkIntentVariables(intentKey: Int, intent: Intent) {
     }
 }
 
-fun rescheduleMidnighReceiver(context: Context, time: Long = System.currentTimeMillis()) {
-    val intent = Intent(context, PrayerMidnightReceiver::class.java)
+fun startSchedulingPrayerTimeNotifications(context: Context, time: Long = System.currentTimeMillis()) {
+    val intent = Intent(context, PrayerTimeScheduler::class.java)
     val pendingIntent =
         PendingIntent.getBroadcast(context, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -206,6 +187,9 @@ fun rescheduleMidnighReceiver(context: Context, time: Long = System.currentTimeM
         time,
         pendingIntent
     )
+
+    if (isDebugMode)
+        Log.d(APPLICATION_TAG, "Alarm set int $time")
 }
 
 class SmoothieThermometer(private val resourceName: String) : IdlingResource {

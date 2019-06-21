@@ -27,7 +27,7 @@ class QuranViewModel(private val repository: QuranRepository) : ViewModel() {
         startQuranImplementation()
     }
 
-    private fun startQuranImplementation() {
+    fun startQuranImplementation() {
         viewModelScope.launch(Dispatchers.IO) {
             showProgress()
             val surahsInDatabase = repository.findAllSurahs()

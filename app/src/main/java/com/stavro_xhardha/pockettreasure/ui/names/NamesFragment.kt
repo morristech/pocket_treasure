@@ -2,6 +2,7 @@ package com.stavro_xhardha.pockettreasure.ui.names
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
+import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_names.*
+import kotlinx.android.synthetic.main.fragment_names.llError
 import javax.inject.Inject
 
 class NamesFragment : BaseFragment() {
@@ -57,6 +61,9 @@ class NamesFragment : BaseFragment() {
 
     override fun initializeComponents() {
         rvNames.layoutManager = LinearLayoutManager(activity)
+        btnRetry.setOnClickListener {
+            namesViewModel.retryConnection()
+        }
     }
 
     override fun handleOnBackPressed(view: View) {

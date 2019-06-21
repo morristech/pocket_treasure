@@ -11,17 +11,10 @@ class HomeRepository @Inject constructor(
     private val treasureApi: TreasureApi,
     private val mSharedPreferences: Rocket
 ) {
-    suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> {
-        val capitalCityName = mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY)
-        val countryName = mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)
-        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName)
-    }
-
-    fun getCurrentRegisteredDay(): Int = mSharedPreferences.readInt(GREGORIAN_DAY_KEY)
-
-    fun getCurrentRegisteredMonth(): Int = mSharedPreferences.readInt(GREGORIAN_MONTH_KEY)
-
-    fun getCurrentRegisteredYear(): Int = mSharedPreferences.readInt(GREGORIAN_YEAR_KEY)
+    suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> = treasureApi.getPrayerTimesTodayAsync(
+        mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY),
+        mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)
+    )
 
     fun saveFajrTime(fajr: String) {
         mSharedPreferences.writeString(FAJR_KEY, fajr)
@@ -71,6 +64,10 @@ class HomeRepository @Inject constructor(
         mSharedPreferences.writeString(HIJRI_YEAR_KEY, year)
     }
 
+    fun saveMidnight(midnight: String) {
+        mSharedPreferences.writeString(MIDNIGHT_KEY, midnight)
+    }
+
     fun readMonthSection(): String? {
         val hijriDay = mSharedPreferences.readString(HIRJI_DAY_OF_MONTH_KEY)
         val hijriMonthName = mSharedPreferences.readString(HIJRI_MONTH_NAME_KEY)
@@ -99,7 +96,9 @@ class HomeRepository @Inject constructor(
 
     fun readIshaTime(): String? = mSharedPreferences.readString(ISHA_KEY)
 
-    fun saveMidnight(midnight: String) {
-        mSharedPreferences.writeString(MIDNIGHT_KEY, midnight)
-    }
+    fun getCurrentRegisteredDay(): Int = mSharedPreferences.readInt(GREGORIAN_DAY_KEY)
+
+    fun getCurrentRegisteredMonth(): Int = mSharedPreferences.readInt(GREGORIAN_MONTH_KEY)
+
+    fun getCurrentRegisteredYear(): Int = mSharedPreferences.readInt(GREGORIAN_YEAR_KEY)
 }

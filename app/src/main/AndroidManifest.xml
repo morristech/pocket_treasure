@@ -18,11 +18,15 @@
             android:theme="@style/AppTheme">
         <uses-library android:name="android.test.runner"
                       android:required="false"/>
-        <receiver android:name=".alarm.PrayerMidnightReceiver"/>
+        <receiver android:name=".alarm.PrayerTimeScheduler"/>
         <receiver android:name=".alarm.PrayerTimeAlarm"/>
         <receiver android:name=".alarm.AlarmRebootReceiver"
                   android:enabled="true"
-                  android:permission="android.permission.RECEIVE_BOOT_COMPLETED"/>
+                  android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <provider
                 android:name="androidx.work.impl.WorkManagerInitializer"
                 android:authorities="com.stavro_xhardha.pockettreasure.workmanager-init"

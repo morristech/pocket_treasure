@@ -18,6 +18,7 @@ import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import com.stavro_xhardha.pockettreasure.brain.InitialNetworkState
 import com.stavro_xhardha.pockettreasure.brain.CurrentNetworkStatus
+import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
 

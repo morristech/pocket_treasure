@@ -3,13 +3,18 @@ package com.stavro_xhardha.pockettreasure.alarm
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.stavro_xhardha.pockettreasure.brain.rescheduleMidnighReceiver
+import android.util.Log
+import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
+import com.stavro_xhardha.pockettreasure.brain.isDebugMode
+import com.stavro_xhardha.pockettreasure.brain.startSchedulingPrayerTimeNotifications
 
 class AlarmRebootReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action.equals("android.intent.action.BOOT_COMPLETED")) {
-            rescheduleMidnighReceiver(context!!)
+            startSchedulingPrayerTimeNotifications(context!!)
+            if (isDebugMode)
+                Log.d(APPLICATION_TAG , "WorksAfter Reboot")
         }
     }
 }

@@ -74,4 +74,8 @@ class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
             progressBarVisibility.value = View.GONE
         }
     }
+
+    fun retryConnection() {
+        loadNamesList()
+    }
 }

@@ -12,6 +12,7 @@ import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
+import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_quran.*
 import javax.inject.Inject
 
@@ -38,6 +39,9 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
     override fun initializeComponents() {
         quranAdapter = QuranAdapter(this)
         rvSuras.adapter = quranAdapter
+        btnRetry.setOnClickListener {
+            quranViewModel.startQuranImplementation()
+        }
     }
 
     override fun initViewModel() {

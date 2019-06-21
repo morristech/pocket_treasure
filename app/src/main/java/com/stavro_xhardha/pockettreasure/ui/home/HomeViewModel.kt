@@ -137,7 +137,7 @@ class HomeViewModel(
                 if (currentTime.isAfter(asrTime))
                     if (currentTime.isAfter(maghribTime))
                         if (currentTime.isAfter(ishaTime))
-                            switcheverythingOff()
+                            switchFajrOn()
                         else
                             switchIshaOn()
                     else
@@ -148,15 +148,41 @@ class HomeViewModel(
                 switchDhuhrOn()
         else
             switchFajrOn()
-
     }
 
-    private fun switcheverythingOff() {
-        fajrColor.value = WHITE_BACKGROUND
-        dhuhrColor.value = WHITE_BACKGROUND
-        asrColor.value = WHITE_BACKGROUND
-        maghribColor.value = WHITE_BACKGROUND
-        ishaColor.value = WHITE_BACKGROUND
+    private fun dateHasPassed(): Boolean {
+        val date = DateTime()
+        return !(date.dayOfMonth == homeRepository.getCurrentRegisteredDay() &&
+                date.monthOfYear == homeRepository.getCurrentRegisteredMonth() &&
+                date.year == homeRepository.getCurrentRegisteredYear())
+    }
+
+    private fun saveDataToShardPreferences(prayerTimeResponse: PrayerTimeResponse?) {
+        if (prayerTimeResponse != null) {
+            try {
+                saveThePrayerTimeResponseToMemory(prayerTimeResponse)
+            } catch (e: NumberFormatException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun saveThePrayerTimeResponseToMemory(prayerTimeResponse: PrayerTimeResponse) {
+        prayerTimeResponse.let {
+            homeRepository.saveFajrTime(it.data.timings.fajr)
+            homeRepository.saveDhuhrTime(it.data.timings.dhuhr)
+            homeRepository.saveAsrTime(it.data.timings.asr)
+            homeRepository.saveMagribTime(it.data.timings.magrib)
+            homeRepository.saveIshaTime(it.data.timings.isha)
+            homeRepository.saveDayOfMonth(it.data.date.gregorianDate.day.toInt())
+            homeRepository.saveYear(it.data.date.gregorianDate.year.toInt())
+            homeRepository.saveMonthOfYear(it.data.date.gregorianDate.gregorianMonth.number)
+            homeRepository.saveMonthName(it.data.date.gregorianDate.gregorianMonth.monthNameInEnglish)
+            homeRepository.saveDayOfMonthHijri(it.data.date.hijriPrayerDate.day)
+            homeRepository.saveMonthOfYearHijri(it.data.date.hijriPrayerDate.hirjiMonth.monthNameInEnglish)
+            homeRepository.saveYearHijri(it.data.date.hijriPrayerDate.year)
+            homeRepository.saveMidnight(it.data.timings.midnight)
+        }
     }
 
     private fun switchFajrOn() {
@@ -197,40 +223,5 @@ class HomeViewModel(
         asrColor.value = WHITE_BACKGROUND
         maghribColor.value = WHITE_BACKGROUND
         ishaColor.value = ACCENT_BACKGROUND
-    }
-
-    private fun dateHasPassed(): Boolean {
-        val date = DateTime()
-        return !(date.dayOfMonth == homeRepository.getCurrentRegisteredDay() &&
-                date.monthOfYear == homeRepository.getCurrentRegisteredMonth() &&
-                date.year == homeRepository.getCurrentRegisteredYear())
-    }
-
-    private fun saveDataToShardPreferences(prayerTimeResponse: PrayerTimeResponse?) {
-        if (prayerTimeResponse != null) {
-            try {
-                saveThePrayerTimeResponseToMemory(prayerTimeResponse)
-            } catch (e: NumberFormatException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun saveThePrayerTimeResponseToMemory(prayerTimeResponse: PrayerTimeResponse) {
-        prayerTimeResponse.let {
-            homeRepository.saveFajrTime(it.data.timings.fajr)
-            homeRepository.saveDhuhrTime(it.data.timings.dhuhr)
-            homeRepository.saveAsrTime(it.data.timings.asr)
-            homeRepository.saveMagribTime(it.data.timings.magrib)
-            homeRepository.saveIshaTime(it.data.timings.isha)
-            homeRepository.saveDayOfMonth(it.data.date.gregorianDate.day.toInt())
-            homeRepository.saveYear(it.data.date.gregorianDate.year.toInt())
-            homeRepository.saveMonthOfYear(it.data.date.gregorianDate.gregorianMonth.number)
-            homeRepository.saveMonthName(it.data.date.gregorianDate.gregorianMonth.monthNameInEnglish)
-            homeRepository.saveDayOfMonthHijri(it.data.date.hijriPrayerDate.day)
-            homeRepository.saveMonthOfYearHijri(it.data.date.hijriPrayerDate.hirjiMonth.monthNameInEnglish)
-            homeRepository.saveYearHijri(it.data.date.hijriPrayerDate.year)
-            homeRepository.saveMidnight(it.data.timings.midnight)
-        }
     }
 }
