@@ -33,6 +33,13 @@ class AyaFragment : BaseFragment() {
     }
 
     override fun handleOnBackPressed(view: View) {
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.stop()
+        mediaPlayer.reset()
     }
 
     override fun initializeComponents() {

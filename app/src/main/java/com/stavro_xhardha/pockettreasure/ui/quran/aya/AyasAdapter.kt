@@ -33,11 +33,12 @@ class AyasAdapter(val ayasContract: MediaPlayer) :
             } else
                 tvAyaText.text = aya.ayatText
 
-            tvAyaNumber.text = "${aya.ayatNumber}."
+            tvAyaNumber.text = aya.ayatNumber.toString()
 
             ivPlayImage.setOnClickListener {
                 if (!mediaPlayer.isPlaying) {
                     ivPlayImage.setImageResource(R.drawable.ic_stop_black_24dp)
+                    ivPlayImage.tag = R.string.playing
                     try {
                         mediaPlayer.setDataSource(aya.audioUrl.replace("http", "https"))
                         mediaPlayer.prepare()
@@ -45,16 +46,21 @@ class AyasAdapter(val ayasContract: MediaPlayer) :
                     } catch (exception: Exception) {
                         exception.printStackTrace()
                         ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
+                        ivPlayImage.tag = R.string.stoped
                     }
                     mediaPlayer.setOnCompletionListener {
                         mediaPlayer.stop()
                         mediaPlayer.reset()
                         ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
+                        ivPlayImage.tag = R.string.stoped
                     }
                 } else {
-                    mediaPlayer.stop()
-                    mediaPlayer.reset()
-                    ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
+                    if (ivPlayImage.tag == R.string.playing) {
+                        mediaPlayer.stop()
+                        mediaPlayer.reset()
+                        ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
+                        ivPlayImage.tag = R.string.stoped
+                    }
                 }
             }
 

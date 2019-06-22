@@ -26,24 +26,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        <ImageView
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="@dimen/global_unit_bigger"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_play_arrow_black_24dp"
-                android:id="@+id/ivPlayImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:layout_gravity="start"
-                android:padding="@dimen/global_unit_smaller_xxxxx"
-                android:textSize="@dimen/text_global_unit_bigger_x"
-                android:textStyle="bold"
-                android:textColor="@color/md_grey_500"
-                android:id="@+id/tvAyaNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <LinearLayout
+                android:weightSum="100"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_weight="20"
+                    android:layout_gravity="start"
+                    android:padding="@dimen/global_unit_smaller_xxxxx"
+                    android:textSize="@dimen/text_global_unit_bigger_x"
+                    android:textStyle="bold"
+                    android:gravity="bottom"
+                    android:text="@string/some_number"
+                    android:textColor="@color/md_grey_500"
+                    android:id="@+id/tvAyaNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            <ImageView
+                    android:layout_weight="80"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/global_unit_bigger"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_play_arrow_black_24dp"
+                    android:id="@+id/ivPlayImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     </LinearLayout>
 
