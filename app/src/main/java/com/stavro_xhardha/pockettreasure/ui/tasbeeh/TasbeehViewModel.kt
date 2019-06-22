@@ -12,7 +12,7 @@ class TasbeehViewModel : ViewModel() {
         initList()
     }
 
-    private fun initList() {
+    fun initList() {
         tasbeehList.value = listOf(
             Tasbeeh("سُبْحاَنَ اللهِ", "Subhanallah", "Glory be to Allah"),
             Tasbeeh("اَلْحَمْدُ لِلهِِ", "Alhamdulillah", "Praise be to Allah"),
@@ -38,7 +38,7 @@ class TasbeehViewModel : ViewModel() {
             ),
             Tasbeeh(
                 "اللهم أنت السلام ومنك السلام تباركت يا ذا الجلال والإكرامِ",
-                "llahumma antas salam wa minkas salam tabarakta (ya) dhal jalali wal ikram",
+                "Allahumma antas salam wa minkas salam tabarakta (ya) dhal jalali wal ikram",
                 "O Allah, You are peace, peace comes from You. Blessed are You O Possessor of Glory and Honour"
             )
         )

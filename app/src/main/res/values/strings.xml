@@ -84,5 +84,6 @@
     <string name="do_you_want_to_get_notified">Do you want to get notified for prayer times?</string>
     <string name="retry_connection">Retry</string>
     <string name="error_retry">An error occurred, please retry</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
