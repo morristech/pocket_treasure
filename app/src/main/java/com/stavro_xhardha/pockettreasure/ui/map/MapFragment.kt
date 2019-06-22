@@ -7,27 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.input.input
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
-
+import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 import kotlinx.android.synthetic.main.map_fragment.*
 import java.io.IOException
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.stavro_xhardha.pockettreasure.R
-import java.lang.Exception
+import javax.inject.Inject
 
 
 const val MAX_LOCATION_RESULTS = 1000
 const val CITY_LOCATION_ZOOM = 10f
 
 class MapFragment : BaseFragment(), OnMapReadyCallback {
+
+    @Inject
+    lateinit var mapViewModelFactory: MapViewModelProviderFactory
 
     private lateinit var viewModel: MapViewModel
     private lateinit var googleMap: GoogleMap
@@ -50,24 +52,10 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
             mapView.onResume()
             mapView.getMapAsync(this@MapFragment)
         }
-        openCitySelectionDialog()
-    }
-
-    private fun openCitySelectionDialog() {
-        MaterialDialog(activity!!).show {
-            title(R.string.app_name)
-            message(R.string.please_specify_city)
-            input { materialDialog, charSequence ->
-                materialDialog.dismiss()
-
-                invokeSearch(charSequence.toString())
-            }
-            positiveButton(text = activity!!.resources.getString(R.string.search))
-        }
     }
 
     private fun invokeSearch(cityToSearch: String) {
-        val fullSearchString = "mosque+in+$cityToSearch"
+        //val fullSearchString = "mosque+in+$cityToSearch"
         geoCoder = Geocoder(activity!!)
         try {
             val city = geoCoder.getFromLocationName(cityToSearch, 1)
@@ -76,7 +64,6 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
                 zoomCameraTo(city)
             else {
                 showNothingFoundToast()
-                openCitySelectionDialog()
                 return
             }
         } catch (e: IOException) {
@@ -108,15 +95,27 @@ class MapFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun performDi() {
+        DaggerMapViewModelComponent.builder()
+            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+            .build().inject(this)
     }
 
     override fun observeTheLiveData() {
+
     }
 
-    override fun onMapReady(p0: GoogleMap?) {
+    override fun onMapReady(map: GoogleMap?) {
         MapsInitializer.initialize(activity)
-        googleMap = p0!!
+        googleMap = map!!
         googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+
+        viewModel = ViewModelProviders.of(this, mapViewModelFactory).get(MapViewModel::class.java)
+
+        viewModel.initMapData()
+
+        viewModel.city.observe(this, Observer {
+            invokeSearch(it)
+        })
     }
 
 }
