@@ -12,15 +12,14 @@ import com.stavro_xhardha.pockettreasure.brain.FIRST_SURAH_SENTENCE
 import com.stavro_xhardha.pockettreasure.model.Aya
 import kotlinx.android.synthetic.main.single_item_aya.view.*
 
-class AyasAdapter() :
+class AyasAdapter(val ayasContract: MediaPlayer) :
     PagedListAdapter<Aya, AyasAdapter.AyasViewHolder>(DIFF_UTIL_AYA) {
-    val mediaPlayer = MediaPlayer()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AyasViewHolder =
         AyasViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_aya, parent, false))
 
     override fun onBindViewHolder(holder: AyasViewHolder, position: Int) {
-        getItem(position).let { holder.bind(it, mediaPlayer) }
+        getItem(position).let { holder.bind(it, ayasContract) }
     }
 
     class AyasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,24 +36,25 @@ class AyasAdapter() :
             tvAyaNumber.text = "${aya.ayatNumber}."
 
             ivPlayImage.setOnClickListener {
-                ivPlayImage.setImageResource(R.drawable.ic_stop_black_24dp)
-                if (mediaPlayer.isPlaying) {
-                    mediaPlayer.stop()
-                    ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
-                } else {
-
+                if (!mediaPlayer.isPlaying) {
+                    ivPlayImage.setImageResource(R.drawable.ic_stop_black_24dp)
                     try {
                         mediaPlayer.setDataSource(aya.audioUrl.replace("http", "https"))
                         mediaPlayer.prepare()
+                        mediaPlayer.start()
                     } catch (exception: Exception) {
                         exception.printStackTrace()
-                    } finally {
-                        mediaPlayer.start()
-                    }
-
-                    mediaPlayer.setOnCompletionListener {
                         ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
                     }
+                    mediaPlayer.setOnCompletionListener {
+                        mediaPlayer.stop()
+                        mediaPlayer.reset()
+                        ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
+                    }
+                } else {
+                    mediaPlayer.stop()
+                    mediaPlayer.reset()
+                    ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.stavro_xhardha.pockettreasure.ui.quran.aya
 
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import androidx.navigation.fragment.navArgs
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment
-import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_aya.*
 import javax.inject.Inject
 
@@ -21,6 +21,7 @@ class AyaFragment : BaseFragment() {
     lateinit var ayaFragmentFactory: AyaFragmentFactory
     private lateinit var ayaViewModel: AyaViewModel
     private lateinit var ayasAdapter: AyasAdapter
+    private val mediaPlayer = MediaPlayer()
 
     private val args: AyaFragmentArgs by navArgs()
 
@@ -35,7 +36,7 @@ class AyaFragment : BaseFragment() {
     }
 
     override fun initializeComponents() {
-        ayasAdapter = AyasAdapter()
+        ayasAdapter = AyasAdapter(mediaPlayer)
         rvAya.adapter = ayasAdapter
         pbAya.visibility = View.VISIBLE
     }
