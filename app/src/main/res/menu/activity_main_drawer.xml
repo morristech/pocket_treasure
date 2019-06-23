@@ -32,10 +32,10 @@
                 android:icon="@drawable/ic_news"
                 android:title="@string/news"/>
 
-        <item
-                android:id="@+id/mapFragment"
-                android:icon="@drawable/ic_local_library_black_24dp"
-                android:title="@string/map"/>
+        <!--<item-->
+                <!--android:id="@+id/mapFragment"-->
+                <!--android:icon="@drawable/ic_local_library_black_24dp"-->
+                <!--android:title="@string/map"/>-->
     </group>
 
     <item android:title="@string/more">

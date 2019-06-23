@@ -77,8 +77,7 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
                 R.id.galleryFragment,
                 R.id.newsFragment,
                 R.id.settingsFragment,
-                R.id.setupFragment,
-                R.id.mapFragment
+                R.id.setupFragment
             ),
             drawerLayout
         )
