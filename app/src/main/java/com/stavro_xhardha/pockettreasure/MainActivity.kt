@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
             val dest: String = try {
                 resources.getResourceName(destination.id)
             } catch (e: Resources.NotFoundException) {
-                Integer.toString(destination.id)
+                destination.id.toString()
             }
             if (isDebugMode)
                 Log.d("NavigationActivity", "Navigated to $dest")
