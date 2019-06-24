@@ -1,36 +1,69 @@
 package com.stavro_xhardha.pockettreasure.ui.gallery
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.stavro_xhardha.pockettreasure.brain.buildPagedList
+import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
-import com.stavro_xhardha.pockettreasure.brain.InitialNetworkState
-import com.stavro_xhardha.pockettreasure.brain.CurrentNetworkStatus
-import java.util.concurrent.Executors
+import java.util.concurrent.Executor
 
-class GalleryViewModel(galleryDataSourceFactory: GalleryDataSourceFactory) : ViewModel() {
-    private var unsplashLiveData: LiveData<PagedList<UnsplashResult>>
-    var currentNetworkStatus: LiveData<CurrentNetworkStatus>
-    var primaryNetworkStatus: LiveData<InitialNetworkState>
+class GalleryViewModel(
+    val galleryDataSourceFactory: GalleryDataSourceFactory,
+    val executor: Executor
+) : ViewModel() {
+    private var listing: Listing<UnsplashResult>
+    var galleryData: LiveData<PagedList<UnsplashResult>>
+    var networkStateLiveData: LiveData<NetworkState>
+    var refreshState: LiveData<NetworkState>
 
     init {
-        val executor = Executors.newFixedThreadPool(5)
+
         val config = buildPagedList()
 
-        currentNetworkStatus = Transformations.switchMap(galleryDataSourceFactory.mutableDataSource) {
-            it.getNetworkStatus()
+        val livePagedListBuilder =
+            LivePagedListBuilder(galleryDataSourceFactory, config).build()
+
+        val refreshStateListener = switchMap(galleryDataSourceFactory.sourceLiveData) {
+            it.initialLoad
         }
 
-        primaryNetworkStatus = Transformations.switchMap(galleryDataSourceFactory.mutableDataSource) {
-            it.getInitialState()
-        }
+        listing = Listing(
+            pagedList = livePagedListBuilder,
+            networkState = switchMap(galleryDataSourceFactory.sourceLiveData) {
+                it.networkState
+            },
+            retry = {
+                galleryDataSourceFactory.sourceLiveData.value?.retryAllFailed()
+            },
+            refresh = {
+                galleryDataSourceFactory.sourceLiveData.value?.invalidate()
+            },
+            refreshState = refreshStateListener
+        )
 
-        unsplashLiveData = LivePagedListBuilder<Int, UnsplashResult>(galleryDataSourceFactory, config)
-            .setFetchExecutor(executor).build()
+        galleryData = listing.pagedList
+        networkStateLiveData = listing.networkState
+        refreshState = listing.refreshState
     }
 
-    fun getUnsplashLiveData(): LiveData<PagedList<UnsplashResult>> = unsplashLiveData
+    fun retry() {
+        if (isDebugMode)
+            Log.d(APPLICATION_TAG, "RETRYING")
+        listing.retry.invoke()
+    }
+
+    fun refresh() {
+        if (isDebugMode)
+            Log.d(APPLICATION_TAG, "REFRESHING")
+        listing.refresh.invoke()
+    }
+
+    fun getGalleryLiveData(): LiveData<PagedList<UnsplashResult>> = galleryData
+
+    fun getCurrentState(): LiveData<NetworkState> = networkStateLiveData
+
+    fun getInitialState(): LiveData<NetworkState> = refreshState
 }

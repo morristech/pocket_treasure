@@ -5,6 +5,8 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.dependency_injection.FragmentScope
 import dagger.Module
 import dagger.Provides
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 @Module
 class GalleryModule(val fragment: GalleryFragment) {
@@ -15,7 +17,8 @@ class GalleryModule(val fragment: GalleryFragment) {
 
     @Provides
     @FragmentScope
-    fun provideGalleryDataSource(treasureApi: TreasureApi): GalleryDataSource = GalleryDataSource(treasureApi)
+    fun provideGalleryDataSource(treasureApi: TreasureApi, executor: Executor): GalleryDataSource =
+        GalleryDataSource(treasureApi, executor)
 
     @Provides
     @FragmentScope
@@ -24,11 +27,17 @@ class GalleryModule(val fragment: GalleryFragment) {
 
     @Provides
     @FragmentScope
-    fun provideGalleryFragmentFactory(galleryDataSourceFactory: GalleryDataSourceFactory): GalleryViewModelFactory =
-        GalleryViewModelFactory(galleryDataSourceFactory)
+    fun provideGalleryFragmentFactory(
+        galleryDataSourceFactory: GalleryDataSourceFactory,
+        executor: Executor
+    ): GalleryViewModelFactory =
+        GalleryViewModelFactory(galleryDataSourceFactory, executor)
 
     @Provides
     @FragmentScope
     fun provideGalleryAdapter(galleryFragment: GalleryFragment, picasso: Picasso): GalleryAdapter =
         GalleryAdapter(galleryFragment, picasso)
+
+    @Provides
+    fun provideExecutor(): Executor = Executors.newFixedThreadPool(5)
 }

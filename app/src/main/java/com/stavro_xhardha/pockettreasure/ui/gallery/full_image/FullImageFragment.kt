@@ -28,8 +28,6 @@ import java.net.URL
 
 class FullImageFragment : Fragment() {
 
-    //todo please refactor this :)
-
     private val args: FullImageFragmentArgs by navArgs()
     private lateinit var expetedUrl: String
 

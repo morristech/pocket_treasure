@@ -7,12 +7,12 @@ import javax.inject.Inject
 
 class GalleryDataSourceFactory @Inject constructor(private val galleryDataSource: GalleryDataSource) :
     DataSource.Factory<Int, UnsplashResult>() {
-    val mutableDataSource: MutableLiveData<GalleryDataSource> = MutableLiveData()
+    val sourceLiveData: MutableLiveData<GalleryDataSource> = MutableLiveData()
     private lateinit var mGalleryDataSouce: GalleryDataSource
 
     override fun create(): DataSource<Int, UnsplashResult> {
         mGalleryDataSouce = galleryDataSource
-        mutableDataSource.postValue(mGalleryDataSouce)
+        sourceLiveData.postValue(mGalleryDataSouce)
         return galleryDataSource
     }
 }

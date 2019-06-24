@@ -87,5 +87,6 @@
     <string name="refresh">Refresh</string>
     <string name="playing">Playing</string>
     <string name="stoped">Stoped</string>
+    <string name="failed_loading_more">Failed Loading</string>
 
 </resources>

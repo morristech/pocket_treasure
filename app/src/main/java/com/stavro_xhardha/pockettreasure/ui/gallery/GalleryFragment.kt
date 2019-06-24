@@ -10,14 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
+import com.stavro_xhardha.pockettreasure.brain.Status
 import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
-import com.stavro_xhardha.pockettreasure.brain.InitialNetworkState
-import com.stavro_xhardha.pockettreasure.brain.CurrentNetworkStatus
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
@@ -45,6 +45,9 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     override fun initializeComponents() {
         rvGallery.layoutManager = GridLayoutManager(activity, 3)
         rvGallery.adapter = galleryAdapter
+        btnRetry.setOnClickListener {
+            galleryViewModel.retry()
+        }
     }
 
     override fun initViewModel() {
@@ -58,44 +61,42 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     }
 
     override fun observeTheLiveData() {
-        galleryViewModel.primaryNetworkStatus.observe(this, Observer {
-            when (it) {
-                InitialNetworkState.ERROR -> {
-                    llError.visibility = View.VISIBLE
-                    rvGallery.visibility = View.GONE
-                    pbGallery.visibility = View.GONE
-                    if (isDebugMode)
-                        Log.d(APPLICATION_TAG, "INITIAL_FAILED")
-                }
-                InitialNetworkState.SUCCESS -> {
-                    llError.visibility = View.GONE
-                    rvGallery.visibility = View.VISIBLE
-                    pbGallery.visibility = View.GONE
-                    if (isDebugMode)
-                        Log.d(APPLICATION_TAG, "INITIAL_SUCCESS")
-                }
-                InitialNetworkState.LOADING -> {
-                    llError.visibility = View.GONE
-                    rvGallery.visibility = View.GONE
-                    pbGallery.visibility = View.VISIBLE
-                    if (isDebugMode)
-                        Log.d(APPLICATION_TAG, "INITIAL_LOADING")
-                }
-                else -> Log.d(APPLICATION_TAG, "TOTAL ERROR")
-            }
-        })
-        galleryViewModel.getUnsplashLiveData().observe(this, Observer {
+        galleryViewModel.getGalleryLiveData().observe(this, Observer {
             galleryAdapter.submitList(it)
         })
-
-        galleryViewModel.currentNetworkStatus.observe(this, Observer {
+        galleryViewModel.getCurrentState().observe(this, Observer {
             if (isDebugMode) {
-                when (it) {
-                    //todo fix handle the errors on the view
-                    CurrentNetworkStatus.FAILED -> Log.d(APPLICATION_TAG, "FAILED")
-                    CurrentNetworkStatus.SUCCESS -> Log.d(APPLICATION_TAG, "SUCCESS")
-                    CurrentNetworkStatus.LOADING -> Log.d(APPLICATION_TAG, "LOADING")
-                    else -> Log.d(APPLICATION_TAG, "TOTAL ERROR")
+                when (it.status) {
+                    Status.FAILED -> {
+                        Snackbar.make(rlGallery, R.string.failed_loading_more, Snackbar.LENGTH_LONG).show()
+                    }
+                    Status.RUNNING -> {
+                        Log.d(APPLICATION_TAG, "LOADING")
+                    }
+                    Status.SUCCESS -> {
+                        Log.d(APPLICATION_TAG, "SUCCESS")
+                    }
+                }
+            }
+        })
+        galleryViewModel.getInitialState().observe(this, Observer {
+            if (isDebugMode) {
+                when (it.status) {
+                    Status.FAILED -> {
+                        pbGallery.visibility = View.GONE
+                        llError.visibility = View.VISIBLE
+                        rvGallery.visibility = View.GONE
+                    }
+                    Status.RUNNING -> {
+                        pbGallery.visibility = View.VISIBLE
+                        llError.visibility = View.GONE
+                        rvGallery.visibility = View.GONE
+                    }
+                    Status.SUCCESS -> {
+                        pbGallery.visibility = View.GONE
+                        llError.visibility = View.GONE
+                        rvGallery.visibility = View.VISIBLE
+                    }
                 }
             }
         })
