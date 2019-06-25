@@ -9,7 +9,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class NamesViewModel(private val repository: NamesRepository) : ViewModel() {
+class NamesViewModel(
+    private val repository: NamesRepository
+) : ViewModel() {
 
     val allNamesList: MutableLiveData<List<Name>> = MutableLiveData()
     val progressBarVisibility: MutableLiveData<Int> = MutableLiveData()
