@@ -7,5 +7,5 @@ import dagger.Component
 @FragmentScope
 @Component(modules = [MapModule::class], dependencies = [PocketTreasureComponent::class])
 interface MapViewModelComponent {
-    fun inject(mapFragment: MapFragment)
+    //fun inject(mapFragment: MapFragment)
 }

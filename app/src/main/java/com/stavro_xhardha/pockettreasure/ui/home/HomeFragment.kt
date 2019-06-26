@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment() {
         })
 
         homeViewModel.monthSection.observe(this, Observer {
-            tvDateTime.text = it
+            tvDateTimeTitle.text = it
         })
 
         homeViewModel.showErroToast.observe(this, Observer {
@@ -70,7 +70,13 @@ class HomeFragment : BaseFragment() {
         })
 
         homeViewModel.contentVisibility.observe(this, Observer {
-            rlHomeContentHolder.visibility = it
+            cvFajr.visibility = it
+            cvDhuhr.visibility = it
+            cvAsr.visibility = it
+            cvMaghrib.visibility = it
+            cvIsha.visibility = it
+            tvDateTimeTitle.visibility = it
+            tvCurrentLocation.visibility = it
         })
     }
 
