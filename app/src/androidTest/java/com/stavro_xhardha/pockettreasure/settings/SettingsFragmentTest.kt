@@ -122,6 +122,12 @@ class SettingsFragmentTest {
         verify(mockNavController).popBackStack(R.id.homeFragment, false)
     }
 
+    @Test
+    fun testDialogFragmentOpening(){
+        performClickOnViews(R.id.llCountryAndCapital)
+        verify(mockNavController).navigate(R.id.dialogFragment)
+    }
+
     private fun performClickOnViews(id: Int) {
         onViewWithId(id).perform(click())
     }
