@@ -32,10 +32,6 @@ class AyaFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_aya, container, false)
     }
 
-    override fun handleOnBackPressed(view: View) {
-
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.stop()

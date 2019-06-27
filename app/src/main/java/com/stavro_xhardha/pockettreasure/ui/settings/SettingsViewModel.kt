@@ -17,12 +17,14 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
     private val _asrCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _maghribCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _ishaCheck: MutableLiveData<Boolean> = MutableLiveData()
+    private val _countryAndCapital: MutableLiveData<String> = MutableLiveData()
 
     val fajrCheck: LiveData<Boolean> = _fajrCheck
     val dhuhrCheck: LiveData<Boolean> = _dhuhrCheck
     val asrCheck: LiveData<Boolean> = _asrCheck
     val maghribCheck: LiveData<Boolean> = _maghribCheck
     val ishaCheck: LiveData<Boolean> = _ishaCheck
+    val countryAndCapital: LiveData<String> = _countryAndCapital
 
     private var fajrCheckHelper: Boolean = false
     private var dhuhrCheckHelper: Boolean = false
@@ -50,7 +52,8 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
                 this@SettingsViewModel._asrCheck.value = asrCheckCheckHelper
                 this@SettingsViewModel._maghribCheck.value = mahgribCheckCheckHelper
                 this@SettingsViewModel._ishaCheck.value = ishaCheckCheckHelper
-               decrementIdlingResource()
+                this@SettingsViewModel._countryAndCapital.value = settingsRepository.readCountryAndCapital()
+                decrementIdlingResource()
             }
         }
     }
@@ -60,7 +63,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putFajrNotification(checked)
             withContext(Dispatchers.Main) {
-               decrementIdlingResource()
+                decrementIdlingResource()
                 _fajrCheck.value = settingsRepository.getFajrChecked()
             }
         }
@@ -71,7 +74,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putDhuhrNotification(checked)
             withContext(Dispatchers.Main) {
-               decrementIdlingResource()
+                decrementIdlingResource()
                 _dhuhrCheck.value = settingsRepository.getDhuhrChecked()
             }
         }
@@ -82,7 +85,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putAsrNotification(checked)
             withContext(Dispatchers.Main) {
-               decrementIdlingResource()
+                decrementIdlingResource()
                 _asrCheck.value = settingsRepository.getAsrChecked()
             }
         }
@@ -93,7 +96,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putMaghribNotification(checked)
             withContext(Dispatchers.Main) {
-               decrementIdlingResource()
+                decrementIdlingResource()
                 _maghribCheck.value = settingsRepository.getMaghribChecked()
             }
         }
@@ -104,7 +107,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
         viewModelScope.launch(Dispatchers.IO) {
             settingsRepository.putIshaNotification(checked)
             withContext(Dispatchers.Main) {
-               decrementIdlingResource()
+                decrementIdlingResource()
                 _ishaCheck.value = settingsRepository.getIshaChecked()
             }
         }
@@ -117,6 +120,10 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
 
     private fun decrementIdlingResource() {
         if (isDebugMode)
-           Smoothie.endProcess()
+            Smoothie.endProcess()
+    }
+
+    fun updateValues() {
+        _countryAndCapital.value = settingsRepository.readCountryAndCapital()
     }
 }

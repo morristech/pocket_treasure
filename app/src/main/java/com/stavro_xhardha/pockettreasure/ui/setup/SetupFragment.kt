@@ -10,8 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.*
-import com.stavro_xhardha.pockettreasure.alarm.PrayerTimeScheduler
-import com.stavro_xhardha.pockettreasure.alarm.PrayerTimeAlarm
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.android.synthetic.main.error_layout.*
@@ -24,7 +22,7 @@ class SetupFragment : BaseFragment(), SetupContract {
     lateinit var setupViewModelFactory: SetupViewModelFactory
 
     private lateinit var setupViewModel: SetupViewModel
-    private lateinit var countriesAdapter: CountriesAdapter
+    private lateinit var countryAdapter: CountryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,8 +82,8 @@ class SetupFragment : BaseFragment(), SetupContract {
 
     override fun observeTheLiveData() {
         setupViewModel.countriesList.observe(this, Observer {
-            countriesAdapter = CountriesAdapter(it, this)
-            rvCountries.adapter = countriesAdapter
+            countryAdapter = CountryAdapter(it, this)
+            rvCountries.adapter = countryAdapter
         })
         setupViewModel.isCountryAndCapitalEmpty.observe(this, Observer {
             if (!it)
@@ -104,6 +102,4 @@ class SetupFragment : BaseFragment(), SetupContract {
         })
     }
 
-    override fun handleOnBackPressed(view: View) {
-    }
 }

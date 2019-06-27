@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
+import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_settings.*
 import javax.inject.Inject
 
@@ -22,16 +23,25 @@ class SettingsFragment : BaseFragment() {
     lateinit var settingsFragmentFactory: SettingsFragmentFactory
 
     private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedViewModel = activity?.run {
+            ViewModelProviders.of(this).get(SharedViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
-    override fun handleOnBackPressed(view: View) {
-        getBackToHomeFragment(view, requireActivity(), this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                view.findNavController().popBackStack(R.id.homeFragment, false)
+            }
+        })
     }
 
     override fun initializeComponents() {
@@ -53,6 +63,10 @@ class SettingsFragment : BaseFragment() {
 
         swIsha.setOnCheckedChangeListener { _, isChecked ->
             settingsViewModel.onSwIshaClick(isChecked)
+        }
+
+        llCountryAndCapital.setOnClickListener {
+            findNavController().navigate(R.id.dialogFragment)
         }
     }
 
@@ -82,6 +96,13 @@ class SettingsFragment : BaseFragment() {
         })
         settingsViewModel.ishaCheck.observe(this, Observer {
             swIsha.isChecked = it
+        })
+        settingsViewModel.countryAndCapital.observe(this, Observer {
+            tvCountryAndCapital.text = it
+        })
+
+        sharedViewModel.updatedCountry.observe(this, Observer {
+            tvCountryAndCapital.text = it
         })
     }
 }

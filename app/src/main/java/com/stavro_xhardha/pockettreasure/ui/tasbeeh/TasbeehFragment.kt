@@ -3,11 +3,12 @@ package com.stavro_xhardha.pockettreasure.ui.tasbeeh
 
 import android.os.Bundle
 import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 import kotlinx.android.synthetic.main.fragment_tasbeeh.*
 
 class TasbeehFragment : BaseFragment() {
@@ -41,8 +42,13 @@ class TasbeehFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_tasbeeh, container, false)
     }
 
-    override fun handleOnBackPressed(view: View) {
-        getBackToHomeFragment(view, requireActivity(), this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                view.findNavController().popBackStack(R.id.homeFragment, false)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

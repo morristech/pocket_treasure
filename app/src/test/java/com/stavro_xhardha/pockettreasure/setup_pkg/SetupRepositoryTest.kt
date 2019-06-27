@@ -26,7 +26,7 @@ class SetupRepositoryTest {
     private lateinit var rocket: Rocket
     private lateinit var treasureApi: TreasureApi
 
-    private val country = Country("Albania", "Tirana", "no need")
+    private val country = Country("Albania", "Tirana")
 
     @Before
     fun setUp() {
@@ -79,7 +79,7 @@ class SetupRepositoryTest {
 
     @Test
     fun `when writing country execution should go fine`() {
-        val country = Country("Albania", "Tirana", "no need")
+        val country = Country("Albania", "Tirana")
         setupRepository.saveCountryToSharedPreferences(country)
 
         verify(rocket).writeString(COUNTRY_SHARED_PREFERENCE_KEY, country.name)

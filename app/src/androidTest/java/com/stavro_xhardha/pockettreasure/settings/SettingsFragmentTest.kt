@@ -5,6 +5,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
@@ -23,11 +24,12 @@ import org.mockito.Mockito.*
 class SettingsFragmentTest {
 
     private lateinit var settingsFragmentScenario: FragmentScenario<SettingsFragment>
+    private lateinit var mockNavController: NavController
 
     @Before
     fun setUp() {
         IdlingRegistry.getInstance().register(Smoothie.countingIdlingResource)
-        val mockNavController = mock(NavController::class.java)
+        mockNavController = mock(NavController::class.java)
         settingsFragmentScenario = launchFragmentInContainer()
         settingsFragmentScenario.onFragment {
             Navigation.setViewNavController(it.requireView(), mockNavController)
@@ -112,6 +114,12 @@ class SettingsFragmentTest {
         settingsFragmentScenario.recreate()
 
         onViewWithId(R.id.swIsha).check(ViewAssertions.matches(isNotChecked()))
+    }
+
+    @Test
+    fun testBackButtonClick() {
+        pressBack()
+        verify(mockNavController).popBackStack(R.id.homeFragment, false)
     }
 
     private fun performClickOnViews(id: Int) {

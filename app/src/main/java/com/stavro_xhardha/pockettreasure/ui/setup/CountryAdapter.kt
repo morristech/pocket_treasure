@@ -9,8 +9,8 @@ import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.android.synthetic.main.single_item_country.view.*
 
 
-class CountriesAdapter(var countriesList: ArrayList<Country>, var setupContract: SetupContract) :
-    RecyclerView.Adapter<CountriesAdapter.CountriesViewHolder>() {
+class CountryAdapter(var countriesList: ArrayList<Country>, var setupContract: SetupContract) :
+    RecyclerView.Adapter<CountryAdapter.CountriesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountriesViewHolder =
         CountriesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_country, parent, false))

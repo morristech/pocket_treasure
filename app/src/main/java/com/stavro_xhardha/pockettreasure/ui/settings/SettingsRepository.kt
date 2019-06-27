@@ -35,4 +35,8 @@ class SettingsRepository @Inject constructor(val rocket: Rocket) {
     fun putDhuhrNotification(oppositeValue: Boolean) {
         rocket.writeBoolean(NOTIFY_USER_FOR_DHUHR, oppositeValue)
     }
+
+    fun readCountryAndCapital(): String? = "${rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)} , ${rocket.readString(
+        COUNTRY_SHARED_PREFERENCE_KEY
+    )}"
 }

@@ -17,25 +17,25 @@ class HomeViewModel(
     private val homeRepository: HomeRepository
 ) : ViewModel() {
 
-    val monthSection: MutableLiveData<String> = MutableLiveData()
-    val locationSecton: MutableLiveData<String> = MutableLiveData()
-    val fajrTime: MutableLiveData<String> = MutableLiveData()
-    val dhuhrtime: MutableLiveData<String> = MutableLiveData()
-    val asrTime: MutableLiveData<String> = MutableLiveData()
-    val maghribTime: MutableLiveData<String> = MutableLiveData()
-    val ishaTime: MutableLiveData<String> = MutableLiveData()
-    val progressBarVisibility: MutableLiveData<Int> = MutableLiveData()
-    val showErroToast: MutableLiveData<Boolean> = MutableLiveData()
-    val contentVisibility: MutableLiveData<Int> = MutableLiveData()
-    val fajrColor: MutableLiveData<Int> = MutableLiveData()
-    val dhuhrColor: MutableLiveData<Int> = MutableLiveData()
-    val asrColor: MutableLiveData<Int> = MutableLiveData()
-    val maghribColor: MutableLiveData<Int> = MutableLiveData()
-    val ishaColor: MutableLiveData<Int> = MutableLiveData()
+    val monthSection = MutableLiveData<String>()
+    val locationSecton = MutableLiveData<String>()
+    val fajrTime = MutableLiveData<String>()
+    val dhuhrtime = MutableLiveData<String>()
+    val asrTime = MutableLiveData<String>()
+    val maghribTime = MutableLiveData<String>()
+    val ishaTime = MutableLiveData<String>()
+    val progressBarVisibility = MutableLiveData<Int>()
+    val showErroToast = MutableLiveData<Boolean>()
+    val contentVisibility = MutableLiveData<Int>()
+    val fajrColor = MutableLiveData<Int>()
+    val dhuhrColor = MutableLiveData<Int>()
+    val asrColor = MutableLiveData<Int>()
+    val maghribColor = MutableLiveData<Int>()
+    val ishaColor = MutableLiveData<Int>()
 
     fun loadPrayerTimes() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (dateHasPassed()) {
+            if (dateHasPassed() || homeRepository.countryHasBeenUpdated()) {
                 makePrayerApiCall()
             } else {
                 withContext(Dispatchers.Main) {
@@ -96,7 +96,7 @@ class HomeViewModel(
     private fun putValues() {
         monthSection.value = homeRepository.readMonthSection()
         locationSecton.value = homeRepository.readLocationSection()
-        fajrTime.value = homeRepository.readFejrtime()
+        fajrTime.value = "${homeRepository.readFejrtime()} - ${homeRepository.readFinishFajrTime()}"
         dhuhrtime.value = homeRepository.readDhuhrTime()
         asrTime.value = homeRepository.readAsrTime()
         maghribTime.value = homeRepository.readMaghribTime()
@@ -170,6 +170,7 @@ class HomeViewModel(
     private fun saveThePrayerTimeResponseToMemory(prayerTimeResponse: PrayerTimeResponse) {
         prayerTimeResponse.let {
             homeRepository.saveFajrTime(it.data.timings.fajr)
+            homeRepository.saveFinishFajrTime(it.data.timings.sunrise)
             homeRepository.saveDhuhrTime(it.data.timings.dhuhr)
             homeRepository.saveAsrTime(it.data.timings.asr)
             homeRepository.saveMagribTime(it.data.timings.magrib)
@@ -182,6 +183,7 @@ class HomeViewModel(
             homeRepository.saveMonthOfYearHijri(it.data.date.hijriPrayerDate.hirjiMonth.monthNameInEnglish)
             homeRepository.saveYearHijri(it.data.date.hijriPrayerDate.year)
             homeRepository.saveMidnight(it.data.timings.midnight)
+            homeRepository.updateCountryState()
         }
     }
 

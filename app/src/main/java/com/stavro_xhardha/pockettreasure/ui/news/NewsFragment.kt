@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.snackbar.Snackbar
@@ -106,8 +108,13 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
         })
     }
 
-    override fun handleOnBackPressed(view: View) {
-        getBackToHomeFragment(view, requireActivity(), this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                view.findNavController().popBackStack(R.id.homeFragment, false)
+            }
+        })
     }
 
     override fun onCurrentNewsClick(url: String) {

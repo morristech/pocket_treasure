@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
 import androidx.test.espresso.IdlingResource
@@ -27,19 +28,6 @@ fun buildPagedList() = PagedList.Config.Builder()
     .setPageSize(INITIAL_PAGE_SIZE)
     .setEnablePlaceholders(false)
     .build()
-
-fun getBackToHomeFragment(
-    view: View,
-    mActivity: FragmentActivity,
-    fragment: Fragment
-) {
-    val navController = Navigation.findNavController(view)
-    mActivity.onBackPressedDispatcher.addCallback(fragment, object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            navController.popBackStack(R.id.homeFragment, false)
-        }
-    })
-}
 
 val DIFF_UTIL_AYA = object : DiffUtil.ItemCallback<Aya>() {
     override fun areItemsTheSame(oldItem: Aya, newItem: Aya): Boolean = oldItem.id == newItem.id

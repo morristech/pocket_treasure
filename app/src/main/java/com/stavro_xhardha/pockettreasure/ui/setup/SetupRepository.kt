@@ -2,15 +2,16 @@ package com.stavro_xhardha.pockettreasure.ui.setup
 
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
-import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
+import com.stavro_xhardha.pockettreasure.room_db.CountriesDao
 import com.stavro_xhardha.rocket.Rocket
 import retrofit2.Response
 import javax.inject.Inject
 
 class SetupRepository @Inject constructor(
     private val treasureApi: TreasureApi,
-    private val rocket: Rocket
+    private val rocket: Rocket,
+    private val countriesDao: CountriesDao
 ) {
 
     suspend fun makeCountryApiCallAsync(): Response<ArrayList<Country>> =
@@ -34,9 +35,11 @@ class SetupRepository @Inject constructor(
         rocket.writeBoolean(NOTIFY_USER_FOR_ISHA, true)
     }
 
-    suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> {
-        val capitalCityName = rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)
-        val countryName = rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)
-        return treasureApi.getPrayerTimesTodayAsync(capitalCityName, countryName)
+    suspend fun saveCountriesToDatabase(body: ArrayList<Country>?) {
+        body.let { body ->
+            body!!.forEach { country ->
+                countriesDao.insertCountry(country)
+            }
+        }
     }
 }

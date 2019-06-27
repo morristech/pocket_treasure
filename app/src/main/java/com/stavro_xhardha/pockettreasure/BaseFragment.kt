@@ -15,13 +15,6 @@ abstract class BaseFragment : Fragment() {
         observeTheLiveData()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        handleOnBackPressed(view)
-    }
-
-    abstract fun handleOnBackPressed(view: View)
-
     abstract fun initializeComponents()
 
     abstract fun initViewModel()

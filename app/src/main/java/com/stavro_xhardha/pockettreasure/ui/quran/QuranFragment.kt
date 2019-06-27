@@ -5,13 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.getBackToHomeFragment
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_quran.*
 import javax.inject.Inject
@@ -32,8 +33,13 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
         return inflater.inflate(R.layout.fragment_quran, container, false)
     }
 
-    override fun handleOnBackPressed(view: View) {
-        getBackToHomeFragment(view, requireActivity(), this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                view.findNavController().popBackStack(R.id.homeFragment, false)
+            }
+        })
     }
 
     override fun initializeComponents() {

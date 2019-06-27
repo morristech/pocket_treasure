@@ -68,6 +68,10 @@ class HomeRepository @Inject constructor(
         mSharedPreferences.writeString(MIDNIGHT_KEY, midnight)
     }
 
+    fun saveFinishFajrTime(sunrise: String) {
+        mSharedPreferences.writeString(SUNRISE_KEY, sunrise)
+    }
+
     fun readMonthSection(): String? {
         val hijriDay = mSharedPreferences.readString(HIRJI_DAY_OF_MONTH_KEY)
         val hijriMonthName = mSharedPreferences.readString(HIJRI_MONTH_NAME_KEY)
@@ -96,9 +100,17 @@ class HomeRepository @Inject constructor(
 
     fun readIshaTime(): String? = mSharedPreferences.readString(ISHA_KEY)
 
+    fun readFinishFajrTime(): String? = mSharedPreferences.readString(SUNRISE_KEY)
+
     fun getCurrentRegisteredDay(): Int = mSharedPreferences.readInt(GREGORIAN_DAY_KEY)
 
     fun getCurrentRegisteredMonth(): Int = mSharedPreferences.readInt(GREGORIAN_MONTH_KEY)
 
     fun getCurrentRegisteredYear(): Int = mSharedPreferences.readInt(GREGORIAN_YEAR_KEY)
+
+    fun countryHasBeenUpdated(): Boolean = mSharedPreferences.readBoolean(COUNTRY_UPDATED)
+
+    fun updateCountryState() {
+        mSharedPreferences.writeBoolean(COUNTRY_UPDATED, false)
+    }
 }

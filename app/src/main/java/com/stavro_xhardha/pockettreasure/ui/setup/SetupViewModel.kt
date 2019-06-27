@@ -39,6 +39,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
         try {
             val countriesListResponse = setupRepository.makeCountryApiCallAsync()
             if (countriesListResponse.isSuccessful) {
+                setupRepository.saveCountriesToDatabase(countriesListResponse.body())
                 withContext(Dispatchers.Main) {
                     showContent()
                     countriesList.value = countriesListResponse.body()
