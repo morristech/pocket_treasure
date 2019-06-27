@@ -6,6 +6,7 @@ import com.stavro_xhardha.pockettreasure.brain.COUNTRIES_API_URL
 import com.stavro_xhardha.pockettreasure.brain.COUNTRY_SHARED_PREFERENCE_KEY
 import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
+import com.stavro_xhardha.pockettreasure.room_db.CountriesDao
 import com.stavro_xhardha.pockettreasure.ui.setup.SetupRepository
 import com.stavro_xhardha.rocket.Rocket
 import junit.framework.Assert.assertEquals
@@ -25,6 +26,7 @@ class SetupRepositoryTest {
     private lateinit var setupRepository: SetupRepository
     private lateinit var rocket: Rocket
     private lateinit var treasureApi: TreasureApi
+    private lateinit var countriesDao: CountriesDao
 
     private val country = Country("Albania", "Tirana")
 
@@ -32,8 +34,8 @@ class SetupRepositoryTest {
     fun setUp() {
         rocket = mock()
         treasureApi = mock()
-
-        setupRepository = SetupRepository(treasureApi, rocket)
+        countriesDao = mock()
+        setupRepository = SetupRepository(treasureApi, rocket, countriesDao)
     }
 
     @After
