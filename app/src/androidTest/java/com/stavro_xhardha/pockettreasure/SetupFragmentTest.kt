@@ -12,7 +12,7 @@ class SetupFragmentTest {
 
     @Before
     fun setUp() {
-        //setup your dependencies, mocks and arrange
+
     }
 
     @After

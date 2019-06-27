@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
@@ -29,7 +31,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     override fun handleOnBackPressed(view: View) {
-        getBackToHomeFragment(view , requireActivity() , this)
+        getBackToHomeFragment(view, requireActivity(), this)
     }
 
     override fun initializeComponents() {

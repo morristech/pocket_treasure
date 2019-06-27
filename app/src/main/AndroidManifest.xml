@@ -24,13 +24,12 @@
                   android:enabled="true"
                   android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
         <!--<meta-data-->
-                <!--android:name="com.google.android.maps.v2.API_KEY"-->
-                <!--android:value="AIzaSyC8aUCRA_6zktzXlE-kMb8HEG9YhJKx1aU"/>-->
+        <!--android:name="com.google.android.maps.v2.API_KEY"-->
+        <!--android:value="AIzaSyC8aUCRA_6zktzXlE-kMb8HEG9YhJKx1aU"/>-->
         <activity
                 android:name=".MainActivity"
                 android:screenOrientation="portrait"
@@ -39,6 +38,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
         </activity>
     </application>

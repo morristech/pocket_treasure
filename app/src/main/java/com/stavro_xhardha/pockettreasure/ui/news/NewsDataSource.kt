@@ -1,5 +1,6 @@
 package com.stavro_xhardha.pockettreasure.ui.news
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.stavro_xhardha.pockettreasure.brain.*
@@ -11,52 +12,75 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.util.concurrent.Executor
 import javax.inject.Inject
 
-class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKeyedDataSource<Int, News>() {
-    private val networkCurrentNetworkStatus: MutableLiveData<CurrentNetworkStatus> = MutableLiveData()
-    private val initialNetworkState: MutableLiveData<InitialNetworkState> = MutableLiveData()
+class NewsDataSource @Inject constructor(val treasureApi: TreasureApi, private val retryExecutor: Executor) :
+    PageKeyedDataSource<Int, News>() {
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, News>) {
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                updateNetworkStatus(CurrentNetworkStatus.LOADING)
-                updateInitialState(InitialNetworkState.LOADING)
-                val primaryNewsResponse = callLatestNewsAsync(1)
-                if (primaryNewsResponse.isSuccessful) {
-                    callback.onResult(primaryNewsResponse.body()!!.articles, null, 2)
-                    updateNetworkStatus(CurrentNetworkStatus.SUCCESS)
-                    updateInitialState(InitialNetworkState.SUCCESS)
-                } else {
-                    updateInitialState(InitialNetworkState.ERROR)
-                }
-            } catch (e: Exception) {
-                updateInitialState(InitialNetworkState.ERROR)
-                e.printStackTrace()
+    private var retry: (() -> Any)? = null
+    val networkState = MutableLiveData<NetworkState>()
+    val initialLoad = MutableLiveData<NetworkState>()
+
+    fun retryAllFailed() {
+        val prevRetry = retry
+        if (isDebugMode)
+            Log.d(APPLICATION_TAG, retry.toString())
+        retry = null
+        prevRetry?.let {
+            retryExecutor.execute {
+                it.invoke()
             }
         }
     }
 
-    private suspend fun updateInitialState(networkStatus: InitialNetworkState) {
-        withContext(Dispatchers.Main) {
-            initialNetworkState.value = networkStatus
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, News>) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                initialLoad.postValue(NetworkState.LOADING)
+                val primaryNewsResponse = callLatestNewsAsync(1)
+                if (primaryNewsResponse.isSuccessful) {
+                    initialLoad.postValue(NetworkState.LOADED)
+                    callback.onResult(primaryNewsResponse.body()!!.articles, null, 2)
+                } else {
+                    retry = {
+                        loadInitial(params, callback)
+                    }
+                    val error = NetworkState.error("Network error")
+                    initialLoad.postValue(error)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                retry = {
+                    loadInitial(params, callback)
+                }
+                val error = NetworkState.error("Network error")
+                initialLoad.postValue(error)
+            }
         }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, News>) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                updateNetworkStatus(CurrentNetworkStatus.LOADING)
+                networkState.postValue(NetworkState.LOADING)
                 val primaryNewsResponse = callLatestNewsAsync(params.key)
                 if (primaryNewsResponse.isSuccessful) {
+                    retry = null
                     callback.onResult(primaryNewsResponse.body()!!.articles, params.key.inc())
-                    updateNetworkStatus(CurrentNetworkStatus.SUCCESS)
+                    networkState.postValue(NetworkState.LOADED)
                 } else {
-                    updateNetworkStatus(CurrentNetworkStatus.FAILED)
+                    retry = {
+                        loadAfter(params, callback)
+                    }
+                    networkState.postValue(NetworkState.error("Network Error"))
                 }
             } catch (e: Exception) {
-                updateNetworkStatus(CurrentNetworkStatus.FAILED)
                 e.printStackTrace()
+                retry = {
+                    loadAfter(params, callback)
+                }
+                networkState.postValue(NetworkState.error("Network Error"))
             }
         }
     }
@@ -67,14 +91,4 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) : PageKey
     private suspend fun callLatestNewsAsync(pageNumber: Int): Response<NewsResponse> = treasureApi.getLatestNewsAsync(
         NEWS_BASE_URL, SEARCH_KEY_WORD, SEARCH_NEWS_API_KEY, pageNumber, INITIAL_PAGE_SIZE
     )
-
-    private suspend fun updateNetworkStatus(networkCurrentNetworkStatus: CurrentNetworkStatus) {
-        withContext(Dispatchers.Main) {
-            this@NewsDataSource.networkCurrentNetworkStatus.value = networkCurrentNetworkStatus
-        }
-    }
-
-    fun getNetworkStatus(): MutableLiveData<CurrentNetworkStatus> = networkCurrentNetworkStatus
-
-    fun getInitialState(): MutableLiveData<InitialNetworkState> = initialNetworkState
 }

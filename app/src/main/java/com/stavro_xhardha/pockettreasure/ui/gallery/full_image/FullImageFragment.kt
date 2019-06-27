@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.REQUEST_STORAGE_PERMISSION
 import kotlinx.android.synthetic.main.fragment_full_image.*
@@ -33,6 +34,8 @@ class FullImageFragment : Fragment() {
 
     private val completableJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
+    private lateinit var picasso: Picasso
+    private lateinit var wallpaperManager: WallpaperManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,10 +47,13 @@ class FullImageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        picasso = PocketTreasureApplication.getPocketTreasureComponent().picasso()
+        wallpaperManager = PocketTreasureApplication.getPocketTreasureComponent().wallpaperManager()
+
         expetedUrl = args.imageUrl
 
         if (expetedUrl.isNotEmpty()) {
-            Picasso.get().load(expetedUrl)
+            picasso.load(expetedUrl)
                 .into(ivFullImage, object : Callback {
                     override fun onSuccess() {
                         onSuccessFulImageLoad()
@@ -81,7 +87,7 @@ class FullImageFragment : Fragment() {
 
     private fun loadErrorImage() {
         pbFullImage.visibility = View.GONE
-        Picasso.get().load(R.drawable.ic_error_in_connection).into(ivFullImage)
+        picasso.load(R.drawable.ic_error_in_connection).into(ivFullImage)
     }
 
     private fun onSuccessFulImageLoad() {
@@ -132,8 +138,7 @@ class FullImageFragment : Fragment() {
     }
 
     private fun initWallPaperSetting(index: Int) {
-        val result = Picasso.get().load(expetedUrl).get()
-        val wallpaperManager = WallpaperManager.getInstance(activity)
+        val result = picasso.load(expetedUrl).get()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             when (index) {
                 0 -> wallpaperManager.setBitmap(result, null, true, WallpaperManager.FLAG_SYSTEM)

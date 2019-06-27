@@ -55,12 +55,6 @@ class GalleryViewModel(
         listing.retry.invoke()
     }
 
-    fun refresh() {
-        if (isDebugMode)
-            Log.d(APPLICATION_TAG, "REFRESHING")
-        listing.refresh.invoke()
-    }
-
     fun getGalleryLiveData(): LiveData<PagedList<UnsplashResult>> = galleryData
 
     fun getCurrentState(): LiveData<NetworkState> = networkStateLiveData

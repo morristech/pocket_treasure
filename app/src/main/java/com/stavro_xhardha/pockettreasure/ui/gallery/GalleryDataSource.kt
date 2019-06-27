@@ -74,7 +74,6 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi, privat
                         loadInitial(params, callback)
                     }
                     val error = NetworkState.error("Network error")
-                    networkState.postValue(error)
                     initialLoad.postValue(error)
                 }
             } catch (exception: Exception) {

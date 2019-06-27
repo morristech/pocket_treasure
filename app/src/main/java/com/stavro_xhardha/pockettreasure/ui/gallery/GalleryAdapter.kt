@@ -37,7 +37,7 @@ class GalleryAdapter(
                 if (currentImageView != null) {
                     picasso.load(unsplashResult?.photoUrls?.thumbnailUrl)
                         .fit()
-                        .error(R.drawable.no_img_available)
+                        .error(R.drawable.img_placeholder)
                         .placeholder(R.drawable.img_placeholder)
                         .into(currentImageView)
                     tvImageDescription.text = "By ${unsplashResult?.user?.userFullName ?: "Anonymous"}"

@@ -11,10 +11,13 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.material.snackbar.Snackbar
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.*
+import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
 
@@ -35,7 +38,22 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
     }
 
     override fun initializeComponents() {
+        enterThankingDialog()
         newsAdapter = NewsAdapter(this)
+        btnRetry.setOnClickListener {
+            newsViewModel.retry()
+        }
+    }
+
+    private fun enterThankingDialog() {
+        MaterialDialog(activity!!).show {
+            title(R.string.app_name)
+            message(R.string.thanking_news_api_message)
+            cancelable(true)
+            positiveButton(R.string.dismiss) {
+                it.dismiss()
+            }
+        }
     }
 
     override fun initViewModel() {
@@ -48,45 +66,41 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
     }
 
     override fun observeTheLiveData() {
-        newsViewModel.networkCurrentNetworkStatus.observe(this, Observer {
-            if (isDebugMode) {
-                when (it) {
-                    //todo fix handle the errors on the view
-                    CurrentNetworkStatus.FAILED -> Log.d(APPLICATION_TAG, "FAILED")
-                    CurrentNetworkStatus.SUCCESS -> Log.d(APPLICATION_TAG, "SUCCESS")
-                    CurrentNetworkStatus.LOADING -> Log.d(APPLICATION_TAG, "LOADING")
-                    else -> Log.d(APPLICATION_TAG, "TOTAL ERROR")
-                }
-            }
+        newsViewModel.currentNetworkState().observe(this, Observer {
+            if (it.status == Status.FAILED) Snackbar.make(
+                rlNewsHolder,
+                R.string.failed_loading_more,
+                Snackbar.LENGTH_LONG
+            ).show()
         })
-        newsViewModel.primaryNetworkStatus.observe(this, Observer {
-            when (it) {
-                InitialNetworkState.ERROR -> {
+
+        newsViewModel.initialNetworkState().observe(this, Observer {
+            when (it.status) {
+                Status.FAILED -> {
                     llError.visibility = View.VISIBLE
                     rvNews.visibility = View.GONE
                     pbNews.visibility = View.GONE
                     if (isDebugMode)
                         Log.d(APPLICATION_TAG, "INITIAL_FAILED")
                 }
-                InitialNetworkState.SUCCESS -> {
+                Status.SUCCESS -> {
                     llError.visibility = View.GONE
                     rvNews.visibility = View.VISIBLE
                     pbNews.visibility = View.GONE
                     if (isDebugMode)
                         Log.d(APPLICATION_TAG, "INITIAL_SUCCESS")
                 }
-                InitialNetworkState.LOADING -> {
+                Status.RUNNING -> {
                     llError.visibility = View.GONE
                     rvNews.visibility = View.GONE
                     pbNews.visibility = View.VISIBLE
                     if (isDebugMode)
                         Log.d(APPLICATION_TAG, "INITIAL_LOADING")
                 }
-                else -> Log.d(APPLICATION_TAG, "TOTAL ERROR")
             }
         })
 
-        newsViewModel.getNewsPost().observe(this, Observer {
+        newsViewModel.newsDataList().observe(this, Observer {
             newsAdapter.submitList(it)
             rvNews.adapter = newsAdapter
         })

@@ -4,13 +4,16 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.dependency_injection.FragmentScope
 import dagger.Module
 import dagger.Provides
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 @Module
 class NewsFragmentModule {
 
     @FragmentScope
     @Provides
-    fun provideNewsDataSource(treasureApi: TreasureApi): NewsDataSource = NewsDataSource(treasureApi)
+    fun provideNewsDataSource(treasureApi: TreasureApi, executor: Executor): NewsDataSource =
+        NewsDataSource(treasureApi, executor)
 
     @FragmentScope
     @Provides
@@ -23,4 +26,7 @@ class NewsFragmentModule {
     @Provides
     fun provideNewsDataSourceFactory(newsDataSource: NewsDataSource): NewsDataSourceFactory =
         NewsDataSourceFactory(newsDataSource)
+
+    @Provides
+    fun provideExecutor(): Executor = Executors.newFixedThreadPool(5)
 }

@@ -65,38 +65,25 @@ class GalleryFragment : BaseFragment(), GalleryContract {
             galleryAdapter.submitList(it)
         })
         galleryViewModel.getCurrentState().observe(this, Observer {
-            if (isDebugMode) {
-                when (it.status) {
-                    Status.FAILED -> {
-                        Snackbar.make(rlGallery, R.string.failed_loading_more, Snackbar.LENGTH_LONG).show()
-                    }
-                    Status.RUNNING -> {
-                        Log.d(APPLICATION_TAG, "LOADING")
-                    }
-                    Status.SUCCESS -> {
-                        Log.d(APPLICATION_TAG, "SUCCESS")
-                    }
-                }
-            }
+            if (it.status == Status.FAILED)
+                Snackbar.make(rlGallery, R.string.failed_loading_more, Snackbar.LENGTH_LONG).show()
         })
         galleryViewModel.getInitialState().observe(this, Observer {
-            if (isDebugMode) {
-                when (it.status) {
-                    Status.FAILED -> {
-                        pbGallery.visibility = View.GONE
-                        llError.visibility = View.VISIBLE
-                        rvGallery.visibility = View.GONE
-                    }
-                    Status.RUNNING -> {
-                        pbGallery.visibility = View.VISIBLE
-                        llError.visibility = View.GONE
-                        rvGallery.visibility = View.GONE
-                    }
-                    Status.SUCCESS -> {
-                        pbGallery.visibility = View.GONE
-                        llError.visibility = View.GONE
-                        rvGallery.visibility = View.VISIBLE
-                    }
+            when (it.status) {
+                Status.FAILED -> {
+                    pbGallery.visibility = View.GONE
+                    llError.visibility = View.VISIBLE
+                    rvGallery.visibility = View.GONE
+                }
+                Status.RUNNING -> {
+                    pbGallery.visibility = View.VISIBLE
+                    llError.visibility = View.GONE
+                    rvGallery.visibility = View.GONE
+                }
+                Status.SUCCESS -> {
+                    pbGallery.visibility = View.GONE
+                    llError.visibility = View.GONE
+                    rvGallery.visibility = View.VISIBLE
                 }
             }
         })
