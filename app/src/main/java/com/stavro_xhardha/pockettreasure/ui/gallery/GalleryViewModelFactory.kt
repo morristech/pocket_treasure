@@ -6,10 +6,9 @@ import java.util.concurrent.Executor
 import javax.inject.Inject
 
 class GalleryViewModelFactory @Inject constructor(
-    private val galleryDataSourceFactory: GalleryDataSourceFactory,
-    private val executor: Executor
-) :
+    private val galleryDataSourceFactory: GalleryDataSourceFactory
+    ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        GalleryViewModel(galleryDataSourceFactory, executor) as T
+        GalleryViewModel(galleryDataSourceFactory) as T
 }

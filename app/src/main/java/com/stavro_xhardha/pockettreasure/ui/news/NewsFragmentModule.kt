@@ -12,8 +12,8 @@ class NewsFragmentModule {
 
     @FragmentScope
     @Provides
-    fun provideNewsDataSource(treasureApi: TreasureApi, executor: Executor): NewsDataSource =
-        NewsDataSource(treasureApi, executor)
+    fun provideNewsDataSource(treasureApi: TreasureApi): NewsDataSource =
+        NewsDataSource(treasureApi)
 
     @FragmentScope
     @Provides
@@ -26,7 +26,4 @@ class NewsFragmentModule {
     @Provides
     fun provideNewsDataSourceFactory(newsDataSource: NewsDataSource): NewsDataSourceFactory =
         NewsDataSourceFactory(newsDataSource)
-
-    @Provides
-    fun provideExecutor(): Executor = Executors.newFixedThreadPool(5)
 }

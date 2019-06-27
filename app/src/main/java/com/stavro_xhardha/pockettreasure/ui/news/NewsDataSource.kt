@@ -15,7 +15,7 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
-class NewsDataSource @Inject constructor(val treasureApi: TreasureApi, private val retryExecutor: Executor) :
+class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) :
     PageKeyedDataSource<Int, News>() {
 
     private var retry: (() -> Any)? = null
@@ -24,14 +24,8 @@ class NewsDataSource @Inject constructor(val treasureApi: TreasureApi, private v
 
     fun retryAllFailed() {
         val prevRetry = retry
-        if (isDebugMode)
-            Log.d(APPLICATION_TAG, retry.toString())
         retry = null
-        prevRetry?.let {
-            retryExecutor.execute {
-                it.invoke()
-            }
-        }
+        prevRetry?.invoke()
     }
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, News>) {

@@ -8,11 +8,9 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
-import java.util.concurrent.Executor
 
 class GalleryViewModel(
-    val galleryDataSourceFactory: GalleryDataSourceFactory,
-    val executor: Executor
+    val galleryDataSourceFactory: GalleryDataSourceFactory
 ) : ViewModel() {
     private var listing: Listing<UnsplashResult>
     var galleryData: LiveData<PagedList<UnsplashResult>>

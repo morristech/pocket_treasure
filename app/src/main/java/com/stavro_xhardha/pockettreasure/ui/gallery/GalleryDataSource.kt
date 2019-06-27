@@ -1,6 +1,5 @@
 package com.stavro_xhardha.pockettreasure.ui.gallery
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.stavro_xhardha.pockettreasure.brain.*
@@ -11,10 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import java.util.concurrent.Executor
 import javax.inject.Inject
 
-class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi, private val retryExecutor: Executor) :
+class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) :
     PageKeyedDataSource<Int, UnsplashResult>() {
 
     private var retry: (() -> Any)? = null
@@ -23,14 +21,8 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi, privat
 
     fun retryAllFailed() {
         val prevRetry = retry
-        if (isDebugMode)
-            Log.d(APPLICATION_TAG, retry.toString())
         retry = null
-        prevRetry?.let {
-            retryExecutor.execute {
-                it.invoke()
-            }
-        }
+        prevRetry?.invoke()
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, UnsplashResult>) {

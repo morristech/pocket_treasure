@@ -17,8 +17,8 @@ class GalleryModule(val fragment: GalleryFragment) {
 
     @Provides
     @FragmentScope
-    fun provideGalleryDataSource(treasureApi: TreasureApi, executor: Executor): GalleryDataSource =
-        GalleryDataSource(treasureApi, executor)
+    fun provideGalleryDataSource(treasureApi: TreasureApi): GalleryDataSource =
+        GalleryDataSource(treasureApi)
 
     @Provides
     @FragmentScope
@@ -28,16 +28,12 @@ class GalleryModule(val fragment: GalleryFragment) {
     @Provides
     @FragmentScope
     fun provideGalleryFragmentFactory(
-        galleryDataSourceFactory: GalleryDataSourceFactory,
-        executor: Executor
+        galleryDataSourceFactory: GalleryDataSourceFactory
     ): GalleryViewModelFactory =
-        GalleryViewModelFactory(galleryDataSourceFactory, executor)
+        GalleryViewModelFactory(galleryDataSourceFactory)
 
     @Provides
     @FragmentScope
     fun provideGalleryAdapter(galleryFragment: GalleryFragment, picasso: Picasso): GalleryAdapter =
         GalleryAdapter(galleryFragment, picasso)
-
-    @Provides
-    fun provideExecutor(): Executor = Executors.newFixedThreadPool(5)
 }
