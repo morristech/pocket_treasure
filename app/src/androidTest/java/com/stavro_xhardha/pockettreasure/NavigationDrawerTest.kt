@@ -1,6 +1,7 @@
 package com.stavro_xhardha.pockettreasure
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions
@@ -55,7 +56,6 @@ class NavigationDrawerTest {
     }
 
     @Test
-    @Throws(AmbiguousElementMatcherException::class)
     fun navigation_shoudlSendMeToQuranFragment() {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
 
@@ -63,6 +63,13 @@ class NavigationDrawerTest {
 
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("Quran"))))
 
+        onView(withId(R.id.drawer_layout)).check(matches(DrawerMatchers.isClosed()))
+    }
+
+    @Test
+    fun drawerClosesWhenBackButtonIsPressed() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
+        pressBack()
         onView(withId(R.id.drawer_layout)).check(matches(DrawerMatchers.isClosed()))
     }
 
