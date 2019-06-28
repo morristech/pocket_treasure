@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure.home
+package com.stavro_xhardha.pockettreasure
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -6,10 +6,9 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.DrawerMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.web.matcher.AmbiguousElementMatcherException
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
-import com.stavro_xhardha.pockettreasure.MainActivity
-import com.stavro_xhardha.pockettreasure.R
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -17,7 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FullNavigationTest {
+class NavigationDrawerTest {
     @get:Rule
     var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
@@ -54,4 +53,17 @@ class FullNavigationTest {
 
         onView(withId(R.id.drawer_layout)).check(matches(DrawerMatchers.isClosed()))
     }
+
+    @Test
+    @Throws(AmbiguousElementMatcherException::class)
+    fun navigation_shoudlSendMeToQuranFragment() {
+        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open())
+
+        onView(withText("Quran")).perform(click())
+
+        onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("Quran"))))
+
+        onView(withId(R.id.drawer_layout)).check(matches(DrawerMatchers.isClosed()))
+    }
+
 }
