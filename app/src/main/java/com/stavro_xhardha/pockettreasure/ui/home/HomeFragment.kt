@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.startSchedulingPrayerTimeNotifications
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 

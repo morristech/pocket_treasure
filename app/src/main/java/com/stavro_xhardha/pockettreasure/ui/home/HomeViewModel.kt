@@ -49,7 +49,7 @@ class HomeViewModel(
 
     private suspend fun makePrayerApiCall() {
         withContext(Dispatchers.Main) {
-            decrementIdlingResource()
+            switchProgressBarOn()
         }
         try {
             incrementIdlingResource()

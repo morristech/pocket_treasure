@@ -2,6 +2,7 @@ package com.stavro_xhardha.pockettreasure.ui.news
 
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.dependency_injection.FragmentScope
+import com.stavro_xhardha.rocket.Rocket
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.Executor
@@ -18,9 +19,10 @@ class NewsFragmentModule {
     @FragmentScope
     @Provides
     fun provideNewsViewModelFactory(
-        newsDataSourceFactory: NewsDataSourceFactory
+        newsDataSourceFactory: NewsDataSourceFactory,
+        rocket: Rocket
     ): NewsViewModelFactory =
-        NewsViewModelFactory(newsDataSourceFactory)
+        NewsViewModelFactory(newsDataSourceFactory, rocket)
 
     @FragmentScope
     @Provides

@@ -40,7 +40,6 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
     }
 
     override fun initializeComponents() {
-        enterThankingDialog()
         newsAdapter = NewsAdapter(this)
         btnRetry.setOnClickListener {
             newsViewModel.retry()
@@ -105,6 +104,10 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
         newsViewModel.newsDataList().observe(this, Observer {
             newsAdapter.submitList(it)
             rvNews.adapter = newsAdapter
+        })
+
+        newsViewModel.enterDialogVisibility.observe(this, Observer {
+            enterThankingDialog()
         })
     }
 

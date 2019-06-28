@@ -2,20 +2,26 @@ package com.stavro_xhardha.pockettreasure.ui.news
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.News
+import com.stavro_xhardha.rocket.Rocket
 
 class NewsViewModel(
-    dataSourceFactory: NewsDataSourceFactory
+    dataSourceFactory: NewsDataSourceFactory,
+    val rocket: Rocket
 ) : ViewModel() {
     private var listing: Listing<News>
+    private val _enterDialogVisibility = MutableLiveData<Boolean>()
+    var enterDialogVisibility = _enterDialogVisibility
     var newsData: LiveData<PagedList<News>>
     var networkState: LiveData<NetworkState>
     var refreshState: LiveData<NetworkState>
+    val hasEnteredNewsYet = rocket.readBoolean(HAS_ONCE_ENTERED_NEWS)
 
     init {
         val config = buildPagedList()
@@ -44,6 +50,15 @@ class NewsViewModel(
         newsData = listing.pagedList
         networkState = listing.networkState
         refreshState = listing.refreshState
+
+        checkDialogVisibility()
+    }
+
+    private fun checkDialogVisibility() {
+        if (!hasEnteredNewsYet) {
+            _enterDialogVisibility.value = true
+            rocket.writeBoolean(HAS_ONCE_ENTERED_NEWS, true)
+        }
     }
 
     fun retry() {

@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure.alarm
+package com.stavro_xhardha.pockettreasure.background
 
 import android.content.BroadcastReceiver
 import android.content.Context
