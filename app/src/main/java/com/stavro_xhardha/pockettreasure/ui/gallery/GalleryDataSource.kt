@@ -9,6 +9,7 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -31,17 +32,24 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) :
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, UnsplashResult>) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
+                incrementIdlingResource()
                 networkState.postValue(NetworkState.LOADING)
                 val primaryUnsplashResponse = getPhotosFromUsplashAPI(params.key)
                 if (primaryUnsplashResponse.code() == 200) {
                     retry = null
                     callback.onResult(primaryUnsplashResponse.body()!!.results, params.key.inc())
                     networkState.postValue(NetworkState.LOADED)
+                    withContext(Dispatchers.Main){
+                        decrementIdlingResource()
+                    }
                 } else {
                     retry = {
                         loadAfter(params, callback)
                     }
                     networkState.postValue(NetworkState.error("Network Error"))
+                    withContext(Dispatchers.Main){
+                        decrementIdlingResource()
+                    }
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
@@ -49,6 +57,9 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) :
                     loadAfter(params, callback)
                 }
                 networkState.postValue(NetworkState.error("Network Error"))
+                withContext(Dispatchers.Main){
+                    decrementIdlingResource()
+                }
             }
         }
     }
@@ -56,17 +67,24 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) :
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, UnsplashResult>) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
+                incrementIdlingResource()
                 initialLoad.postValue(NetworkState.LOADING)
                 val primaryUnsplashResponse = getPhotosFromUsplashAPI(1)
                 if (primaryUnsplashResponse.code() == 200) {
                     initialLoad.postValue(NetworkState.LOADED)
                     callback.onResult(primaryUnsplashResponse.body()!!.results, null, 2)
+                    withContext(Dispatchers.Main){
+                        decrementIdlingResource()
+                    }
                 } else {
                     retry = {
                         loadInitial(params, callback)
                     }
                     val error = NetworkState.error("Network error")
                     initialLoad.postValue(error)
+                    withContext(Dispatchers.Main){
+                        decrementIdlingResource()
+                    }
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
@@ -75,6 +93,9 @@ class GalleryDataSource @Inject constructor(val treasureApi: TreasureApi) :
                 }
                 val error = NetworkState.error("Network error")
                 initialLoad.postValue(error)
+                withContext(Dispatchers.Main){
+                    decrementIdlingResource()
+                }
             }
         }
     }

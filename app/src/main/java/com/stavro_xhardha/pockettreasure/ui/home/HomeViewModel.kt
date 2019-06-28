@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stavro_xhardha.pockettreasure.brain.ACCENT_BACKGROUND
 import com.stavro_xhardha.pockettreasure.brain.WHITE_BACKGROUND
+import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
+import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,22 +49,26 @@ class HomeViewModel(
 
     private suspend fun makePrayerApiCall() {
         withContext(Dispatchers.Main) {
-            switchProgressBarOn()
+            decrementIdlingResource()
         }
         try {
+            incrementIdlingResource()
             val todaysPrayerTime = homeRepository.makePrayerCallAsync()
             if (todaysPrayerTime.isSuccessful) {
+                decrementIdlingResource()
                 saveDataToShardPreferences(todaysPrayerTime.body())
                 withContext(Dispatchers.Main) {
                     setValuesToLiveData()
                 }
             } else {
                 withContext(Dispatchers.Main) {
+                    decrementIdlingResource()
                     showError()
                 }
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
+                decrementIdlingResource()
                 showError()
             }
             e.printStackTrace()

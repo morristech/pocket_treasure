@@ -21,6 +21,8 @@ import com.squareup.picasso.Picasso
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.REQUEST_STORAGE_PERMISSION
+import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
+import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
 import kotlinx.android.synthetic.main.fragment_full_image.*
 import kotlinx.coroutines.*
 import java.io.IOException
@@ -124,13 +126,17 @@ class FullImageFragment : Fragment() {
 
     private fun setWallPaper(index: Int) {
         coroutineScope.launch(Dispatchers.IO) {
+            incrementIdlingResource()
             withContext(Dispatchers.Main) {
                 pbFullImage.visibility = View.VISIBLE
+                decrementIdlingResource()
             }
 
+            incrementIdlingResource()
             initWallPaperSetting(index)
 
             withContext(Dispatchers.Main) {
+                decrementIdlingResource()
                 pbFullImage.visibility = View.GONE
                 Snackbar.make(rlFullImageHolder, R.string.wallpaper_saved, Snackbar.LENGTH_LONG).show()
             }
@@ -180,13 +186,17 @@ class FullImageFragment : Fragment() {
 
     private fun writeImageToFile() {
         coroutineScope.launch(Dispatchers.IO) {
+            incrementIdlingResource()
             withContext(Dispatchers.Main) {
+                decrementIdlingResource()
                 pbFullImage.visibility = View.VISIBLE
             }
 
+            incrementIdlingResource()
             initImageSaving()
 
             withContext(Dispatchers.Main) {
+                decrementIdlingResource()
                 pbFullImage.visibility = View.GONE
                 Snackbar.make(rlFullImageHolder, R.string.image_saved, Snackbar.LENGTH_LONG).show()
             }

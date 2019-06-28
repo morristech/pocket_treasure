@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:background="@color/md_grey_100"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -43,7 +42,7 @@
             android:id="@+id/cvFajr"
             android:layout_width="360dp"
             android:layout_height="85dp"
-            style="@style/Widget.MaterialComponents.CardView"
+            
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
@@ -83,7 +82,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-            style="@style/Widget.MaterialComponents.CardView"
+            
             android:id="@+id/cvDhuhr"
             android:layout_width="360dp"
             android:layout_height="85dp"
@@ -126,7 +125,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-            style="@style/Widget.MaterialComponents.CardView"
+            
             android:id="@+id/cvAsr"
             android:layout_width="360dp"
             android:layout_height="85dp"
@@ -168,7 +167,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-            style="@style/Widget.MaterialComponents.CardView"
+            
             android:id="@+id/cvMaghrib"
             android:layout_width="360dp"
             android:layout_height="85dp"
@@ -212,7 +211,7 @@
     <androidx.cardview.widget.CardView
             android:id="@+id/cvIsha"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.MaterialComponents.CardView" android:layout_marginEnd="8dp"
+             android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             android:layout_width="360dp"
             android:layout_height="85dp"

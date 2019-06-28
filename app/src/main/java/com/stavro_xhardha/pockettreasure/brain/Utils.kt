@@ -226,3 +226,13 @@ object Smoothie {
         }
     }
 }
+
+fun incrementIdlingResource() {
+    if (isDebugMode)
+        Smoothie.startProcess()
+}
+
+fun decrementIdlingResource() {
+    if (isDebugMode)
+        Smoothie.endProcess()
+}

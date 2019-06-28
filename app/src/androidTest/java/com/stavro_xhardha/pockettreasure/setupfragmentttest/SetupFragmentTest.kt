@@ -1,4 +1,4 @@
-package com.stavro_xhardha.pockettreasure
+package com.stavro_xhardha.pockettreasure.setupfragmentttest
 
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
