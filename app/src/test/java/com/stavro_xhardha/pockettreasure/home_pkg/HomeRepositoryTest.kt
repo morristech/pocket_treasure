@@ -1,7 +1,7 @@
 package com.stavro_xhardha.pockettreasure.home_pkg
 
 import com.nhaarman.mockitokotlin2.mock
-import com.stavro_xhardha.pockettreasure.brain.GREGORIAN_DAY_KEY
+import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.ui.home.HomeRepository
 import com.stavro_xhardha.rocket.Rocket
@@ -11,7 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 
 @RunWith(JUnit4::class)
 class HomeRepositoryTest {
@@ -41,11 +41,95 @@ class HomeRepositoryTest {
     }
 
     @Test
-    fun `number gregorian day should return the number`(){
+    fun `number gregorian day should return the number`() {
         `when`(rocket.readInt(GREGORIAN_DAY_KEY)).thenReturn(55)
 
         val day = homeRepository.getCurrentRegisteredDay()
 
         assertEquals(55, day)
+    }
+
+    @Test
+    fun `on empty string fajr should not be saved`() {
+        homeRepository.saveFajrTime("")
+
+        verify(rocket, times(0)).writeString(FAJR_KEY, "")
+    }
+
+    @Test
+    fun `on emty string dhuhr should not be saved`() {
+        homeRepository.saveDhuhrTime("")
+
+        verify(rocket, times(0)).writeString(DHUHR_KEY, "")
+    }
+
+    @Test
+    fun `on emty string asr should not be saved`() {
+        homeRepository.saveAsrTime("")
+
+        verify(rocket, times(0)).writeString(ASR_KEY, "")
+    }
+
+    @Test
+    fun `on emty string maghrib should not be saved`() {
+        homeRepository.saveMagribTime("")
+
+        verify(rocket, times(0)).writeString(MAGHRIB_KEY, "")
+    }
+
+    @Test
+    fun `on emty string isha should not be saved`() {
+        homeRepository.saveIshaTime("")
+
+        verify(rocket, times(0)).writeString(ISHA_KEY, "")
+    }
+
+    @Test
+    fun `on non qualified value year saveMonthOfYear should not be saved`() {
+        homeRepository.saveYear(0)
+
+        verify(rocket, times(0)).writeInt(GREGORIAN_YEAR_KEY, 0)
+    }
+
+    @Test
+    fun `on negative year, saveMonthOfYear should not execute`() {
+        homeRepository.saveYear(-150)
+
+        verify(rocket, times(0)).writeInt(GREGORIAN_YEAR_KEY, -150)
+    }
+
+    @Test
+    fun `on positive year saveMonthOfYear should execute`() {
+        homeRepository.saveYear(1996)
+
+        verify(rocket, times(1)).writeInt(GREGORIAN_YEAR_KEY, 1996)
+    }
+
+    @Test
+    fun `on empty month name, saving month name method should not execute`() {
+        homeRepository.saveMonthName("")
+
+        verify(rocket, times(0)).writeString(GREGORIAN_MONTH_NAME_KEY, "")
+    }
+
+    @Test
+    fun `on given non empty month name, saving month name should execute`() {
+        homeRepository.saveMonthName("Stavro")
+
+        verify(rocket, times(1)).writeString(GREGORIAN_MONTH_NAME_KEY, "Stavro")
+    }
+
+    @Test
+    fun `on given empty hijri month, saving hijri month name won't execute`() {
+        homeRepository.saveMonthOfYearHijri("")
+
+        verify(rocket, times(0)).writeString(HIJRI_MONTH_NAME_KEY, "")
+    }
+
+    @Test
+    fun `on given non empty hijri month, saving hijri month name won't execute`() {
+        homeRepository.saveMonthOfYearHijri("Testing")
+
+        verify(rocket, times(1)).writeString(HIJRI_MONTH_NAME_KEY, "Testing")
     }
 }

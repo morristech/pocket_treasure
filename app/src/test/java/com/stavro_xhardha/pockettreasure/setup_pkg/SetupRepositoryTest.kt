@@ -1,9 +1,9 @@
 package com.stavro_xhardha.pockettreasure.setup_pkg
 
-import com.nhaarman.mockitokotlin2.*
-import com.stavro_xhardha.pockettreasure.brain.CAPITAL_SHARED_PREFERENCES_KEY
-import com.stavro_xhardha.pockettreasure.brain.COUNTRIES_API_URL
-import com.stavro_xhardha.pockettreasure.brain.COUNTRY_SHARED_PREFERENCE_KEY
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
+import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.CountriesDao
@@ -112,6 +112,17 @@ class SetupRepositoryTest {
 
         assertEquals(200, apiResponse.code())
         assertEquals(arrayListOf(country), apiResponse.body())
+    }
+
+    @Test
+    fun `on switch notification flags should execute correctly`() {
+        setupRepository.switchNotificationFlags()
+
+        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_FAJR, true)
+        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_DHUHR, true)
+        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_ASR, true)
+        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_MAGHRIB, true)
+        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_ISHA, true)
     }
 
     private fun countryNotEmptyAndCapitalEmpty() {

@@ -29,7 +29,7 @@ import java.lang.IllegalStateException
 class SetupViewModelTest {
 
     private lateinit var setupViewModel: SetupViewModel
-    private val country = Country("Albania", "Tirana", "https://leshlesh.com")
+    private val country = Country("Albania", "Tirana")
     private lateinit var setupRepository: SetupRepository
     @ObsoleteCoroutinesApi
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")

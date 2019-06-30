@@ -17,23 +17,28 @@ class HomeRepository @Inject constructor(
     )
 
     fun saveFajrTime(fajr: String) {
-        mSharedPreferences.writeString(FAJR_KEY, fajr)
+        if (fajr.isNotEmpty())
+            mSharedPreferences.writeString(FAJR_KEY, fajr)
     }
 
     fun saveDhuhrTime(dhuhr: String) {
-        mSharedPreferences.writeString(DHUHR_KEY, dhuhr)
+        if (dhuhr.isNotEmpty())
+            mSharedPreferences.writeString(DHUHR_KEY, dhuhr)
     }
 
     fun saveAsrTime(asr: String) {
-        mSharedPreferences.writeString(ASR_KEY, asr)
+        if (asr.isNotEmpty())
+            mSharedPreferences.writeString(ASR_KEY, asr)
     }
 
     fun saveMagribTime(magrib: String) {
-        mSharedPreferences.writeString(MAGHRIB_KEY, magrib)
+        if (magrib.isNotEmpty())
+            mSharedPreferences.writeString(MAGHRIB_KEY, magrib)
     }
 
     fun saveIshaTime(isha: String) {
-        mSharedPreferences.writeString(ISHA_KEY, isha)
+        if (isha.isNotEmpty())
+            mSharedPreferences.writeString(ISHA_KEY, isha)
     }
 
     fun saveDayOfMonth(datyOfMonth: Int) {
@@ -41,31 +46,38 @@ class HomeRepository @Inject constructor(
     }
 
     fun saveYear(year: Int) {
-        mSharedPreferences.writeInt(GREGORIAN_YEAR_KEY, year)
+        if (year > 0)
+            mSharedPreferences.writeInt(GREGORIAN_YEAR_KEY, year)
     }
 
     fun saveMonthOfYear(month: Int) {
-        mSharedPreferences.writeInt(GREGORIAN_MONTH_KEY, month)
+        if (month >= 0)
+            mSharedPreferences.writeInt(GREGORIAN_MONTH_KEY, month)
     }
 
     fun saveMonthName(monthNameInEnglish: String) {
-        mSharedPreferences.writeString(GREGORIAN_MONTH_NAME_KEY, monthNameInEnglish)
+        if (monthNameInEnglish.isNotEmpty())
+            mSharedPreferences.writeString(GREGORIAN_MONTH_NAME_KEY, monthNameInEnglish)
     }
 
     fun saveDayOfMonthHijri(day: String) {
-        mSharedPreferences.writeString(HIRJI_DAY_OF_MONTH_KEY, day)
+        if (day.isNotEmpty())
+            mSharedPreferences.writeString(HIRJI_DAY_OF_MONTH_KEY, day)
     }
 
     fun saveMonthOfYearHijri(monthNameHijri: String) {
-        mSharedPreferences.writeString(HIJRI_MONTH_NAME_KEY, monthNameHijri)
+        if (monthNameHijri.isNotEmpty())
+            mSharedPreferences.writeString(HIJRI_MONTH_NAME_KEY, monthNameHijri)
     }
 
     fun saveYearHijri(year: String) {
-        mSharedPreferences.writeString(HIJRI_YEAR_KEY, year)
+        if (year.isNotEmpty())
+            mSharedPreferences.writeString(HIJRI_YEAR_KEY, year)
     }
 
     fun saveMidnight(midnight: String) {
-        mSharedPreferences.writeString(MIDNIGHT_KEY, midnight)
+        if (midnight.isNotEmpty())
+            mSharedPreferences.writeString(MIDNIGHT_KEY, midnight)
     }
 
     fun saveFinishFajrTime(sunrise: String) {
