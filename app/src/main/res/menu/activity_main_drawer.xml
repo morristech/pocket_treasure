@@ -40,11 +40,6 @@
 
     <item android:title="@string/more">
         <menu>
-            <!--todo add sharing link after-->
-            <!--<item-->
-            <!--android:id="@+id/nav_share"-->
-            <!--android:icon="@drawable/ic_menu_share"-->
-            <!--android:title="Share"/>-->
             <item
                     android:id="@+id/settingsFragment"
                     android:icon="@drawable/ic_settings_dark_grey_24dp"

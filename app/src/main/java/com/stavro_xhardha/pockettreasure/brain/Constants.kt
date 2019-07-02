@@ -21,6 +21,7 @@ const val GOOGLE_MAP_PLACE_SEARCH = "https://maps.googleapis.com/maps/api/place/
 const val REQUEST_STORAGE_PERMISSION = 355
 const val QURAN_API_CALL_BASE_URL = "https://api.alquran.cloud/v1/quran/ar.alafasy"
 const val FIRST_SURAH_SENTENCE = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.stavro_xhardha.pockettreasure"
 
 //Colors
 const val WHITE_BACKGROUND = R.color.md_white_1000

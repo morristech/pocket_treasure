@@ -51,7 +51,6 @@
     </string>
     <string name="article_details">Post details</string>
     <string name="download">Download</string>
-    <string name="share">Share</string>
     <string name="set_as_wallpaper">Set as wallpaper</string>
     <string name="can_not_save_image_need_permission">Can\'t save image, need permission</string>
     <string name="wallpaper_saved">Wallpaper saved</string>
@@ -91,5 +90,7 @@
     <string name="thanking_news_api_message">This menu is brought to you thanks to newsapi.org</string>
     <string name="dismiss">Dismiss</string>
     <string name="default_country_and_capital">Tirana, Albania</string>
+    <string name="share">Share</string>
+    <string name="share_app">Share App</string>
 
 </resources>

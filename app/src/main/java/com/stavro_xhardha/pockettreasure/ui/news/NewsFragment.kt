@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.callbacks.onDismiss
+import com.afollestad.materialdialogs.callbacks.onShow
 import com.google.android.material.snackbar.Snackbar
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
@@ -51,6 +53,9 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
             title(R.string.app_name)
             message(R.string.thanking_news_api_message)
             cancelable(true)
+            onDismiss {
+                newsViewModel.turnOfNextVisibility()
+            }
             positiveButton(R.string.dismiss) {
                 it.dismiss()
             }
@@ -107,7 +112,8 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
         })
 
         newsViewModel.enterDialogVisibility.observe(this, Observer {
-            enterThankingDialog()
+            if (it)
+                enterThankingDialog()
         })
     }
 
@@ -140,6 +146,6 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
     }
 
     override fun showErrorMessage() {
-        Toast.makeText(activity, "Error Loading Data", Toast.LENGTH_LONG).show() //todo please refactor this cases
+        Toast.makeText(activity, "Error Loading Data", Toast.LENGTH_LONG).show()
     }
 }
