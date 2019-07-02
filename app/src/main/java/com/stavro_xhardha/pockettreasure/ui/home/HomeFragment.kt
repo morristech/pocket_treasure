@@ -1,19 +1,18 @@
 package com.stavro_xhardha.pockettreasure.ui.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.startSchedulingPrayerTimeNotifications
+import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
+import com.stavro_xhardha.pockettreasure.brain.PLAY_STORE_URL
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -38,6 +37,26 @@ class HomeFragment : BaseFragment() {
                 activity?.finish()
             }
         })
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.share_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_share)
+            shareApp()
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun shareApp() {
+        val sharingIntent = Intent(Intent.ACTION_SEND)
+        sharingIntent.type = "text/plain"
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, APPLICATION_TAG)
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, PLAY_STORE_URL)
+        startActivity(Intent.createChooser(sharingIntent, resources.getString(R.string.share_via)))
     }
 
     override fun onResume() {

@@ -21,9 +21,9 @@ class NewsViewModel(
     var newsData: LiveData<PagedList<News>>
     var networkState: LiveData<NetworkState>
     var refreshState: LiveData<NetworkState>
-    val hasEnteredNewsYet = rocket.readBoolean(HAS_ONCE_ENTERED_NEWS)
 
     init {
+
         val config = buildPagedList()
 
         val livePagedListBuilder =
@@ -55,7 +55,7 @@ class NewsViewModel(
     }
 
     private fun checkDialogVisibility() {
-        if (!hasEnteredNewsYet) {
+        if (!rocket.readBoolean(HAS_ONCE_ENTERED_NEWS)) {
             _enterDialogVisibility.value = true
             rocket.writeBoolean(HAS_ONCE_ENTERED_NEWS, true)
         }
@@ -72,4 +72,8 @@ class NewsViewModel(
     fun currentNetworkState(): LiveData<NetworkState> = networkState
 
     fun initialNetworkState(): LiveData<NetworkState> = refreshState
+
+    fun turnOfNextVisibility() {
+        _enterDialogVisibility.value = false
+    }
 }
