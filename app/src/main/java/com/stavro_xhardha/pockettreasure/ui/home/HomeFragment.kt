@@ -8,11 +8,17 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.PLAY_STORE_URL
+import com.stavro_xhardha.pockettreasure.background.PrayerTimeWorkManager
+import com.stavro_xhardha.pockettreasure.brain.startWorkManager
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -38,6 +44,7 @@ class HomeFragment : BaseFragment() {
             }
         })
         setHasOptionsMenu(true)
+        startWorkManager()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

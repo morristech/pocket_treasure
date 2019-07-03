@@ -10,9 +10,18 @@ interface PrayerTimesDao {
     @Query(" SELECT * FROM prayer_times WHERE timestamp = :timeStamp AND is_fired = :isFired")
     suspend fun selectAllPrayersWhereDateAndIsFired(timeStamp: Long, isFired: Int): List<PrayerTiming>
 
+    @Query(" SELECT * FROM prayer_times WHERE timestamp = :timeStamp")
+    suspend fun selectAllPrayersWhereDate(timeStamp: Long): List<PrayerTiming>
+
     @Query(" UPDATE prayer_times SET is_fired = :isFired WHERE timestamp = :timeStamp")
-    suspend fun updatePrayersWhehereDateAndIsFired(timeStamp: Long, isFired: Boolean)
+    suspend fun updatePrayersWhehereDate(timeStamp: Long, isFired: Int)
+
+    @Query(" SELECT * FROM prayer_times")
+    suspend fun selectAll(): List<PrayerTiming>
 
     @Insert
     suspend fun insertPrayerTimes(prayerTime: PrayerTiming)
+
+    @Query(" SELECT midnight FROM prayer_times WHERE timestamp = :millis AND is_fired = :fired")
+    suspend fun findTodaysMidnight(millis: Long, fired: Int): String
 }

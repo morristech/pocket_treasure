@@ -43,4 +43,12 @@ interface TreasureApi {
 
     @GET
     suspend fun getQuranDataAsync(@Url baseUrl: String): Response<QuranResponse>
+
+    @GET("calendarByCity")
+    suspend fun getAllYearsPrayerTImesAsync(
+        @Query("city") city: String?,
+        @Query("country") country: String?,
+        @Query("method") method: Int = 3,
+        @Query("annual") annual: Boolean = true
+    ): Response<PrayerTimeYearResponse>
 }

@@ -35,7 +35,7 @@ class SurahReadWriteTest {
     @Test
     @Throws(Exception::class)
     fun writeSurahAndReadIt() = runBlocking {
-        //Arrang
+        //Arrange
         val surah = Surah(1, "Abc", "Def", "Ghi", "Jkl", listOf())
 
         //Act

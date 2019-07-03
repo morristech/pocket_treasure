@@ -1,10 +1,6 @@
 package com.stavro_xhardha.pockettreasure.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import java.sql.Timestamp
 
 
 data class PrayerTimeYearResponse(
@@ -18,32 +14,32 @@ data class PrayerTimeYearResponse(
 
 data class PrayerYear(
     @SerializedName("1")
-    val january: List<PrayerMonth>,
+    val january: List<PrayerMonthDays>,
     @SerializedName("2")
-    val february: List<PrayerMonth>,
+    val february: List<PrayerMonthDays>,
     @SerializedName("3")
-    val march: List<PrayerMonth>,
+    val marches: List<PrayerMonthDays>,
     @SerializedName("4")
-    val april: List<PrayerMonth>,
+    val april: List<PrayerMonthDays>,
     @SerializedName("5")
-    val may: List<PrayerMonth>,
+    val may: List<PrayerMonthDays>,
     @SerializedName("6")
-    val june: List<PrayerMonth>,
+    val june: List<PrayerMonthDays>,
     @SerializedName("7")
-    val july: List<PrayerMonth>,
+    val july: List<PrayerMonthDays>,
     @SerializedName("8")
-    val august: List<PrayerMonth>,
+    val august: List<PrayerMonthDays>,
     @SerializedName("9")
-    val september: List<PrayerMonth>,
+    val september: List<PrayerMonthDays>,
     @SerializedName("10")
-    val october: List<PrayerMonth>,
+    val october: List<PrayerMonthDays>,
     @SerializedName("11")
-    val november: List<PrayerMonth>,
+    val november: List<PrayerMonthDays>,
     @SerializedName("12")
-    val december: List<PrayerMonth>
+    val december: List<PrayerMonthDays>
 )
 
-data class PrayerMonth(
+data class PrayerMonthDays(
     @SerializedName("timings")
     val timing: PrayerTiming,
     @SerializedName("date")

@@ -9,8 +9,13 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
 import androidx.test.espresso.IdlingResource
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.background.PrayerTimeScheduler
+import com.stavro_xhardha.pockettreasure.background.PrayerTimeWorkManager
 import com.stavro_xhardha.pockettreasure.model.*
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -228,4 +233,15 @@ fun incrementIdlingResource() {
 fun decrementIdlingResource() {
     if (isDebugMode)
         Smoothie.endProcess()
+}
+
+fun startWorkManager() {
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()
+    val compressionWork = OneTimeWorkRequestBuilder<PrayerTimeWorkManager>()
+        .setConstraints(constraints)
+        .build()
+
+    WorkManager.getInstance().enqueue(compressionWork)
 }
