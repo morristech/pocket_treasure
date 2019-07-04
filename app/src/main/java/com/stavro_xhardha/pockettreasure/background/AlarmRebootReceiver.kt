@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
+import com.stavro_xhardha.pockettreasure.brain.DATA_ARE_READY
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -16,11 +17,14 @@ class AlarmRebootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action.equals("android.intent.action.BOOT_COMPLETED")) {
             val offlinePrayerScheduler = PocketTreasureApplication.getPocketTreasureComponent().offlineScheduler()
+            val rocket = PocketTreasureApplication.getPocketTreasureComponent().getSharedPreferences()
             GlobalScope.launch(Dispatchers.IO) {
-                offlinePrayerScheduler.initScheduler()
+                if (rocket.readBoolean(DATA_ARE_READY)) {
+                    offlinePrayerScheduler.initScheduler()
+                    if (isDebugMode)
+                        Log.d(APPLICATION_TAG, "WorksAfter Reboot")
+                }
             }
-            if (isDebugMode)
-                Log.d(APPLICATION_TAG, "WorksAfter Reboot")
         }
     }
 }

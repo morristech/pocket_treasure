@@ -24,4 +24,7 @@ interface PrayerTimesDao {
 
     @Query(" SELECT midnight FROM prayer_times WHERE timestamp = :millis AND is_fired = :fired")
     suspend fun findTodaysMidnight(millis: Long, fired: Int): String
+
+    @Query(" DELETE FROM prayer_times ")
+    suspend fun deleteAllDataInside()
 }

@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.PrayerTiming
 import com.stavro_xhardha.pockettreasure.room_db.PrayerTimesDao
@@ -29,6 +30,8 @@ class OfflinePrayerScheduler @Inject constructor(
         } else {
             val currentTime = DateTime()
             if (currentTime.dayOfMonth != 1 && currentTime.monthOfYear != 1) {
+                prayerstimeDao.deleteAllDataInside()
+                rocket.writeBoolean(WORKER_FIRED_KEY, false)
                 throw RuntimeException(" Crash, Boom , Pew Pew, 1st January yet to come or has passed :) ")
             } else {
                 startWorkManager()
@@ -36,7 +39,7 @@ class OfflinePrayerScheduler @Inject constructor(
         }
     }
 
-    private fun scheduleNotificationTimes(it: PrayerTiming) {
+    private suspend fun scheduleNotificationTimes(it: PrayerTiming) {
         scheduleAlarmForPrayer(
             rocket.readBoolean(NOTIFY_USER_FOR_FAJR),
             it.fajr,
@@ -82,13 +85,13 @@ class OfflinePrayerScheduler @Inject constructor(
             )
     }
 
-    fun scheduleAlarmForPrayer(
-        isNotificationTrigable: Boolean,
+    private suspend fun scheduleAlarmForPrayer(
+        isNotificationTriguable: Boolean,
         prayerTime: String,
         pendingIntentKey: Int
     ) {
         val currentTime = DateTime()
-        if (isNotificationTrigable) {
+        if (isNotificationTriguable) {
             if (currentTime.isBefore(getCurrentDayPrayerImplementation(prayerTime))) {
                 schedulePrayingAlarm(
                     context,
@@ -100,9 +103,12 @@ class OfflinePrayerScheduler @Inject constructor(
                     Log.d(APPLICATION_TAG, "ALARM SET IN: $prayerTime")
             }
         }
+
+        val dataToUpdate = getCurrentDayPrayerImplementation(prayerTime).millis
+        prayerstimeDao.updatePrayersWhehereDate(dataToUpdate, 1)
     }
 
-    fun schedulePrayingAlarm(mContext: Context, time: DateTime, pendingIntentKey: Int, desiredClass: Class<*>) {
+    private fun schedulePrayingAlarm(mContext: Context, time: DateTime, pendingIntentKey: Int, desiredClass: Class<*>) {
         val intent = Intent(mContext, desiredClass)
         checkIntentVariables(pendingIntentKey, intent)
         val pendingIntent =
@@ -121,7 +127,7 @@ class OfflinePrayerScheduler @Inject constructor(
             Log.d(APPLICATION_TAG, "Alarm set at ${time.millis}")
     }
 
-    fun checkIntentVariables(intentKey: Int, intent: Intent) {
+    private fun checkIntentVariables(intentKey: Int, intent: Intent) {
         when (intentKey) {
             PENDING_INTENT_FIRE_NOTIFICATION_FAJR -> {
                 intent.putExtra(PRAYER_TITLE, FAJR)
@@ -146,7 +152,7 @@ class OfflinePrayerScheduler @Inject constructor(
         }
     }
 
-    fun getCurrentDayPrayerImplementation(prayerTime: String): DateTime =
+    private fun getCurrentDayPrayerImplementation(prayerTime: String): DateTime =
         if (prayerTime.isNotEmpty()) {
             val actualHour =
                 if (prayerTime.startsWith("0")) prayerTime.substring(1, 2).toInt() else prayerTime.substring(

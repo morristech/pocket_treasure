@@ -13,15 +13,13 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.PrayerTimesDao
 import com.stavro_xhardha.pockettreasure.room_db.TreasureDatabase
 import com.stavro_xhardha.rocket.Rocket
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
 class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) : CoroutineWorker(context, parameters) {
-    //todo refactor calendar to joda time
+
     private lateinit var treasureDatabase: TreasureDatabase
     private lateinit var treasureApi: TreasureApi
     private lateinit var rocket: Rocket
@@ -29,7 +27,7 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
     private lateinit var offlineScheduler: OfflinePrayerScheduler
 
     override suspend fun doWork(): Result = coroutineScope {
-        instantiateData()
+        instantiateDependencies()
         launch {
             val yearPrayerTimes = treasureApi.getAllYearsPrayerTImesAsync(
                 rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY),
@@ -64,13 +62,12 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
         if (isDebugMode) {
             val selection = prayerTimesDao.selectAll()
             selection.forEach {
-                Log.d(APPLICATION_TAG, " DATA INSERTED : ${it.id}")
+                Log.d(APPLICATION_TAG, " DATA INSERTED : ${it.id} and size of selection is: ${selection.size}")
             }
         }
 
-        withContext(Dispatchers.IO) {
-            offlineScheduler.initScheduler()
-        }
+        offlineScheduler.initScheduler()
+        rocket.writeBoolean(DATA_ARE_READY, true)
     }
 
     private suspend fun reviewCurrentMonth(vararg monthDays: List<PrayerMonthDays>) {
@@ -100,7 +97,7 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
         }
     }
 
-    private fun instantiateData() {
+    private fun instantiateDependencies() {
         val application = PocketTreasureApplication.getPocketTreasureComponent()
         treasureApi = application.getTreasureApi()
         rocket = application.getSharedPreferences()

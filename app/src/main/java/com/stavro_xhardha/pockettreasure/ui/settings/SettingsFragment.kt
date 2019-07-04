@@ -102,8 +102,8 @@ class SettingsFragment : BaseFragment() {
         })
 
         sharedViewModel.updatedCountry.observe(this, Observer {
+            settingsViewModel.resetDataForWorker()
             tvCountryAndCapital.text = it
-            //todo erase all data in database and remake the call :)
         })
     }
 }

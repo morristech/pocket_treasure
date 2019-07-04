@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.brain.Smoothie
-import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
-import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
-import com.stavro_xhardha.pockettreasure.brain.isDebugMode
+import com.stavro_xhardha.pockettreasure.brain.*
 //import com.sxhardha.smoothie.Smoothie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -112,6 +109,13 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
                 decrementIdlingResource()
                 _ishaCheck.value = settingsRepository.getIshaChecked()
             }
+        }
+    }
+
+    fun resetDataForWorker() {
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepository.deleteAllDataInside()
+            startWorkManager()
         }
     }
 }

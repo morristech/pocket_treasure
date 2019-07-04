@@ -8,6 +8,7 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.background.OfflinePrayerScheduler
+import com.stavro_xhardha.pockettreasure.brain.WORKER_FIRED_KEY
 import com.stavro_xhardha.pockettreasure.room_db.PrayerTimesDao
 import com.stavro_xhardha.rocket.Rocket
 import junit.framework.Assert.assertEquals
@@ -20,7 +21,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.Mockito.`when`
 import java.io.IOException
+import java.lang.RuntimeException
 import java.util.Calendar.*
 
 @RunWith(JUnit4::class)
@@ -44,9 +47,14 @@ class OfflineSchedulerTest {
     }
 
     @Test
-    fun `on given empty string, getCurrentDayImplementation should return current day`() {
-        val calendar = offlinePrayerScheduler.getCurrentDayPrayerImplementation("")
+    @Throws(RuntimeException::class)
+    fun `on same year, query brought nothing`() {
+        runBlocking {
+            val calendarHelper = DateTime().withTime(9, 1, 1, 0)
+            `when`(prayerTimesDao.selectAllPrayersWhereDateAndIsFired(calendarHelper.millis, 0)).thenReturn(null)
 
-        assertEquals(calendar.dayOfMonth, 4)
+            verify(prayerTimesDao, times(0)).deleteAllDataInside()
+            verify(rocket, times(0)).writeBoolean(WORKER_FIRED_KEY, false)
+        }
     }
 }
