@@ -1,10 +1,5 @@
 package com.stavro_xhardha.pockettreasure.brain
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
@@ -14,10 +9,8 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.stavro_xhardha.pockettreasure.BuildConfig
-import com.stavro_xhardha.pockettreasure.background.PrayerTimeScheduler
 import com.stavro_xhardha.pockettreasure.background.PrayerTimeWorkManager
 import com.stavro_xhardha.pockettreasure.model.*
-import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
@@ -85,97 +78,6 @@ val DIFF_UTIL_TASBEEH = object : DiffUtil.ItemCallback<Tasbeeh>() {
 fun <T> LiveData<T>.observeOnce(onChangeHandler: (T) -> Unit) {
     val observer = OneTimeObserver(handler = onChangeHandler)
     observe(observer, observer)
-}
-
-fun getMidnightImplementation(midnightInput: String): Calendar = Calendar.getInstance().apply {
-    val actualHour = if (midnightInput.startsWith("0"))
-        midnightInput.substring(1, 2).toInt()
-    else
-        midnightInput.substring(0, 2).toInt()
-
-    val actualminute = if (midnightInput.substring(3, 5).startsWith("0"))
-        midnightInput.substring(4, 5)
-    else
-        midnightInput.substring(3, 5)
-    add(Calendar.DATE, 1)
-    set(Calendar.HOUR_OF_DAY, actualHour)
-    set(Calendar.MINUTE, actualminute.toInt())
-    set(Calendar.SECOND, 0)
-}
-
-fun getCurrentDayPrayerImplementation(prayerTime: String): Calendar = Calendar.getInstance().apply {
-    val actualHour = if (prayerTime.startsWith("0"))
-        prayerTime.substring(1, 2).toInt()
-    else
-        prayerTime.substring(0, 2).toInt()
-
-    val actualminute = if (prayerTime.substring(3, 5).startsWith("0"))
-        prayerTime.substring(4, 5).toInt()
-    else
-        prayerTime.substring(3, 5).toInt()
-    set(Calendar.HOUR_OF_DAY, actualHour)
-    set(Calendar.MINUTE, actualminute)
-    set(Calendar.SECOND, 0)
-}
-
-fun schedulePrayingAlarm(mContext: Context, time: Calendar, pendingIntentKey: Int, desiredClass: Class<*>) {
-    val intent = Intent(mContext, desiredClass)
-    checkIntentVariables(pendingIntentKey, intent)
-    val pendingIntent =
-        PendingIntent.getBroadcast(
-            mContext,
-            pendingIntentKey,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-    val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-    alarmManager.setExact(AlarmManager.RTC, time.timeInMillis, pendingIntent)
-
-    if (isDebugMode)
-        Log.d(APPLICATION_TAG, "Alarm set at ${time.timeInMillis}")
-}
-
-fun checkIntentVariables(intentKey: Int, intent: Intent) {
-    when (intentKey) {
-        PENDING_INTENT_FIRE_NOTIFICATION_FAJR -> {
-            intent.putExtra(PRAYER_TITLE, FAJR)
-            intent.putExtra(PRAYER_DESCRIPTION, "Fajr time has arrived")
-        }
-        PENDING_INTENT_FIRE_NOTIFICATION_DHUHR -> {
-            intent.putExtra(PRAYER_TITLE, DHUHR)
-            intent.putExtra(PRAYER_DESCRIPTION, "Dhuhr time has arrived")
-        }
-        PENDING_INTENT_FIRE_NOTIFICATION_ASR -> {
-            intent.putExtra(PRAYER_TITLE, ASR)
-            intent.putExtra(PRAYER_DESCRIPTION, "Asr time has arrived")
-        }
-        PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB -> {
-            intent.putExtra(PRAYER_TITLE, MAGHRIB)
-            intent.putExtra(PRAYER_DESCRIPTION, "Maghrib time has arrived")
-        }
-        PENDING_INTENT_FIRE_NOTIFICATION_ISHA -> {
-            intent.putExtra(PRAYER_TITLE, ISHA)
-            intent.putExtra(PRAYER_DESCRIPTION, "Isha time has arrived")
-        }
-    }
-}
-
-fun startSchedulingPrayerTimeNotifications(context: Context, time: Long = System.currentTimeMillis()) {
-    val intent = Intent(context, PrayerTimeScheduler::class.java)
-    val pendingIntent =
-        PendingIntent.getBroadcast(context, PENDING_INTENT_SYNC, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-    alarmManager.setExact(
-        AlarmManager.RTC,
-        time,
-        pendingIntent
-    )
-
-    if (isDebugMode)
-        Log.d(APPLICATION_TAG, "Alarm set int $time")
 }
 
 class SmoothieThermometer(private val resourceName: String) : IdlingResource {

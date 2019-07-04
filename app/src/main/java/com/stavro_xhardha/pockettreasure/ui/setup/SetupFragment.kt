@@ -54,6 +54,7 @@ class SetupFragment : BaseFragment(), SetupContract {
 
     override fun onListItemClick(country: Country) {
         setupViewModel.onCountrySelected(country)
+        setupViewModel.saveCountriesToDatabase()
         askForNotifyingUser()
     }
 
@@ -63,12 +64,10 @@ class SetupFragment : BaseFragment(), SetupContract {
             message(R.string.do_you_want_to_get_notified)
             positiveButton(text = activity!!.resources.getString(R.string.yes)) {
                 setupViewModel.updateNotificationFlags()
-                //startSchedulingPrayerTimeNotifications(activity!!)
                 findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
                 it.dismiss()
             }
             negativeButton(text = activity!!.resources.getString(R.string.no)) {
-              //  startSchedulingPrayerTimeNotifications(activity!!)
                 findNavController().navigate(SetupFragmentDirections.actionSetupFragmentToHomeFragment3())
                 it.dismiss()
             }

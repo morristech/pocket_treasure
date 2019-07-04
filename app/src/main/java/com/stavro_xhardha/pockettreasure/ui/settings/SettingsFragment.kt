@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.startSchedulingPrayerTimeNotifications
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_settings.*
 import javax.inject.Inject
@@ -104,7 +103,7 @@ class SettingsFragment : BaseFragment() {
 
         sharedViewModel.updatedCountry.observe(this, Observer {
             tvCountryAndCapital.text = it
-            startSchedulingPrayerTimeNotifications(activity!!)
+            //todo erase all data in database and remake the call :)
         })
     }
 }

@@ -4,10 +4,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.brain.ACCENT_BACKGROUND
-import com.stavro_xhardha.pockettreasure.brain.WHITE_BACKGROUND
-import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
-import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
+import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -231,5 +228,12 @@ class HomeViewModel(
         asrColor.value = WHITE_BACKGROUND
         maghribColor.value = WHITE_BACKGROUND
         ishaColor.value = ACCENT_BACKGROUND
+    }
+
+    fun initWorker() {
+        if (!homeRepository.isWorkerFired()) {
+            startWorkManager()
+            homeRepository.updateWorkerFired()
+        }
     }
 }

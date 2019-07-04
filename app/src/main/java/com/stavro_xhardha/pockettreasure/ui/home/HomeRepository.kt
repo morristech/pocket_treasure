@@ -11,6 +11,8 @@ class HomeRepository @Inject constructor(
     private val treasureApi: TreasureApi,
     private val mSharedPreferences: Rocket
 ) {
+    //todo update to suspend :)
+
     suspend fun makePrayerCallAsync(): Response<PrayerTimeResponse> = treasureApi.getPrayerTimesTodayAsync(
         mSharedPreferences.readString(CAPITAL_SHARED_PREFERENCES_KEY),
         mSharedPreferences.readString(COUNTRY_SHARED_PREFERENCE_KEY)
@@ -124,5 +126,11 @@ class HomeRepository @Inject constructor(
 
     fun updateCountryState() {
         mSharedPreferences.writeBoolean(COUNTRY_UPDATED, false)
+    }
+
+    fun isWorkerFired(): Boolean = mSharedPreferences.readBoolean(WORKER_FIRED_KEY)
+
+    fun updateWorkerFired() {
+        mSharedPreferences.writeBoolean(WORKER_FIRED_KEY, true)
     }
 }

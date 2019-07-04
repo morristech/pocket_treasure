@@ -23,8 +23,8 @@
             android:theme="@style/AppTheme">
         <uses-library android:name="android.test.runner"
                       android:required="false"/>
-        <receiver android:name=".background.PrayerTimeScheduler"/>
-        <receiver android:name=".background.PrayerTimeAlarm"/>
+        <receiver android:name=".background.MidnightScheduler"/>
+        <receiver android:name=".background.PrayerTimeNotificationReceiver"/>
         <receiver android:name=".background.AlarmRebootReceiver"
                   android:enabled="true"
                   android:permission="android.permission.RECEIVE_BOOT_COMPLETED">

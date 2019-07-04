@@ -16,9 +16,9 @@ import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.rocket.Rocket
 
-class PrayerTimeAlarm : BroadcastReceiver() {
+class PrayerTimeNotificationReceiver : BroadcastReceiver() {
 
-    private val CHANNEL_ID = "Some Channel Id"
+    private val CHANNEL_ID = "PrayerTimeId"
     private lateinit var rocket: Rocket
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -42,9 +42,6 @@ class PrayerTimeAlarm : BroadcastReceiver() {
         title: String?,
         notificationDescription: String?
     ) {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-
         val resultIntent = Intent(context, MainActivity::class.java)
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(context!!).run {
             addNextIntentWithParentStack(resultIntent)

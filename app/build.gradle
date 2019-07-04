@@ -133,4 +133,7 @@ dependencies {
 
     //new viewmodel saved instance state
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-alpha01'
+
+    testImplementation 'joda-time:joda-time:2.10.1'
+
 }

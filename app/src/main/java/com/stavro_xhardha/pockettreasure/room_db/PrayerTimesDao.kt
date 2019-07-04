@@ -8,7 +8,7 @@ import com.stavro_xhardha.pockettreasure.model.PrayerTiming
 @Dao
 interface PrayerTimesDao {
     @Query(" SELECT * FROM prayer_times WHERE timestamp = :timeStamp AND is_fired = :isFired")
-    suspend fun selectAllPrayersWhereDateAndIsFired(timeStamp: Long, isFired: Int): List<PrayerTiming>
+    suspend fun selectAllPrayersWhereDateAndIsFired(timeStamp: Long, isFired: Int): PrayerTiming?
 
     @Query(" SELECT * FROM prayer_times WHERE timestamp = :timeStamp")
     suspend fun selectAllPrayersWhereDate(timeStamp: Long): List<PrayerTiming>

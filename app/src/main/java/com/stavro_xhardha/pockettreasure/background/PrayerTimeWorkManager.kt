@@ -21,10 +21,12 @@ import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
 class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) : CoroutineWorker(context, parameters) {
+    //todo refactor calendar to joda time
     private lateinit var treasureDatabase: TreasureDatabase
     private lateinit var treasureApi: TreasureApi
     private lateinit var rocket: Rocket
     private lateinit var prayerTimesDao: PrayerTimesDao
+    private lateinit var offlineScheduler: OfflinePrayerScheduler
 
     override suspend fun doWork(): Result = coroutineScope {
         instantiateData()
@@ -37,25 +39,27 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
                 handleResponse(yearPrayerTimes.body())
                 Result.success()
             } else {
-                Result.failure()
+                Result.retry()
             }
         }
         Result.success()
     }
 
     private suspend fun handleResponse(body: PrayerTimeYearResponse?) {
-        reviewCurrentMonth(body?.data?.january!!)
-        reviewCurrentMonth(body.data.february)
-        reviewCurrentMonth(body.data.marches)
-        reviewCurrentMonth(body.data.april)
-        reviewCurrentMonth(body.data.may)
-        reviewCurrentMonth(body.data.june)
-        reviewCurrentMonth(body.data.july)
-        reviewCurrentMonth(body.data.august)
-        reviewCurrentMonth(body.data.september)
-        reviewCurrentMonth(body.data.october)
-        reviewCurrentMonth(body.data.november)
-        reviewCurrentMonth(body.data.december)
+        reviewCurrentMonth(
+            body?.data?.january!!,
+            body.data.february,
+            body.data.march,
+            body.data.april,
+            body.data.may,
+            body.data.june,
+            body.data.july,
+            body.data.august,
+            body.data.september,
+            body.data.october,
+            body.data.november,
+            body.data.december
+        )
 
         if (isDebugMode) {
             val selection = prayerTimesDao.selectAll()
@@ -65,31 +69,33 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
         }
 
         withContext(Dispatchers.IO) {
-            startSchedulingPrayerTimeNotifications(context)
+            offlineScheduler.initScheduler()
         }
     }
 
-    private suspend fun reviewCurrentMonth(monthDays: List<PrayerMonthDays>) {
+    private suspend fun reviewCurrentMonth(vararg monthDays: List<PrayerMonthDays>) {
         val currentDateTime = DateTime()
         monthDays.forEach {
-            val incomingTime = DateTime(it.prayerDate.timestamp.toLong() * 1000L)
-            if (incomingTime.isAfter(currentDateTime) || (incomingTime.toLocalDate()).equals(LocalDate())) {
-                prayerTimesDao.insertPrayerTimes(
-                    PrayerTiming(
-                        id = 0,
-                        fajr = it.timing.fajr,
-                        sunrise = it.timing.sunrise,
-                        dhuhr = it.timing.dhuhr,
-                        asr = it.timing.asr,
-                        sunset = it.timing.sunset,
-                        magrib = it.timing.magrib,
-                        isha = it.timing.isha,
-                        midnight = it.timing.midnight,
-                        imsak = it.timing.imsak,
-                        isFired = 0,
-                        timestamp = it.prayerDate.timestamp.toLong() * 1000L
+            it.forEach { prayerMonthDays ->
+                val incomingTime = DateTime(prayerMonthDays.prayerDate.timestamp.toLong() * 1000L)
+                if (incomingTime.isAfter(currentDateTime) || (incomingTime.toLocalDate()).equals(LocalDate())) {
+                    prayerTimesDao.insertPrayerTimes(
+                        PrayerTiming(
+                            id = 0,
+                            fajr = prayerMonthDays.timing.fajr,
+                            sunrise = prayerMonthDays.timing.sunrise,
+                            dhuhr = prayerMonthDays.timing.dhuhr,
+                            asr = prayerMonthDays.timing.asr,
+                            sunset = prayerMonthDays.timing.sunset,
+                            magrib = prayerMonthDays.timing.magrib,
+                            isha = prayerMonthDays.timing.isha,
+                            midnight = prayerMonthDays.timing.midnight,
+                            imsak = prayerMonthDays.timing.imsak,
+                            isFired = 0,
+                            timestamp = prayerMonthDays.prayerDate.timestamp.toLong() * 1000L
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -100,5 +106,6 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
         rocket = application.getSharedPreferences()
         treasureDatabase = application.treasureDatabase()
         prayerTimesDao = treasureDatabase.prayerTimesDao()
+        offlineScheduler = application.offlineScheduler()
     }
 }

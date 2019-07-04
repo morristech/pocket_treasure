@@ -18,7 +18,7 @@ data class PrayerYear(
     @SerializedName("2")
     val february: List<PrayerMonthDays>,
     @SerializedName("3")
-    val marches: List<PrayerMonthDays>,
+    val march: List<PrayerMonthDays>,
     @SerializedName("4")
     val april: List<PrayerMonthDays>,
     @SerializedName("5")

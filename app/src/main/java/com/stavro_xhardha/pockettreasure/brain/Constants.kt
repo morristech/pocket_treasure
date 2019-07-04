@@ -53,6 +53,7 @@ const val NOTIFY_USER_FOR_MAGHRIB = "app_notify_maghrib"
 const val NOTIFY_USER_FOR_ISHA = "app_notify_isha"
 const val COUNTRY_UPDATED= "app_country_updated"
 const val HAS_ONCE_ENTERED_NEWS = "app_has_once_entered_news"
+const val WORKER_FIRED_KEY = "app_worker_has_been_fired"
 
 const val PENDING_INTENT_SYNC = 1001
 const val PENDING_INTENT_FIRE_NOTIFICATION_FAJR = 2002

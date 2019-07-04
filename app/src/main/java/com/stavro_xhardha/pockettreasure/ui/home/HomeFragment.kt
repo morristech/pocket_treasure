@@ -44,7 +44,6 @@ class HomeFragment : BaseFragment() {
             }
         })
         setHasOptionsMenu(true)
-        startWorkManager()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -80,6 +79,7 @@ class HomeFragment : BaseFragment() {
 
     override fun initViewModel() {
         homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel.initWorker()
     }
 
     override fun initializeComponents() {

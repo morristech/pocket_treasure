@@ -1,5 +1,6 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
+import android.database.sqlite.SQLiteException
 import android.view.View
 import androidx.lifecycle.*
 import com.stavro_xhardha.pockettreasure.model.Country
@@ -8,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
 
@@ -16,6 +18,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     val pbVisibility: MutableLiveData<Int> = MutableLiveData()
     val errorVisibility: MutableLiveData<Int> = MutableLiveData()
     val contentVisibility: MutableLiveData<Int> = MutableLiveData()
+    private lateinit var listOfCountries: ArrayList<Country>
 
     init {
         loadListOfCountries()
@@ -39,7 +42,7 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
         try {
             val countriesListResponse = setupRepository.makeCountryApiCallAsync()
             if (countriesListResponse.isSuccessful) {
-                setupRepository.saveCountriesToDatabase(countriesListResponse.body())
+                listOfCountries = countriesListResponse.body()!!
                 withContext(Dispatchers.Main) {
                     showContent()
                     countriesList.value = countriesListResponse.body()
@@ -82,6 +85,16 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     fun updateNotificationFlags() {
         viewModelScope.launch(Dispatchers.IO) {
             setupRepository.switchNotificationFlags()
+        }
+    }
+
+    fun saveCountriesToDatabase() {
+        viewModelScope.launch {
+            try {
+                setupRepository.saveCountriesToDatabase(listOfCountries)
+            } catch (e: SQLiteException) {
+                e.printStackTrace()
+            }
         }
     }
 }
