@@ -40,6 +40,7 @@ class NamesViewModel(
     private suspend fun startProgressBar() {
         withContext(Dispatchers.Main) {
             progressBarVisibility.value = View.VISIBLE
+            errorLayoutVisibility.value = View.GONE
         }
     }
 
@@ -48,6 +49,7 @@ class NamesViewModel(
         withContext(Dispatchers.Main) {
             allNamesList.value = names
             progressBarVisibility.value = View.GONE
+            errorLayoutVisibility.value = View.GONE
         }
     }
 
