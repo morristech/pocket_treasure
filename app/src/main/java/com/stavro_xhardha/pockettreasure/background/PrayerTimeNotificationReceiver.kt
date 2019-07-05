@@ -10,6 +10,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.core.content.ContextCompat
+import com.squareup.picasso.Picasso
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.MainActivity
 import com.stavro_xhardha.pockettreasure.R
@@ -24,41 +26,43 @@ class PrayerTimeNotificationReceiver : BroadcastReceiver() {
 
     private val CHANNEL_ID = "PrayerTimeId"
     private lateinit var rocket: Rocket
+    private lateinit var picasso: Picasso
 
     override fun onReceive(context: Context?, intent: Intent?) {
         rocket = PocketTreasureApplication.getPocketTreasureComponent().getSharedPreferences()
+        picasso = PocketTreasureApplication.getPocketTreasureComponent().picasso()
         val title = intent?.getStringExtra(PRAYER_TITLE)
         val description = intent?.getStringExtra(PRAYER_DESCRIPTION)
         GlobalScope.launch {
             if (title.equals(FAJR) && rocket.readBoolean(NOTIFY_USER_FOR_FAJR)) {
                 withContext(Dispatchers.Main) {
-                    showSomeNotification(context, title, description)
+                    showPrayerNotification(context, title, description)
                 }
             }
             if (title.equals(DHUHR) && rocket.readBoolean(NOTIFY_USER_FOR_DHUHR)) {
                 withContext(Dispatchers.Main) {
-                    showSomeNotification(context, title, description)
+                    showPrayerNotification(context, title, description)
                 }
             }
             if (title.equals(ASR) && rocket.readBoolean(NOTIFY_USER_FOR_ASR)) {
                 withContext(Dispatchers.Main) {
-                    showSomeNotification(context, title, description)
+                    showPrayerNotification(context, title, description)
                 }
             }
             if (title.equals(MAGHRIB) && rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB)) {
                 withContext(Dispatchers.Main) {
-                    showSomeNotification(context, title, description)
+                    showPrayerNotification(context, title, description)
                 }
             }
             if (title.equals(ISHA) && rocket.readBoolean(NOTIFY_USER_FOR_ISHA)) {
                 withContext(Dispatchers.Main) {
-                    showSomeNotification(context, title, description)
+                    showPrayerNotification(context, title, description)
                 }
             }
         }
     }
 
-    private fun showSomeNotification(
+    private fun showPrayerNotification(
         context: Context?,
         title: String?,
         notificationDescription: String?
@@ -71,23 +75,22 @@ class PrayerTimeNotificationReceiver : BroadcastReceiver() {
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentIntent(resultPendingIntent)
-            .setSmallIcon(R.drawable.ic_mosque_small)
+            .setColorized(true)
+            .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+            .setSmallIcon(R.mipmap.ic_launcher_round)
             .setAutoCancel(true)
             .setContentTitle(title)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(notificationDescription)
-            )
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentText(notificationDescription)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "prayer_time_name"
-            val descriptionText = "prayer_time_description"
+            val name = "Prayer time notifications"
+            val descriptionText = "This notifications notify when praying time has arrived"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
-            // Register the channel with the system
+
             val notificationManager: NotificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
