@@ -25,13 +25,13 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     }
 
     fun loadListOfCountries() {
-        if (setupRepository.isCountryOrCapitalEmpty()) {
-            viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if (setupRepository.isCountryOrCapitalEmpty()) {
                 makeCountriesApiCall()
+                isCountryAndCapitalEmpty.postValue(true)
+            } else {
+                isCountryAndCapitalEmpty.postValue(false)
             }
-            isCountryAndCapitalEmpty.value = true
-        } else {
-            isCountryAndCapitalEmpty.value = false
         }
     }
 
@@ -79,7 +79,9 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     }
 
     fun onCountrySelected(country: Country) {
-        setupRepository.saveCountryToSharedPreferences(country)
+        viewModelScope.launch {
+            setupRepository.saveCountryToSharedPreferences(country)
+        }
     }
 
     fun updateNotificationFlags() {

@@ -90,23 +90,23 @@ class HomeViewModel(
         showErroToast.value = false
     }
 
-    private fun setValuesToLiveData() {
+    private suspend fun setValuesToLiveData() {
         putValues()
         findCurrentTime()
         switchProgressBarOff()
     }
 
-    private fun putValues() {
-        monthSection.value = homeRepository.readMonthSection()
-        locationSecton.value = homeRepository.readLocationSection()
-        fajrTime.value = "${homeRepository.readFejrtime()} - ${homeRepository.readFinishFajrTime()}"
-        dhuhrtime.value = homeRepository.readDhuhrTime()
-        asrTime.value = homeRepository.readAsrTime()
-        maghribTime.value = homeRepository.readMaghribTime()
-        ishaTime.value = homeRepository.readIshaTime()
+    private suspend fun putValues() {
+        monthSection.postValue(homeRepository.readMonthSection())
+        locationSecton.postValue(homeRepository.readLocationSection())
+        fajrTime.postValue("${homeRepository.readFejrtime()} - ${homeRepository.readFinishFajrTime()}")
+        dhuhrtime.postValue(homeRepository.readDhuhrTime())
+        asrTime.postValue(homeRepository.readAsrTime())
+        maghribTime.postValue(homeRepository.readMaghribTime())
+        ishaTime.postValue(homeRepository.readIshaTime())
     }
 
-    private fun findCurrentTime() {
+    private suspend fun findCurrentTime() {
         val currentTime = LocalTime()
         try {
             compareTiming(
@@ -153,14 +153,14 @@ class HomeViewModel(
             switchFajrOn()
     }
 
-    private fun dateHasPassed(): Boolean {
+    private suspend fun dateHasPassed(): Boolean {
         val date = DateTime()
         return !(date.dayOfMonth == homeRepository.getCurrentRegisteredDay() &&
                 date.monthOfYear == homeRepository.getCurrentRegisteredMonth() &&
                 date.year == homeRepository.getCurrentRegisteredYear())
     }
 
-    private fun saveDataToShardPreferences(prayerTimeResponse: PrayerTimeResponse?) {
+    private suspend fun saveDataToShardPreferences(prayerTimeResponse: PrayerTimeResponse?) {
         if (prayerTimeResponse != null) {
             try {
                 saveThePrayerTimeResponseToMemory(prayerTimeResponse)
@@ -170,7 +170,7 @@ class HomeViewModel(
         }
     }
 
-    private fun saveThePrayerTimeResponseToMemory(prayerTimeResponse: PrayerTimeResponse) {
+    private suspend fun saveThePrayerTimeResponseToMemory(prayerTimeResponse: PrayerTimeResponse) {
         prayerTimeResponse.let {
             homeRepository.saveFajrTime(it.data.timings.fajr)
             homeRepository.saveFinishFajrTime(it.data.timings.sunrise)
@@ -231,9 +231,11 @@ class HomeViewModel(
     }
 
     fun initWorker() {
-        if (!homeRepository.isWorkerFired()) {
-            startWorkManager()
-            homeRepository.updateWorkerFired()
+        viewModelScope.launch {
+            if (!homeRepository.isWorkerFired()) {
+                startWorkManager()
+                homeRepository.updateWorkerFired()
+            }
         }
     }
 }

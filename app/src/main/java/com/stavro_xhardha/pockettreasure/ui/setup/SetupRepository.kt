@@ -17,17 +17,17 @@ class SetupRepository @Inject constructor(
     suspend fun makeCountryApiCallAsync(): Response<ArrayList<Country>> =
         treasureApi.getCountriesListAsync(COUNTRIES_API_URL)
 
-    fun saveCountryToSharedPreferences(country: Country) {
+    suspend fun saveCountryToSharedPreferences(country: Country) {
         rocket.writeString(COUNTRY_SHARED_PREFERENCE_KEY, country.name)
         rocket.writeString(CAPITAL_SHARED_PREFERENCES_KEY, country.capitalCity)
     }
 
-    fun isCountryOrCapitalEmpty(): Boolean {
+    suspend fun isCountryOrCapitalEmpty(): Boolean {
         return rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)!!.isEmpty()
                 || rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)!!.isEmpty()
     }
 
-    fun switchNotificationFlags() {
+    suspend fun switchNotificationFlags() {
         rocket.writeBoolean(NOTIFY_USER_FOR_FAJR, true)
         rocket.writeBoolean(NOTIFY_USER_FOR_DHUHR, true)
         rocket.writeBoolean(NOTIFY_USER_FOR_ASR, true)

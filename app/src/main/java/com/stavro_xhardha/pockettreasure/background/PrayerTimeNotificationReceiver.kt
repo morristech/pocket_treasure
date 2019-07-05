@@ -15,6 +15,10 @@ import com.stavro_xhardha.pockettreasure.MainActivity
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.rocket.Rocket
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PrayerTimeNotificationReceiver : BroadcastReceiver() {
 
@@ -25,16 +29,33 @@ class PrayerTimeNotificationReceiver : BroadcastReceiver() {
         rocket = PocketTreasureApplication.getPocketTreasureComponent().getSharedPreferences()
         val title = intent?.getStringExtra(PRAYER_TITLE)
         val description = intent?.getStringExtra(PRAYER_DESCRIPTION)
-        if (title.equals(FAJR) && rocket.readBoolean(NOTIFY_USER_FOR_FAJR))
-            showSomeNotification(context, title, description)
-        if (title.equals(DHUHR) && rocket.readBoolean(NOTIFY_USER_FOR_DHUHR))
-            showSomeNotification(context, title, description)
-        if (title.equals(ASR) && rocket.readBoolean(NOTIFY_USER_FOR_ASR))
-            showSomeNotification(context, title, description)
-        if (title.equals(MAGHRIB) && rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB))
-            showSomeNotification(context, title, description)
-        if (title.equals(ISHA) && rocket.readBoolean(NOTIFY_USER_FOR_ISHA))
-            showSomeNotification(context, title, description)
+        GlobalScope.launch {
+            if (title.equals(FAJR) && rocket.readBoolean(NOTIFY_USER_FOR_FAJR)) {
+                withContext(Dispatchers.Main) {
+                    showSomeNotification(context, title, description)
+                }
+            }
+            if (title.equals(DHUHR) && rocket.readBoolean(NOTIFY_USER_FOR_DHUHR)) {
+                withContext(Dispatchers.Main) {
+                    showSomeNotification(context, title, description)
+                }
+            }
+            if (title.equals(ASR) && rocket.readBoolean(NOTIFY_USER_FOR_ASR)) {
+                withContext(Dispatchers.Main) {
+                    showSomeNotification(context, title, description)
+                }
+            }
+            if (title.equals(MAGHRIB) && rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB)) {
+                withContext(Dispatchers.Main) {
+                    showSomeNotification(context, title, description)
+                }
+            }
+            if (title.equals(ISHA) && rocket.readBoolean(NOTIFY_USER_FOR_ISHA)) {
+                withContext(Dispatchers.Main) {
+                    showSomeNotification(context, title, description)
+                }
+            }
+        }
     }
 
     private fun showSomeNotification(

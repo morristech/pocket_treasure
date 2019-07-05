@@ -8,39 +8,40 @@ import javax.inject.Inject
 
 class SettingsRepository @Inject constructor(val rocket: Rocket, val prayerTimesDao: PrayerTimesDao) {
 
-    fun getFajrChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_FAJR)
+    suspend fun getFajrChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_FAJR)
 
-    fun getDhuhrChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_DHUHR)
+    suspend fun getDhuhrChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_DHUHR)
 
-    fun getAsrChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_ASR)
+    suspend fun getAsrChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_ASR)
 
-    fun getMaghribChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB)
+    suspend fun getMaghribChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_MAGHRIB)
 
-    fun getIshaChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_ISHA)
+    suspend fun getIshaChecked(): Boolean = rocket.readBoolean(NOTIFY_USER_FOR_ISHA)
 
-    fun putFajrNotification(oppositeValue: Boolean) {
+    suspend fun putFajrNotification(oppositeValue: Boolean) {
         rocket.writeBoolean(NOTIFY_USER_FOR_FAJR, oppositeValue)
     }
 
-    fun putAsrNotification(oppositeValue: Boolean) {
+    suspend fun putAsrNotification(oppositeValue: Boolean) {
         rocket.writeBoolean(NOTIFY_USER_FOR_ASR, oppositeValue)
     }
 
-    fun putMaghribNotification(oppositeValue: Boolean) {
+    suspend fun putMaghribNotification(oppositeValue: Boolean) {
         rocket.writeBoolean(NOTIFY_USER_FOR_MAGHRIB, oppositeValue)
     }
 
-    fun putIshaNotification(oppositeValue: Boolean) {
+    suspend fun putIshaNotification(oppositeValue: Boolean) {
         rocket.writeBoolean(NOTIFY_USER_FOR_ISHA, oppositeValue)
     }
 
-    fun putDhuhrNotification(oppositeValue: Boolean) {
+    suspend fun putDhuhrNotification(oppositeValue: Boolean) {
         rocket.writeBoolean(NOTIFY_USER_FOR_DHUHR, oppositeValue)
     }
 
-    fun readCountryAndCapital(): String? = "${rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)} , ${rocket.readString(
-        COUNTRY_SHARED_PREFERENCE_KEY
-    )}"
+    suspend fun readCountryAndCapital(): String? =
+        "${rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)} , ${rocket.readString(
+            COUNTRY_SHARED_PREFERENCE_KEY
+        )}"
 
     suspend fun deleteAllDataInside() {
         prayerTimesDao.deleteAllDataInside()

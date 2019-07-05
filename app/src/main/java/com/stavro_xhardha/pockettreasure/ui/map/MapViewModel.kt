@@ -7,7 +7,7 @@ class MapViewModel(private val mapRepository: MapRepository) : ViewModel() {
 
     val city: MutableLiveData<String> = MutableLiveData()
 
-    fun initMapData() {
+    suspend fun initMapData() {
         city.value = mapRepository.readCurrentSavedCity()
     }
 }

@@ -37,7 +37,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
 
     private fun listenToRepository() {
         incrementIdlingResource()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             settingsRepository.let {
                 fajrCheckHelper = it.getFajrChecked()
                 dhuhrCheckHelper = it.getDhuhrChecked()
@@ -59,7 +59,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
 
     fun onSwFajrClick(checked: Boolean) {
         incrementIdlingResource()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             settingsRepository.putFajrNotification(checked)
             withContext(Dispatchers.Main) {
                 decrementIdlingResource()
@@ -70,7 +70,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
 
     fun onSwDhuhrClick(checked: Boolean) {
         incrementIdlingResource()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             settingsRepository.putDhuhrNotification(checked)
             withContext(Dispatchers.Main) {
                 decrementIdlingResource()
@@ -81,7 +81,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
 
     fun onSwAsrClick(checked: Boolean) {
         incrementIdlingResource()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             settingsRepository.putAsrNotification(checked)
             withContext(Dispatchers.Main) {
                 decrementIdlingResource()
@@ -92,7 +92,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
 
     fun onSwMaghribClick(checked: Boolean) {
         incrementIdlingResource()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             settingsRepository.putMaghribNotification(checked)
             withContext(Dispatchers.Main) {
                 decrementIdlingResource()
@@ -103,7 +103,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
 
     fun onSwIshaClick(checked: Boolean) {
         incrementIdlingResource()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             settingsRepository.putIshaNotification(checked)
             withContext(Dispatchers.Main) {
                 decrementIdlingResource()
@@ -113,7 +113,7 @@ class SettingsViewModel(private val settingsRepository: SettingsRepository) : Vi
     }
 
     fun resetDataForWorker() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             settingsRepository.deleteAllDataInside()
             startWorkManager()
         }

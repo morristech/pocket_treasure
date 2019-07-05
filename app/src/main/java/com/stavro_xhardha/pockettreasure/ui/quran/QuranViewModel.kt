@@ -80,7 +80,7 @@ class QuranViewModel(private val repository: QuranRepository) : ViewModel() {
     private suspend fun makeLocalDatabaseCall() {
         val surahs = repository.findAllSurahs()
         withContext(Dispatchers.Main) {
-            this@QuranViewModel._surahs.value = surahs
+            _surahs.value = surahs
             resetVisibilityValues()
         }
     }

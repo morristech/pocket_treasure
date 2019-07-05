@@ -1,15 +1,13 @@
 package com.stavro_xhardha.pockettreasure.ui.news
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.rocket.Rocket
+import kotlinx.coroutines.launch
 
 class NewsViewModel(
     dataSourceFactory: NewsDataSourceFactory,
@@ -51,12 +49,14 @@ class NewsViewModel(
         networkState = listing.networkState
         refreshState = listing.refreshState
 
-        checkDialogVisibility()
+        viewModelScope.launch {
+            checkDialogVisibility()
+        }
     }
 
-    private fun checkDialogVisibility() {
+    private suspend fun checkDialogVisibility() {
         if (!rocket.readBoolean(HAS_ONCE_ENTERED_NEWS)) {
-            _enterDialogVisibility.value = true
+            _enterDialogVisibility.postValue(true)
             rocket.writeBoolean(HAS_ONCE_ENTERED_NEWS, true)
         }
     }

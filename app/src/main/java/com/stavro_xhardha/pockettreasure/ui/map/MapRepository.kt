@@ -9,6 +9,6 @@ class MapRepository(
     private val rocket: Rocket
 ) {
 
-    fun readCurrentSavedCity(): String? = rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)
+    suspend fun readCurrentSavedCity(): String? = rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)
 
 }

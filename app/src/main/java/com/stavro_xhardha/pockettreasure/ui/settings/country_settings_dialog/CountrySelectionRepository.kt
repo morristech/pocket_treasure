@@ -11,13 +11,14 @@ import javax.inject.Inject
 class CountrySelectionRepository @Inject constructor(private val countriesDao: CountriesDao, val rocket: Rocket) {
     suspend fun selectAllCountries(): List<Country>? = countriesDao.selectAllCountries()
 
-    fun updateCountry(country: Country) {
+    suspend fun updateCountry(country: Country) {
         rocket.writeString(COUNTRY_SHARED_PREFERENCE_KEY, country.name)
         rocket.writeString(CAPITAL_SHARED_PREFERENCES_KEY, country.capitalCity)
         rocket.writeBoolean(COUNTRY_UPDATED, true)
     }
 
-    fun readCurrentCountry(): String = "${rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)} , ${rocket.readString(
-        COUNTRY_SHARED_PREFERENCE_KEY
-    )}"
+    suspend fun readCurrentCountry(): String =
+        "${rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)} , ${rocket.readString(
+            COUNTRY_SHARED_PREFERENCE_KEY
+        )}"
 }
