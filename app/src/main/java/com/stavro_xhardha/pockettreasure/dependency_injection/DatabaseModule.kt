@@ -15,5 +15,5 @@ class DatabaseModule {
     fun provideRoomDatabase(context: Application): TreasureDatabase = Room.databaseBuilder(
         context,
         TreasureDatabase::class.java, TREASURE_DATABASE_NAME
-    ).fallbackToDestructiveMigration().build()
+    ).build()
 }
