@@ -87,7 +87,7 @@ dependencies {
     implementation 'com.github.stavro96:Rocket:1.2.0'
 
     //ViewModel scope for coroutines
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02'
 
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
@@ -108,7 +108,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    debugImplementation 'androidx.fragment:fragment-testing:1.1.0-beta01'
+    debugImplementation 'androidx.fragment:fragment-testing:1.2.0-alpha01'
     implementation 'androidx.fragment:fragment:1.1.0-alpha01'
     androidTestImplementation 'org.mockito:mockito-android:2.24.5'
 
@@ -132,7 +132,7 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     //new viewmodel saved instance state
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-alpha02'
 
     testImplementation 'joda-time:joda-time:2.10.1'
 
