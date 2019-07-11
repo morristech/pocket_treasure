@@ -76,9 +76,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:input:3.0.0-rc2'
 
     //room
-    implementation "androidx.room:room-runtime:2.1.0"
-    kapt "androidx.room:room-compiler:2.1.0"
-    implementation "androidx.room:room-ktx:2.1.0"
+    implementation "androidx.room:room-runtime:2.2.0-alpha01"
+    kapt "androidx.room:room-compiler:2.2.0-alpha01"
+    implementation "androidx.room:room-ktx:2.2.0-alpha01"
 
     //Joda time
     implementation 'net.danlew:android.joda:2.10.1.2'
