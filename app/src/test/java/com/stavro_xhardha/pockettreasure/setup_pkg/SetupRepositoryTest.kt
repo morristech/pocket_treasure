@@ -45,47 +45,57 @@ class SetupRepositoryTest {
 
     @Test
     fun `SetupRepository on given empty country and capital city, invoked method should return true`() {
-        countryAndCapitalEmpty()
+        runBlocking {
+            countryAndCapitalEmpty()
 
-        val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
+            val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
 
-        assertEquals(true, repositoryEmpty)
+            assertEquals(true, repositoryEmpty)
+        }
     }
 
     @Test
     fun `on country empty and capital not empty method should return true`() {
-        countryEmptyCapitalNotEmpty()
+        runBlocking {
+            countryEmptyCapitalNotEmpty()
 
-        val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
+            val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
 
-        assertEquals(true, repositoryEmpty)
+            assertEquals(true, repositoryEmpty)
+        }
     }
 
     @Test
     fun `on country not empty and capital empty method should return true`() {
-        countryNotEmptyAndCapitalEmpty()
+        runBlocking {
+            countryNotEmptyAndCapitalEmpty()
 
-        val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
+            val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
 
-        assertEquals(true, repositoryEmpty)
+            assertEquals(true, repositoryEmpty)
+        }
     }
 
     @Test
     fun `on both country and capital not empty method should return false`() {
-        countryNotEmptyAndCapitalNotEmpty()
+        runBlocking {
+            countryNotEmptyAndCapitalNotEmpty()
 
-        val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
+            val repositoryEmpty = setupRepository.isCountryOrCapitalEmpty()
 
-        assertEquals(false, repositoryEmpty)
+            assertEquals(false, repositoryEmpty)
+        }
     }
 
     @Test
     fun `when writing country execution should go fine`() {
-        val country = Country("Albania", "Tirana")
-        setupRepository.saveCountryToSharedPreferences(country)
+        runBlocking {
+            val country = Country("Albania", "Tirana")
+            setupRepository.saveCountryToSharedPreferences(country)
 
-        verify(rocket).writeString(COUNTRY_SHARED_PREFERENCE_KEY, country.name)
-        verify(rocket).writeString(CAPITAL_SHARED_PREFERENCES_KEY, country.capitalCity)
+            verify(rocket).writeString(COUNTRY_SHARED_PREFERENCE_KEY, country.name)
+            verify(rocket).writeString(CAPITAL_SHARED_PREFERENCES_KEY, country.capitalCity)
+        }
     }
 
     @Test
@@ -116,32 +126,42 @@ class SetupRepositoryTest {
 
     @Test
     fun `on switch notification flags should execute correctly`() {
-        setupRepository.switchNotificationFlags()
+        runBlocking {
+            setupRepository.switchNotificationFlags()
 
-        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_FAJR, true)
-        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_DHUHR, true)
-        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_ASR, true)
-        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_MAGHRIB, true)
-        verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_ISHA, true)
+            verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_FAJR, true)
+            verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_DHUHR, true)
+            verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_ASR, true)
+            verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_MAGHRIB, true)
+            verify(rocket, times(1)).writeBoolean(NOTIFY_USER_FOR_ISHA, true)
+        }
     }
 
     private fun countryNotEmptyAndCapitalEmpty() {
-        `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("Albania")
-        `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("")
+        runBlocking {
+            `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("Albania")
+            `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("")
+        }
     }
 
     private fun countryAndCapitalEmpty() {
-        `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("")
-        `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("")
+        runBlocking {
+            `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("")
+            `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("")
+        }
     }
 
     private fun countryEmptyCapitalNotEmpty() {
-        `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("")
-        `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("Tirana")
+        runBlocking {
+            `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("")
+            `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("Tirana")
+        }
     }
 
     private fun countryNotEmptyAndCapitalNotEmpty() {
-        `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("Albania")
-        `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("Tirana")
+        runBlocking {
+            `when`(rocket.readString(COUNTRY_SHARED_PREFERENCE_KEY)).thenReturn("Albania")
+            `when`(rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)).thenReturn("Tirana")
+        }
     }
 }
