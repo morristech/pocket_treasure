@@ -11,8 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.Smoothie
 import com.stavro_xhardha.pockettreasure.ui.home.HomeFragment
+import com.sxhardha.smoothie.Smoothie
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before

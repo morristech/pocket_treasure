@@ -58,11 +58,13 @@ class SetupViewModelTest {
     }
 
     @Test
-    fun onCountrySelected_countryShouldBeCorrect() {
+    fun onCountrySelected_countryShouldBeCorrect() = runBlocking {
 
         setupViewModel.onCountrySelected(country)
 
+
         verify(setupRepository).saveCountryToSharedPreferences(country)
+
     }
 
     @Test

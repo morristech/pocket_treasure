@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.stavro_xhardha.pockettreasure.brain.Smoothie
 import com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragment
 import org.junit.After
 import org.junit.Before
@@ -29,6 +28,7 @@ import com.stavro_xhardha.pockettreasure.R
 import org.hamcrest.CoreMatchers.not
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragmentDirections
+import com.sxhardha.smoothie.Smoothie
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.any
 import org.mockito.Mockito.verify

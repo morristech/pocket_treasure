@@ -6,8 +6,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.stavro_xhardha.pockettreasure.brain.Smoothie
 import com.stavro_xhardha.pockettreasure.ui.gallery.full_image.FullImageFragment
+import com.sxhardha.smoothie.Smoothie
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
