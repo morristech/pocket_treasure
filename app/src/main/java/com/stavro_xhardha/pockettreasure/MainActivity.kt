@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -45,13 +46,21 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
 
     private fun setupNavControllerListener(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            val dest: String = try {
-                resources.getResourceName(destination.id)
-            } catch (e: Resources.NotFoundException) {
-                destination.id.toString()
+            if (destination.id == R.id.setupFragment) {
+                toolbar.visibility = View.GONE
+                drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            } else {
+                toolbar.visibility = View.VISIBLE
+                drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
-            if (isDebugMode)
+            if (isDebugMode) {
+                val dest: String = try {
+                    resources.getResourceName(destination.id)
+                } catch (e: Resources.NotFoundException) {
+                    destination.id.toString()
+                }
                 Log.d("NavigationActivity", "Navigated to $dest")
+            }
         }
     }
 
