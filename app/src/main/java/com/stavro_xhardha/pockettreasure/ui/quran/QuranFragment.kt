@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_quran.*
 import javax.inject.Inject
@@ -20,11 +22,10 @@ import javax.inject.Inject
 class QuranFragment : BaseFragment(), QuranAdapterContract {
 
     @Inject
-    lateinit var quranFragmentFactory: QuranFragmentFactory
+    lateinit var quranFragmentFactory: ViewModelProvider.Factory
 
     private lateinit var quranViewModel: QuranViewModel
     private lateinit var quranAdapter: QuranAdapter
-    private lateinit var componentHelper: QuranComponent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,13 +56,15 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
     }
 
     override fun performDi() {
-        componentHelper = DaggerQuranComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build()
+//        componentHelper = DaggerQuranComponent.builder()
+//            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+//            .build()
+//
+//        componentHelper.inject(this)
+//
+//        component = componentHelper
 
-        componentHelper.inject(this)
-
-        component = componentHelper
+        AndroidSupportInjection.inject(this)
     }
 
     override fun observeTheLiveData() {
@@ -85,12 +88,5 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
     override fun onSurahClicked(surahsNumber: Int) {
         val action = QuranFragmentDirections.actionQuranFragmentToAyaFragment(surahsNumber)
         findNavController().navigate(action)
-    }
-
-    companion object {
-        private var component: QuranComponent? = null
-
-        @JvmStatic
-        fun getComponent(): QuranComponent? = component
     }
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -21,6 +22,7 @@ import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.*
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
@@ -29,7 +31,7 @@ import javax.inject.Inject
 class NewsFragment : BaseFragment(), NewsAdapterContract {
 
     @Inject
-    lateinit var newsViewModelFactory: NewsViewModelFactory
+    lateinit var newsViewModelFactory: ViewModelProvider.Factory
 
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var newsAdapter: NewsAdapter
@@ -67,8 +69,9 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
     }
 
     override fun performDi() {
-        DaggerNewsComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+//        DaggerNewsComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+//            .build().inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun observeTheLiveData() {

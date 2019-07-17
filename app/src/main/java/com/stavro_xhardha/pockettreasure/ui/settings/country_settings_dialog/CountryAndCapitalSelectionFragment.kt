@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.R
@@ -13,13 +15,15 @@ import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import com.stavro_xhardha.pockettreasure.ui.setup.CountryAdapter
 import com.stavro_xhardha.pockettreasure.ui.setup.SetupContract
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_country_and_capital_selection.*
 import javax.inject.Inject
 
 class CountryAndCapitalSelectionFragment : DialogFragment(), SetupContract {
 
     @Inject
-    lateinit var countrySelectionFactory: CountrySettingsViewModelFactory
+    lateinit var countrySelectionFactory: ViewModelProvider.Factory
+
     private lateinit var countrySelectionViewModel: CountrySettingsViewModel
     private lateinit var adapter: CountryAdapter
     private lateinit var sharedViewModel: SharedViewModel
@@ -62,9 +66,10 @@ class CountryAndCapitalSelectionFragment : DialogFragment(), SetupContract {
     }
 
     private fun performDependencyInjection() {
-        DaggerCountrySelectionComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+//        DaggerCountrySelectionComponent.builder()
+//            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+//            .build().inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun onListItemClick(country: Country) {

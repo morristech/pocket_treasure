@@ -1,25 +1,24 @@
 package com.stavro_xhardha
 
+import android.app.Activity
 import android.app.Application
 import com.stavro_xhardha.pockettreasure.dependency_injection.DaggerPocketTreasureComponent
-import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureComponent
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
 import net.danlew.android.joda.JodaTimeAndroid
+import javax.inject.Inject
 
+class PocketTreasureApplication : Application(), HasActivityInjector {
 
-class PocketTreasureApplication : Application() {
-    private lateinit var pocketTreasureComponent: PocketTreasureComponent
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     override fun onCreate() {
         super.onCreate()
         JodaTimeAndroid.init(this)
-        pocketTreasureComponent = DaggerPocketTreasureComponent.factory().create(this)
-        INSTANCE = pocketTreasureComponent
+        DaggerPocketTreasureComponent.factory().create(this).inject(this)
     }
 
-    companion object {
-        private var INSTANCE: PocketTreasureComponent? = null
-
-        @JvmStatic
-        fun getPocketTreasureComponent(): PocketTreasureComponent = INSTANCE!!
-    }
+    override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
 }

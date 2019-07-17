@@ -8,15 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.Status
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
@@ -24,8 +27,10 @@ import javax.inject.Inject
 class GalleryFragment : BaseFragment(), GalleryContract {
 
     @Inject
-    lateinit var galleryViewModelFactory: GalleryViewModelFactory
+    lateinit var galleryViewModelFactory: ViewModelProvider.Factory
     @Inject
+    lateinit var picasso: Picasso
+
     lateinit var galleryAdapter: GalleryAdapter
 
     private lateinit var galleryViewModel: GalleryViewModel
@@ -48,6 +53,7 @@ class GalleryFragment : BaseFragment(), GalleryContract {
 
     override fun initializeComponents() {
         rvGallery.layoutManager = GridLayoutManager(activity, 3)
+        galleryAdapter = GalleryAdapter(this, picasso)
         rvGallery.adapter = galleryAdapter
         btnRetry.setOnClickListener {
             galleryViewModel.retry()
@@ -59,9 +65,10 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     }
 
     override fun performDi() {
-        DaggerGalleryComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .galleryModule(GalleryModule(this))
-            .build().inject(this)
+//        DaggerGalleryComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+//            .galleryModule(GalleryModule(this))
+//            .build().inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun observeTheLiveData() {

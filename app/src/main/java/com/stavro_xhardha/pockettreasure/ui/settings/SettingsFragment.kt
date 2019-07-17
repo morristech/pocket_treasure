@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -14,13 +15,14 @@ import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_settings.*
 import javax.inject.Inject
 
 class SettingsFragment : BaseFragment() {
 
     @Inject
-    lateinit var settingsFragmentFactory: SettingsFragmentFactory
+    lateinit var settingsFragmentFactory: ViewModelProvider.Factory
 
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var sharedViewModel: SharedViewModel
@@ -76,9 +78,10 @@ class SettingsFragment : BaseFragment() {
     }
 
     override fun performDi() {
-        DaggerSettingsFragmentComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+//        DaggerSettingsFragmentComponent.builder()
+//            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+//            .build().inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun observeTheLiveData() {

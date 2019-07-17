@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
@@ -13,6 +14,7 @@ import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.*
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.Country
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_setup.*
 import javax.inject.Inject
@@ -20,7 +22,7 @@ import javax.inject.Inject
 
 class SetupFragment : BaseFragment(), SetupContract {
     @Inject
-    lateinit var setupViewModelFactory: SetupViewModelFactory
+    lateinit var setupViewModelFactory: ViewModelProvider.Factory
 
     private lateinit var setupViewModel: SetupViewModel
     private lateinit var countryAdapter: CountryAdapter
@@ -33,9 +35,10 @@ class SetupFragment : BaseFragment(), SetupContract {
     }
 
     override fun performDi() {
-        DaggerSetupComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+//        DaggerSetupComponent.builder()
+//            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+//            .build().inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun initViewModel() {

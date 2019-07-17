@@ -17,20 +17,23 @@ import com.stavro_xhardha.pockettreasure.MainActivity
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.rocket.Rocket
+import dagger.android.AndroidInjection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class PrayerTimeNotificationReceiver : BroadcastReceiver() {
 
     private val CHANNEL_ID = "PrayerTimeId"
-    private lateinit var rocket: Rocket
-    private lateinit var picasso: Picasso
+    @Inject
+    lateinit var rocket: Rocket
+    @Inject
+    lateinit var picasso: Picasso
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        rocket = PocketTreasureApplication.getPocketTreasureComponent().getSharedPreferences()
-        picasso = PocketTreasureApplication.getPocketTreasureComponent().picasso()
+        AndroidInjection.inject(this, context)
         val title = intent?.getStringExtra(PRAYER_TITLE)
         val description = intent?.getStringExtra(PRAYER_DESCRIPTION)
         GlobalScope.launch {

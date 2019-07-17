@@ -18,15 +18,16 @@ import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.REQUEST_STORAGE_PERMISSION
 import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
 import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_full_image.*
 import kotlinx.coroutines.*
 import java.io.IOException
 import java.net.URL
+import javax.inject.Inject
 
 
 class FullImageFragment : Fragment() {
@@ -36,8 +37,11 @@ class FullImageFragment : Fragment() {
 
     private val completableJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
-    private lateinit var picasso: Picasso
-    private lateinit var wallpaperManager: WallpaperManager
+
+    @Inject
+    lateinit var picasso: Picasso
+    @Inject
+    lateinit var wallpaperManager: WallpaperManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +52,7 @@ class FullImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        picasso = PocketTreasureApplication.getPocketTreasureComponent().picasso()
-        wallpaperManager = PocketTreasureApplication.getPocketTreasureComponent().wallpaperManager()
-
+        AndroidSupportInjection.inject(this)
         expetedUrl = args.imageUrl
 
         if (expetedUrl.isNotEmpty()) {
@@ -60,6 +61,7 @@ class FullImageFragment : Fragment() {
                     override fun onSuccess() {
                         onSuccessFulImageLoad()
                     }
+
                     override fun onError(e: Exception?) {
                         loadErrorImage()
                     }

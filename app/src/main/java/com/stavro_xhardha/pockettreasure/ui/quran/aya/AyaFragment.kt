@@ -7,18 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_aya.*
 import javax.inject.Inject
 
 class AyaFragment : BaseFragment() {
 
     @Inject
-    lateinit var ayaFragmentFactory: AyaFragmentFactory
+    lateinit var ayaFragmentFactory: ViewModelProvider.Factory
     private lateinit var ayaViewModel: AyaViewModel
     private lateinit var ayasAdapter: AyasAdapter
     private val mediaPlayer = MediaPlayer()
@@ -51,7 +53,7 @@ class AyaFragment : BaseFragment() {
     }
 
     override fun performDi() {
-        DaggerAyaComponent.builder().quranComponent(QuranFragment.getComponent()).build().inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun observeTheLiveData() {

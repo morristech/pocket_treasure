@@ -13,6 +13,7 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.PrayerTimesDao
 import com.stavro_xhardha.pockettreasure.room_db.TreasureDatabase
 import com.stavro_xhardha.rocket.Rocket
+import dagger.android.AndroidInjection
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -98,11 +99,11 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
     }
 
     private fun instantiateDependencies() {
-        val application = PocketTreasureApplication.getPocketTreasureComponent()
-        treasureApi = application.getTreasureApi()
-        rocket = application.getSharedPreferences()
-        treasureDatabase = application.treasureDatabase()
-        prayerTimesDao = treasureDatabase.prayerTimesDao()
-        offlineScheduler = application.offlineScheduler()
+//        val application = PocketTreasureApplication.getPocketTreasureComponent()
+//        treasureApi = application.getTreasureApi()
+//        rocket = application.getSharedPreferences()
+//        treasureDatabase = application.treasureDatabase()
+//        prayerTimesDao = treasureDatabase.prayerTimesDao()
+//        offlineScheduler = application.offlineScheduler()
     }
 }

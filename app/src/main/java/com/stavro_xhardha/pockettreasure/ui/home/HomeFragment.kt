@@ -14,12 +14,13 @@ import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.PLAY_STORE_URL
-import com.stavro_xhardha.pockettreasure.dependency_injection.DaggerPocketTreasureComponent
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment() {
 
+    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var homeViewModel: HomeViewModel
@@ -53,7 +54,7 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun performDi() {
-        viewModelFactory = PocketTreasureApplication.getPocketTreasureComponent().daggerViewModelFactory()
+        AndroidSupportInjection.inject(this)
     }
 
     private fun shareApp() {

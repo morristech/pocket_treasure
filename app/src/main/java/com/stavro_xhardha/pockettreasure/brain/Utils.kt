@@ -91,12 +91,12 @@ fun decrementIdlingResource() {
 }
 
 fun startWorkManager() {
-    val constraints = Constraints.Builder()
-        .setRequiredNetworkType(NetworkType.CONNECTED)
-        .build()
-    val compressionWork = OneTimeWorkRequestBuilder<PrayerTimeWorkManager>()
-        .setConstraints(constraints)
-        .build()
-
-    WorkManager.getInstance().enqueue(compressionWork)
+//    val constraints = Constraints.Builder()
+//        .setRequiredNetworkType(NetworkType.CONNECTED)
+//        .build()
+//    val compressionWork = OneTimeWorkRequestBuilder<PrayerTimeWorkManager>()
+//        .setConstraints(constraints)
+//        .build()
+//
+//    WorkManager.getInstance().enqueue(compressionWork)
 }

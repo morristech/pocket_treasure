@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_names.*
 import javax.inject.Inject
@@ -20,7 +22,7 @@ import javax.inject.Inject
 class NamesFragment : BaseFragment() {
 
     @Inject
-    lateinit var namesFragmentProviderFactory: NamesViewModelProviderFactory
+    lateinit var namesFragmentProviderFactory: ViewModelProvider.Factory
 
     private lateinit var namesViewModel: NamesViewModel
     private lateinit var namesAdapter: NamesAdapter
@@ -33,9 +35,10 @@ class NamesFragment : BaseFragment() {
     }
 
     override fun performDi() {
-        DaggerNamesFragmentComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+//        DaggerNamesFragmentComponent.builder()
+//            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
+//            .build().inject(this)
+        AndroidSupportInjection.inject(this)
     }
 
     override fun initViewModel() {
