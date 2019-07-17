@@ -32,16 +32,6 @@ class SetupFragment : BaseFragment(), SetupContract {
         return inflater.inflate(R.layout.fragment_setup, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        (activity!! as MainActivity).supportActionBar?.hide()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        (activity!! as MainActivity).supportActionBar?.show()
-    }
-
     override fun performDi() {
         DaggerSetupComponent.builder()
             .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
