@@ -2,6 +2,7 @@ package com.stavro_xhardha.pockettreasure.dependency_injection
 
 import android.app.Application
 import android.app.WallpaperManager
+import androidx.lifecycle.ViewModelProvider
 import com.squareup.picasso.Picasso
 import com.stavro_xhardha.pockettreasure.background.OfflinePrayerScheduler
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
@@ -11,7 +12,10 @@ import dagger.BindsInstance
 import dagger.Component
 
 @ApplicationScope
-@Component(modules = [NetworkModule::class, PreferencesModule::class, DatabaseModule::class, ImageModule::class, OfflineSchedulerModule::class])
+@Component(
+    modules = [NetworkModule::class, PreferencesModule::class, DatabaseModule::class, ImageModule::class,
+        OfflineSchedulerModule::class, ViewModelFactoryModule::class]
+)
 interface PocketTreasureComponent {
     fun getTreasureApi(): TreasureApi
 
@@ -24,6 +28,8 @@ interface PocketTreasureComponent {
     fun wallpaperManager(): WallpaperManager
 
     fun offlineScheduler(): OfflinePrayerScheduler
+
+    fun daggerViewModelFactory(): ViewModelProvider.Factory
 
     @Component.Factory
     interface Factory {

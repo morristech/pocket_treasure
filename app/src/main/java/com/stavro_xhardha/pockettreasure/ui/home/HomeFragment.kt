@@ -7,19 +7,20 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.PLAY_STORE_URL
+import com.stavro_xhardha.pockettreasure.dependency_injection.DaggerPocketTreasureComponent
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment() {
 
-    @Inject
-    lateinit var homeViewModelFactory: HomeViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -51,6 +52,10 @@ class HomeFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun performDi() {
+        viewModelFactory = PocketTreasureApplication.getPocketTreasureComponent().daggerViewModelFactory()
+    }
+
     private fun shareApp() {
         val sharingIntent = Intent(Intent.ACTION_SEND)
         sharingIntent.type = "text/plain"
@@ -64,15 +69,8 @@ class HomeFragment : BaseFragment() {
         homeViewModel.loadPrayerTimes()
     }
 
-    override fun performDi() {
-        DaggerHomeComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build()
-            .inject(this)
-    }
-
     override fun initViewModel() {
-        homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         homeViewModel.initWorker()
     }
 
