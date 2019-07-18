@@ -1,6 +1,7 @@
-package com.stavro_xhardha.pockettreasure.dependency_injection
+package com.stavro_xhardha.pockettreasure.dependency_injection.modules
 
 import com.stavro_xhardha.pockettreasure.brain.PRAYER_API_BASE_URL
+import com.stavro_xhardha.pockettreasure.dependency_injection.scopes.ApplicationScope
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import dagger.Module
 import dagger.Provides

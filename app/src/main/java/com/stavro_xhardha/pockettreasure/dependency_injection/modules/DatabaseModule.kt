@@ -1,8 +1,9 @@
-package com.stavro_xhardha.pockettreasure.dependency_injection
+package com.stavro_xhardha.pockettreasure.dependency_injection.modules
 
 import android.app.Application
 import androidx.room.Room
 import com.stavro_xhardha.pockettreasure.brain.TREASURE_DATABASE_NAME
+import com.stavro_xhardha.pockettreasure.dependency_injection.scopes.ApplicationScope
 import com.stavro_xhardha.pockettreasure.room_db.*
 import dagger.Module
 import dagger.Provides

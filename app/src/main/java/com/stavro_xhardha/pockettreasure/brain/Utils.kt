@@ -8,10 +8,9 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.stavro_xhardha.pockettreasure.BuildConfig
-import com.stavro_xhardha.pockettreasure.background.PrayerTimeWorkManager
+import com.stavro_xhardha.pockettreasure.background.PrayerSyncWorker
 import com.stavro_xhardha.pockettreasure.model.*
 import com.sxhardha.smoothie.Smoothie
-import java.util.concurrent.atomic.AtomicInteger
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
 
@@ -91,12 +90,12 @@ fun decrementIdlingResource() {
 }
 
 fun startWorkManager() {
-//    val constraints = Constraints.Builder()
-//        .setRequiredNetworkType(NetworkType.CONNECTED)
-//        .build()
-//    val compressionWork = OneTimeWorkRequestBuilder<PrayerTimeWorkManager>()
-//        .setConstraints(constraints)
-//        .build()
-//
-//    WorkManager.getInstance().enqueue(compressionWork)
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()
+    val compressionWork = OneTimeWorkRequestBuilder<PrayerSyncWorker>()
+        .setConstraints(constraints)
+        .build()
+
+    WorkManager.getInstance().enqueue(compressionWork)
 }

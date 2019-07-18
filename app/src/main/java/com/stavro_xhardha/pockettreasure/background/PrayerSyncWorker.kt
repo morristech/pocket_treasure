@@ -3,9 +3,14 @@ package com.stavro_xhardha.pockettreasure.background
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
+import androidx.work.ListenableWorker
+import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.brain.*
+import com.stavro_xhardha.pockettreasure.dependency_injection.ChildWorkerFactory
 import com.stavro_xhardha.pockettreasure.model.PrayerMonthDays
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeYearResponse
 import com.stavro_xhardha.pockettreasure.model.PrayerTiming
@@ -18,14 +23,18 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
+import javax.inject.Inject
+import javax.inject.Provider
 
-class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) : CoroutineWorker(context, parameters) {
-
-    private lateinit var treasureDatabase: TreasureDatabase
-    private lateinit var treasureApi: TreasureApi
-    private lateinit var rocket: Rocket
-    private lateinit var prayerTimesDao: PrayerTimesDao
-    private lateinit var offlineScheduler: OfflinePrayerScheduler
+class PrayerSyncWorker @AssistedInject constructor(
+    @Assisted val context: Context,
+    @Assisted parameters: WorkerParameters,
+    val treasureDatabase: TreasureDatabase,
+    val treasureApi: TreasureApi,
+    val rocket: Rocket,
+    val prayerTimesDao: PrayerTimesDao,
+    val offlinePrayerScheduler: OfflinePrayerScheduler
+) : CoroutineWorker(context, parameters) {
 
     override suspend fun doWork(): Result = coroutineScope {
         instantiateDependencies()
@@ -67,7 +76,7 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
             }
         }
 
-        offlineScheduler.initScheduler()
+        offlinePrayerScheduler.initScheduler()
         rocket.writeBoolean(DATA_ARE_READY, true)
     }
 
@@ -106,4 +115,7 @@ class PrayerTimeWorkManager(val context: Context, parameters: WorkerParameters) 
 //        prayerTimesDao = treasureDatabase.prayerTimesDao()
 //        offlineScheduler = application.offlineScheduler()
     }
+
+    @AssistedInject.Factory
+    interface PrayerFactory : ChildWorkerFactory
 }

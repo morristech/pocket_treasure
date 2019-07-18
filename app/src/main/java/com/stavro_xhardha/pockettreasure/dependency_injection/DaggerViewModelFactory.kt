@@ -2,6 +2,7 @@ package com.stavro_xhardha.pockettreasure.dependency_injection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.stavro_xhardha.pockettreasure.dependency_injection.scopes.ApplicationScope
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 import java.lang.RuntimeException
@@ -9,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @ApplicationScope
-class DaggerVMFactory @Inject constructor(private val viewModels: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>) :
+class DaggerViewModelFactory @Inject constructor(private val viewModels: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val creator = viewModels[modelClass] ?: viewModels.asIterable().firstOrNull {
