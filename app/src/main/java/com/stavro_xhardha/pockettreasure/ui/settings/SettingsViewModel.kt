@@ -9,8 +9,9 @@ import com.stavro_xhardha.pockettreasure.brain.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SettingsViewModel(private val settingsRepository: SettingsRepository) : ViewModel() {
+class SettingsViewModel @Inject constructor(private val settingsRepository: SettingsRepository) : ViewModel() {
     private val _fajrCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _dhuhrCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _asrCheck: MutableLiveData<Boolean> = MutableLiveData()

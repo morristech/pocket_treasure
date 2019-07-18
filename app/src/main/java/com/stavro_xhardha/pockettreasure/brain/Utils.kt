@@ -1,6 +1,10 @@
 package com.stavro_xhardha.pockettreasure.brain
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
 import androidx.work.Constraints
@@ -99,3 +103,6 @@ fun startWorkManager() {
 
     WorkManager.getInstance().enqueue(compressionWork)
 }
+
+fun Fragment.initViewModel(factory: ViewModelProvider.Factory, viewModelClass: Class<out ViewModel>): <out ViewModel> =
+ViewModelProviders.of(this, factory).get(viewModelClass)

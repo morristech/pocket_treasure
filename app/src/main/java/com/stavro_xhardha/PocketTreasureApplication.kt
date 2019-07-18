@@ -6,9 +6,6 @@ import android.content.BroadcastReceiver
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import androidx.work.WorkManager.*
-import androidx.work.WorkerFactory
-import com.stavro_xhardha.pockettreasure.background.PrayerSyncWorker
-import com.stavro_xhardha.pockettreasure.dependency_injection.ChildWorkerFactory
 import com.stavro_xhardha.pockettreasure.dependency_injection.DaggerPocketTreasureComponent
 import com.stavro_xhardha.pockettreasure.dependency_injection.PrayerWorkerFactory
 import dagger.android.AndroidInjector

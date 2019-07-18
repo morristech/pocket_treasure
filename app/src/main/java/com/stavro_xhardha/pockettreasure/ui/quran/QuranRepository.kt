@@ -8,8 +8,9 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.AyasDao
 import com.stavro_xhardha.pockettreasure.room_db.SurahsDao
 import retrofit2.Response
+import javax.inject.Inject
 
-class QuranRepository(
+class QuranRepository @Inject constructor(
     val treasureApi: TreasureApi,
     val surahsDao: SurahsDao,
     val ayasDao: AyasDao
@@ -26,7 +27,7 @@ class QuranRepository(
         quranResponse?.data?.surahs?.forEach { surah ->
             surahsDao.insertSurah(surah)
             surah.ayas.forEach { aya ->
-                val ayaHelper = Aya(0,aya.audioUrl, aya.ayatText, aya.ayatNumber, aya.juz, surah.surahNumber)
+                val ayaHelper = Aya(0, aya.audioUrl, aya.ayatText, aya.ayatNumber, aya.juz, surah.surahNumber)
                 ayasDao.insertAya(ayaHelper)
             }
         }

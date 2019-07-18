@@ -8,8 +8,10 @@ import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CountrySettingsViewModel(private val countrySelectionRepository: CountrySelectionRepository) : ViewModel() {
+class CountrySettingsViewModel @Inject constructor(private val countrySelectionRepository: CountrySelectionRepository) :
+    ViewModel() {
     private val _countriesList: MutableLiveData<ArrayList<Country>> = MutableLiveData()
     private val _isFragmentReadyToClose: MutableLiveData<Boolean> = MutableLiveData()
     private val _countryAndCapital = MutableLiveData<String>()

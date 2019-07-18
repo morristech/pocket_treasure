@@ -8,8 +8,9 @@ import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.rocket.Rocket
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NewsViewModel(
+class NewsViewModel @Inject constructor(
     dataSourceFactory: NewsDataSourceFactory,
     val rocket: Rocket
 ) : ViewModel() {
