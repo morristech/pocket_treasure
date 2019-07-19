@@ -11,8 +11,9 @@ import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.DIFF_UTIL_GALLERY
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
 import kotlinx.android.synthetic.main.single_item_image.view.*
+import javax.inject.Inject
 
-class GalleryAdapter(
+class GalleryAdapter @Inject constructor(
     private val contract: GalleryContract,
     private val picasso: Picasso
 ) :

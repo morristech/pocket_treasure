@@ -22,7 +22,7 @@ abstract class FragmentModule {
     abstract fun contributeHomeFragment(): HomeFragment
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [GalleryFragmentModule::class])
     abstract fun contributesGalleryFragment(): GalleryFragment
 
     @FragmentScope
@@ -38,7 +38,7 @@ abstract class FragmentModule {
     abstract fun conributesNewsFragment(): NewsFragment
 
     @FragmentScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [QuranModule::class])
     abstract fun contributesQuranFragment(): QuranFragment
 
     @FragmentScope

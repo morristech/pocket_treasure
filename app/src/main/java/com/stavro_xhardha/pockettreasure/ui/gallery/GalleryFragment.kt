@@ -30,7 +30,7 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     lateinit var galleryViewModelFactory: ViewModelProvider.Factory
     @Inject
     lateinit var picasso: Picasso
-
+    @Inject
     lateinit var galleryAdapter: GalleryAdapter
 
     private lateinit var galleryViewModel: GalleryViewModel
@@ -53,7 +53,6 @@ class GalleryFragment : BaseFragment(), GalleryContract {
 
     override fun initializeComponents() {
         rvGallery.layoutManager = GridLayoutManager(activity, 3)
-        galleryAdapter = GalleryAdapter(this, picasso)
         rvGallery.adapter = galleryAdapter
         btnRetry.setOnClickListener {
             galleryViewModel.retry()
@@ -65,9 +64,6 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     }
 
     override fun performDi() {
-//        DaggerGalleryComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-//            .galleryModule(GalleryModule(this))
-//            .build().inject(this)
         AndroidSupportInjection.inject(this)
     }
 

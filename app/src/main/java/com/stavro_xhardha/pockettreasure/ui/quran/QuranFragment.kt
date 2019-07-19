@@ -23,9 +23,10 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
 
     @Inject
     lateinit var quranFragmentFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var quranAdapter: QuranAdapter
 
     private lateinit var quranViewModel: QuranViewModel
-    private lateinit var quranAdapter: QuranAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +45,6 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
     }
 
     override fun initializeComponents() {
-        quranAdapter = QuranAdapter(this)
         rvSuras.adapter = quranAdapter
         btnRetry.setOnClickListener {
             quranViewModel.startQuranImplementation()
@@ -56,14 +56,6 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
     }
 
     override fun performDi() {
-//        componentHelper = DaggerQuranComponent.builder()
-//            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-//            .build()
-//
-//        componentHelper.inject(this)
-//
-//        component = componentHelper
-
         AndroidSupportInjection.inject(this)
     }
 

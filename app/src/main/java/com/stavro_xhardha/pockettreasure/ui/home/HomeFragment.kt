@@ -13,7 +13,6 @@ import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.PLAY_STORE_URL
-import com.stavro_xhardha.pockettreasure.brain.initViewModel
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -71,7 +70,6 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initViewModel() {
-        homeViewModel = initViewModel(viewModelFactory, HomeViewModel::class.java)
         homeViewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         homeViewModel.initWorker()
     }

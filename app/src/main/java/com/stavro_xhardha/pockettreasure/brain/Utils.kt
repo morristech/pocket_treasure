@@ -103,6 +103,3 @@ fun startWorkManager() {
 
     WorkManager.getInstance().enqueue(compressionWork)
 }
-
-fun Fragment.initViewModel(factory: ViewModelProvider.Factory, viewModelClass: Class<out ViewModel>): <out ViewModel> =
-ViewModelProviders.of(this, factory).get(viewModelClass)

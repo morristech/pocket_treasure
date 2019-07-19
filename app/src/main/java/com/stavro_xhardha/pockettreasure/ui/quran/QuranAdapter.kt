@@ -10,8 +10,9 @@ import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.DIFF_UTIL_QURAN
 import com.stavro_xhardha.pockettreasure.model.Surah
 import kotlinx.android.synthetic.main.single_item_surah.view.*
+import javax.inject.Inject
 
-class QuranAdapter(val quranAdapterContract: QuranAdapterContract) :
+class QuranAdapter @Inject constructor(val quranAdapterContract: QuranAdapterContract) :
     ListAdapter<Surah, QuranAdapter.QuranViewHolder>(DIFF_UTIL_QURAN) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuranViewHolder =
         QuranViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_surah, parent, false))
