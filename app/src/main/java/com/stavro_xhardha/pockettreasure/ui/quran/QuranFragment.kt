@@ -10,21 +10,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_quran.*
 import javax.inject.Inject
 
 class QuranFragment : BaseFragment(), QuranAdapterContract {
-
     @Inject
-    lateinit var quranFragmentFactory: QuranFragmentFactory
+    lateinit var factory: PocketTreasureViewModelFactory
 
     private lateinit var quranViewModel: QuranViewModel
     private lateinit var quranAdapter: QuranAdapter
-    private lateinit var componentHelper: QuranComponent
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,17 +49,11 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
     }
 
     override fun initViewModel() {
-        quranViewModel = ViewModelProviders.of(this, quranFragmentFactory).get(QuranViewModel::class.java)
+        quranViewModel = ViewModelProviders.of(this, factory).get(QuranViewModel::class.java)
     }
 
     override fun performDi() {
-        componentHelper = DaggerQuranComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build()
-
-        componentHelper.inject(this)
-
-        component = componentHelper
+        component.inject(this)
     }
 
     override fun observeTheLiveData() {
@@ -85,12 +77,5 @@ class QuranFragment : BaseFragment(), QuranAdapterContract {
     override fun onSurahClicked(surahsNumber: Int) {
         val action = QuranFragmentDirections.actionQuranFragmentToAyaFragment(surahsNumber)
         findNavController().navigate(action)
-    }
-
-    companion object {
-        private var component: QuranComponent? = null
-
-        @JvmStatic
-        fun getComponent(): QuranComponent? = component
     }
 }

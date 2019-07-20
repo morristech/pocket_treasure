@@ -2,8 +2,9 @@ package com.stavro_xhardha.pockettreasure.ui.map
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel;
+import javax.inject.Inject
 
-class MapViewModel(private val mapRepository: MapRepository) : ViewModel() {
+class MapViewModel @Inject constructor(private val mapRepository: MapRepository) : ViewModel() {
 
     val city: MutableLiveData<String> = MutableLiveData()
 

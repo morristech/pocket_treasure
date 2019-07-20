@@ -8,18 +8,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
 import com.stavro_xhardha.pockettreasure.brain.PLAY_STORE_URL
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : BaseFragment() {
 
     @Inject
-    lateinit var homeViewModelFactory: HomeViewModelFactory
+    lateinit var factory: PocketTreasureViewModelFactory
 
     private lateinit var homeViewModel: HomeViewModel
 
@@ -65,14 +65,11 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun performDi() {
-        DaggerHomeComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build()
-            .inject(this)
+        component.inject(this)
     }
 
     override fun initViewModel() {
-        homeViewModel = ViewModelProviders.of(this, homeViewModelFactory).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProviders.of(this, factory).get(HomeViewModel::class.java)
         homeViewModel.initWorker()
     }
 

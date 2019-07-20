@@ -1,16 +1,19 @@
 package com.stavro_xhardha.pockettreasure.ui.settings
 
+//import com.sxhardha.smoothie.Smoothie
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.brain.*
-//import com.sxhardha.smoothie.Smoothie
+import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
+import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
+import com.stavro_xhardha.pockettreasure.brain.startWorkManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SettingsViewModel(private val settingsRepository: SettingsRepository) : ViewModel() {
+class SettingsViewModel @Inject constructor(private val settingsRepository: SettingsRepository) : ViewModel() {
     private val _fajrCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _dhuhrCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _asrCheck: MutableLiveData<Boolean> = MutableLiveData()

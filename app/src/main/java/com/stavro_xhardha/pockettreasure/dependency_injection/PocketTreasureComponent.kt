@@ -6,12 +6,21 @@ import com.squareup.picasso.Picasso
 import com.stavro_xhardha.pockettreasure.background.OfflinePrayerScheduler
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.TreasureDatabase
+import com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragment
+import com.stavro_xhardha.pockettreasure.ui.home.HomeFragment
+import com.stavro_xhardha.pockettreasure.ui.names.NamesFragment
+import com.stavro_xhardha.pockettreasure.ui.news.NewsFragment
+import com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment
+import com.stavro_xhardha.pockettreasure.ui.quran.aya.AyaFragment
+import com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment
+import com.stavro_xhardha.pockettreasure.ui.settings.country_settings_dialog.CountryAndCapitalSelectionFragment
+import com.stavro_xhardha.pockettreasure.ui.setup.SetupFragment
 import com.stavro_xhardha.rocket.Rocket
 import dagger.BindsInstance
 import dagger.Component
 
 @ApplicationScope
-@Component(modules = [NetworkModule::class, PreferencesModule::class, DatabaseModule::class, ImageModule::class, OfflineSchedulerModule::class])
+@Component(modules = [NetworkModule::class, PreferencesModule::class, DatabaseModule::class, ImageModule::class, OfflineSchedulerModule::class, ViewModelModule::class])
 interface PocketTreasureComponent {
     fun getTreasureApi(): TreasureApi
 
@@ -24,6 +33,16 @@ interface PocketTreasureComponent {
     fun wallpaperManager(): WallpaperManager
 
     fun offlineScheduler(): OfflinePrayerScheduler
+
+    fun inject(fragment: GalleryFragment)
+    fun inject(fragment: HomeFragment)
+    fun inject(fragment: NamesFragment)
+    fun inject(fragment: NewsFragment)
+    fun inject(fragment: AyaFragment)
+    fun inject(fragment: QuranFragment)
+    fun inject(fragment: CountryAndCapitalSelectionFragment)
+    fun inject(fragment: SettingsFragment)
+    fun inject(fragment: SetupFragment)
 
     @Component.Factory
     interface Factory {

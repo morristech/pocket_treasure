@@ -11,14 +11,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
 import kotlinx.android.synthetic.main.fragment_aya.*
 import javax.inject.Inject
 
 class AyaFragment : BaseFragment() {
-
     @Inject
-    lateinit var ayaFragmentFactory: AyaFragmentFactory
+    lateinit var factory: PocketTreasureViewModelFactory
     private lateinit var ayaViewModel: AyaViewModel
     private lateinit var ayasAdapter: AyasAdapter
     private val mediaPlayer = MediaPlayer()
@@ -45,13 +44,13 @@ class AyaFragment : BaseFragment() {
     }
 
     override fun initViewModel() {
-        ayaViewModel = ViewModelProviders.of(this, ayaFragmentFactory).get(AyaViewModel::class.java)
+        ayaViewModel = ViewModelProviders.of(this, factory).get(AyaViewModel::class.java)
         val ayasNumber = args.ayasNumber
         ayaViewModel.startSuraDataBaseCall(ayasNumber)
     }
 
     override fun performDi() {
-        DaggerAyaComponent.builder().quranComponent(QuranFragment.getComponent()).build().inject(this)
+        component.inject(this)
     }
 
     override fun observeTheLiveData() {

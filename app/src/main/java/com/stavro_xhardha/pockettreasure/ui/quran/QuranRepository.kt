@@ -8,8 +8,9 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.AyasDao
 import com.stavro_xhardha.pockettreasure.room_db.SurahsDao
 import retrofit2.Response
+import javax.inject.Inject
 
-class QuranRepository(
+class QuranRepository @Inject constructor(
     val treasureApi: TreasureApi,
     val surahsDao: SurahsDao,
     val ayasDao: AyasDao

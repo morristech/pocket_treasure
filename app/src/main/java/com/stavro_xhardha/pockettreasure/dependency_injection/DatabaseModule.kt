@@ -9,11 +9,30 @@ import dagger.Provides
 
 @Module
 class DatabaseModule {
-
     @Provides
     @ApplicationScope
     fun provideRoomDatabase(context: Application): TreasureDatabase = Room.databaseBuilder(
         context,
         TreasureDatabase::class.java, TREASURE_DATABASE_NAME
     ).build()
+
+    @Provides
+    @ApplicationScope
+    fun providesNamesDao(database: TreasureDatabase) = database.namesDao()
+
+    @Provides
+    @ApplicationScope
+    fun providesSurahsDao(database: TreasureDatabase) = database.surahsDao()
+
+    @Provides
+    @ApplicationScope
+    fun providesAyahDao(database: TreasureDatabase) = database.ayasDao()
+
+    @Provides
+    @ApplicationScope
+    fun providesCountriesDao(database: TreasureDatabase) = database.countriesDao()
+
+    @Provides
+    @ApplicationScope
+    fun providesPrayerTimesDao(database: TreasureDatabase) = database.prayerTimesDao()
 }
