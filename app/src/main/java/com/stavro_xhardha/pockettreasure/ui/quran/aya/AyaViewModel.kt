@@ -7,8 +7,9 @@ import androidx.paging.PagedList
 import com.stavro_xhardha.pockettreasure.brain.buildPagedList
 import com.stavro_xhardha.pockettreasure.model.Aya
 import com.stavro_xhardha.pockettreasure.room_db.AyasDao
+import javax.inject.Inject
 
-class AyaViewModel(private val ayasDao: AyasDao) : ViewModel() {
+class AyaViewModel @Inject constructor(private val ayasDao: AyasDao) : ViewModel() {
 
     lateinit var ayas: LiveData<PagedList<Aya>>
 

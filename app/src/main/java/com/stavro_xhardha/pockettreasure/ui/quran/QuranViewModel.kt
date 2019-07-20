@@ -10,8 +10,9 @@ import com.stavro_xhardha.pockettreasure.model.Surah
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class QuranViewModel(private val repository: QuranRepository) : ViewModel() {
+class QuranViewModel @Inject constructor(private val repository: QuranRepository) : ViewModel() {
 
     private val _surahs: MutableLiveData<List<Surah>> = MutableLiveData()
     private val _errorVisibility: MutableLiveData<Int> = MutableLiveData()

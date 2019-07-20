@@ -2,7 +2,6 @@ package com.stavro_xhardha.pockettreasure.ui.gallery
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,22 +12,23 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.stavro_xhardha.PocketTreasureApplication
+import com.squareup.picasso.Picasso
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.brain.Status
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_gallery.*
 import javax.inject.Inject
 
 class GalleryFragment : BaseFragment(), GalleryContract {
-
     @Inject
-    lateinit var galleryViewModelFactory: GalleryViewModelFactory
+    lateinit var factory: PocketTreasureViewModelFactory
     @Inject
-    lateinit var galleryAdapter: GalleryAdapter
+    lateinit var picasso: Picasso
 
     private lateinit var galleryViewModel: GalleryViewModel
+    private lateinit var galleryAdapter: GalleryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +47,7 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     }
 
     override fun initializeComponents() {
+        galleryAdapter = GalleryAdapter(this, picasso)
         rvGallery.layoutManager = GridLayoutManager(activity, 3)
         rvGallery.adapter = galleryAdapter
         btnRetry.setOnClickListener {
@@ -55,13 +56,11 @@ class GalleryFragment : BaseFragment(), GalleryContract {
     }
 
     override fun initViewModel() {
-        galleryViewModel = ViewModelProviders.of(this, galleryViewModelFactory).get(GalleryViewModel::class.java)
+        galleryViewModel = ViewModelProviders.of(this, factory).get(GalleryViewModel::class.java)
     }
 
     override fun performDi() {
-        DaggerGalleryComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .galleryModule(GalleryModule(this))
-            .build().inject(this)
+        component.inject(this)
     }
 
     override fun observeTheLiveData() {

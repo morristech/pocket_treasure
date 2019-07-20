@@ -8,17 +8,18 @@ import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.News
 import com.stavro_xhardha.rocket.Rocket
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NewsViewModel(
+class NewsViewModel @Inject constructor(
     dataSourceFactory: NewsDataSourceFactory,
     val rocket: Rocket
 ) : ViewModel() {
     private var listing: Listing<News>
     private val _enterDialogVisibility = MutableLiveData<Boolean>()
     var enterDialogVisibility = _enterDialogVisibility
-    var newsData: LiveData<PagedList<News>>
-    var networkState: LiveData<NetworkState>
-    var refreshState: LiveData<NetworkState>
+    private var newsData: LiveData<PagedList<News>>
+    private var networkState: LiveData<NetworkState>
+    private var refreshState: LiveData<NetworkState>
 
     init {
 

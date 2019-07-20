@@ -15,12 +15,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
-import com.afollestad.materialdialogs.callbacks.onShow
 import com.google.android.material.snackbar.Snackbar
-import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.*
+import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
+import com.stavro_xhardha.pockettreasure.brain.Status
+import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_news.*
 import javax.inject.Inject
@@ -29,7 +30,7 @@ import javax.inject.Inject
 class NewsFragment : BaseFragment(), NewsAdapterContract {
 
     @Inject
-    lateinit var newsViewModelFactory: NewsViewModelFactory
+    lateinit var factory: PocketTreasureViewModelFactory
 
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var newsAdapter: NewsAdapter
@@ -63,12 +64,11 @@ class NewsFragment : BaseFragment(), NewsAdapterContract {
     }
 
     override fun initViewModel() {
-        newsViewModel = ViewModelProviders.of(this, newsViewModelFactory).get(NewsViewModel::class.java)
+        newsViewModel = ViewModelProviders.of(this, factory).get(NewsViewModel::class.java)
     }
 
     override fun performDi() {
-        DaggerNewsComponent.builder().pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+        component.inject(this)
     }
 
     override fun observeTheLiveData() {

@@ -8,14 +8,15 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.UnsplashResult
+import javax.inject.Inject
 
-class GalleryViewModel(
-    val galleryDataSourceFactory: GalleryDataSourceFactory
+class GalleryViewModel @Inject constructor(
+    private val galleryDataSourceFactory: GalleryDataSourceFactory
 ) : ViewModel() {
     private var listing: Listing<UnsplashResult>
-    var galleryData: LiveData<PagedList<UnsplashResult>>
-    var networkStateLiveData: LiveData<NetworkState>
-    var refreshState: LiveData<NetworkState>
+    private var galleryData: LiveData<PagedList<UnsplashResult>>
+    private var networkStateLiveData: LiveData<NetworkState>
+    private var refreshState: LiveData<NetworkState>
 
     init {
 

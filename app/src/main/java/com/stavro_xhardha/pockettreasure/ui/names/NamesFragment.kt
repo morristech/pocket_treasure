@@ -10,17 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_names.*
 import javax.inject.Inject
 
 class NamesFragment : BaseFragment() {
-
     @Inject
-    lateinit var namesFragmentProviderFactory: NamesViewModelProviderFactory
+    lateinit var factory: PocketTreasureViewModelFactory
 
     private lateinit var namesViewModel: NamesViewModel
     private lateinit var namesAdapter: NamesAdapter
@@ -33,13 +32,11 @@ class NamesFragment : BaseFragment() {
     }
 
     override fun performDi() {
-        DaggerNamesFragmentComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+        component.inject(this)
     }
 
     override fun initViewModel() {
-        namesViewModel = ViewModelProviders.of(this, namesFragmentProviderFactory)
+        namesViewModel = ViewModelProviders.of(this, factory)
             .get(NamesViewModel::class.java)
     }
 

@@ -10,17 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_settings.*
 import javax.inject.Inject
 
 class SettingsFragment : BaseFragment() {
-
     @Inject
-    lateinit var settingsFragmentFactory: SettingsFragmentFactory
+    lateinit var factory: PocketTreasureViewModelFactory
 
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var sharedViewModel: SharedViewModel
@@ -29,9 +28,6 @@ class SettingsFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedViewModel = activity?.run {
-            ViewModelProviders.of(this).get(SharedViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
@@ -71,14 +67,12 @@ class SettingsFragment : BaseFragment() {
     }
 
     override fun initViewModel() {
-        settingsViewModel =
-            ViewModelProviders.of(this, settingsFragmentFactory).get(SettingsViewModel::class.java)
+        settingsViewModel = ViewModelProviders.of(this, factory).get(SettingsViewModel::class.java)
+        sharedViewModel = ViewModelProviders.of(requireActivity()).get(SharedViewModel::class.java)
     }
 
     override fun performDi() {
-        DaggerSettingsFragmentComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+        component.inject(this)
     }
 
     override fun observeTheLiveData() {

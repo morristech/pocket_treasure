@@ -1,7 +1,6 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
-import com.stavro_xhardha.PocketTreasureApplication
-import com.stavro_xhardha.pockettreasure.*
-import com.stavro_xhardha.pockettreasure.brain.*
+import com.stavro_xhardha.pockettreasure.BaseFragment
+import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.android.synthetic.main.error_layout.*
 import kotlinx.android.synthetic.main.fragment_setup.*
@@ -20,7 +19,7 @@ import javax.inject.Inject
 
 class SetupFragment : BaseFragment(), SetupContract {
     @Inject
-    lateinit var setupViewModelFactory: SetupViewModelFactory
+    lateinit var factory: PocketTreasureViewModelFactory
 
     private lateinit var setupViewModel: SetupViewModel
     private lateinit var countryAdapter: CountryAdapter
@@ -33,13 +32,11 @@ class SetupFragment : BaseFragment(), SetupContract {
     }
 
     override fun performDi() {
-        DaggerSetupComponent.builder()
-            .pocketTreasureComponent(PocketTreasureApplication.getPocketTreasureComponent())
-            .build().inject(this)
+        component.inject(this)
     }
 
     override fun initViewModel() {
-        setupViewModel = ViewModelProviders.of(this, setupViewModelFactory).get(SetupViewModel::class.java)
+        setupViewModel = ViewModelProviders.of(this, factory).get(SetupViewModel::class.java)
     }
 
     override fun onListItemClick(country: Country) {
