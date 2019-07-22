@@ -6,13 +6,13 @@
                 android:id="@+id/rlNewsHolder"
                 android:background="@color/md_grey_100" android:layout_height="match_parent"
                 tools:context=".ui.news.NewsFragment">
-    <ProgressBar
-            android:id="@+id/pbNews"
-            android:visibility="gone"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+
+    <include layout="@layout/single_item_progress"
+             android:visibility="gone"
+             android:id="@+id/pbNews"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerInParent="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNews"

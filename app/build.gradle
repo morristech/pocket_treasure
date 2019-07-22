@@ -148,4 +148,7 @@ dependencies {
 
     testImplementation 'joda-time:joda-time:2.10.1'
 
+    //lottie
+    implementation 'com.airbnb.android:lottie:3.0.7'
+
 }
