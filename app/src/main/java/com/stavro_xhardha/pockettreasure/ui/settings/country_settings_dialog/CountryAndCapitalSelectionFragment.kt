@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
+import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.model.Country
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import com.stavro_xhardha.pockettreasure.ui.setup.CountryAdapter

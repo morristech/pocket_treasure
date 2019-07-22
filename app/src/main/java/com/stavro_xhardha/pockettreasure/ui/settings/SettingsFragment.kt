@@ -12,7 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
+import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_settings.*
 import javax.inject.Inject
