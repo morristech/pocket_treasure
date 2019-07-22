@@ -11,16 +11,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
-import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
+import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
 import kotlinx.android.synthetic.main.fragment_aya.*
 import javax.inject.Inject
 
 class AyaFragment : BaseFragment() {
     @Inject
     lateinit var factory: PocketTreasureViewModelFactory
+    @Inject
+    lateinit var mediaPlayer: MediaPlayer
+
     private lateinit var ayaViewModel: AyaViewModel
     private lateinit var ayasAdapter: AyasAdapter
-    private val mediaPlayer = MediaPlayer()
 
     private val args: AyaFragmentArgs by navArgs()
 
@@ -45,8 +47,8 @@ class AyaFragment : BaseFragment() {
 
     override fun initViewModel() {
         ayaViewModel = ViewModelProviders.of(this, factory).get(AyaViewModel::class.java)
-        val ayasNumber = args.ayasNumber
-        ayaViewModel.startSuraDataBaseCall(ayasNumber)
+        val surahsNumber = args.surahsNumber
+        ayaViewModel.startSuraDataBaseCall(surahsNumber)
     }
 
     override fun performDi() {

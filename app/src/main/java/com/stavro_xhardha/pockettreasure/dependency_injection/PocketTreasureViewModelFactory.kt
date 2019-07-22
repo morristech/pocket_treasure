@@ -1,10 +1,11 @@
-package com.stavro_xhardha.pockettreasure.brain
+package com.stavro_xhardha.pockettreasure.dependency_injection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject
 import javax.inject.Provider
 
+@ApplicationScope
 class PocketTreasureViewModelFactory @Inject constructor(
     private val creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
@@ -18,6 +19,5 @@ class PocketTreasureViewModelFactory @Inject constructor(
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
-
     }
 }

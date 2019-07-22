@@ -40,7 +40,9 @@ class AyasAdapter(val ayasContract: MediaPlayer) :
                     ivPlayImage.setImageResource(R.drawable.ic_stop_black_24dp)
                     ivPlayImage.tag = R.string.playing
                     try {
-                        mediaPlayer.setDataSource(aya.audioUrl.replace("http", "https"))
+                        val audioUrl = if (aya.audioUrl.contains("https")) aya.audioUrl else
+                            aya.audioUrl.replace("http", "https")
+                        mediaPlayer.setDataSource(audioUrl)
                         mediaPlayer.prepare()
                         mediaPlayer.start()
                     } catch (exception: Exception) {

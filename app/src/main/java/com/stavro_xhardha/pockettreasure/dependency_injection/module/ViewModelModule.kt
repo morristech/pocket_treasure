@@ -1,8 +1,9 @@
-package com.stavro_xhardha.pockettreasure.dependency_injection
+package com.stavro_xhardha.pockettreasure.dependency_injection.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
+import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
+import com.stavro_xhardha.pockettreasure.dependency_injection.ViewModelKey
 import com.stavro_xhardha.pockettreasure.ui.gallery.GalleryViewModel
 import com.stavro_xhardha.pockettreasure.ui.home.HomeViewModel
 import com.stavro_xhardha.pockettreasure.ui.map.MapViewModel

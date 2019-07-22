@@ -106,7 +106,7 @@
     </fragment>
     <fragment android:id="@+id/ayaFragment" android:name="com.stavro_xhardha.pockettreasure.ui.quran.aya.AyaFragment"
               android:label="بسم الله الرحمن الرحيم" tools:layout="@layout/fragment_aya">
-        <argument android:name="ayasNumber" app:argType="integer" android:defaultValue="0"/>
+        <argument android:name="surahsNumber" app:argType="integer" android:defaultValue="0"/>
     </fragment>
     <fragment android:id="@+id/countryAndCapitalSelectionFragment"
               android:name="com.stavro_xhardha.pockettreasure.ui.settings.country_settings_dialog.CountryAndCapitalSelectionFragment"

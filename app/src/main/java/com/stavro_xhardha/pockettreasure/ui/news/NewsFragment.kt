@@ -19,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.brain.APPLICATION_TAG
-import com.stavro_xhardha.pockettreasure.brain.PocketTreasureViewModelFactory
+import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.brain.Status
 import com.stavro_xhardha.pockettreasure.brain.isDebugMode
 import kotlinx.android.synthetic.main.error_layout.*

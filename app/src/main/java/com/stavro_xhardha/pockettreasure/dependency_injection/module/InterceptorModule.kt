@@ -1,5 +1,6 @@
-package com.stavro_xhardha.pockettreasure.dependency_injection
+package com.stavro_xhardha.pockettreasure.dependency_injection.module
 
+import com.stavro_xhardha.pockettreasure.dependency_injection.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
