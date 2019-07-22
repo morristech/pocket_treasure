@@ -23,13 +23,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-        <ProgressBar
-                android:id="@+id/pbSetup"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <include layout="@layout/single_item_progress"
+                 android:visibility="gone"
+                 android:id="@+id/pbSetup"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerInParent="true"/>
 
         <include layout="@layout/error_layout"
                  android:visibility="gone"

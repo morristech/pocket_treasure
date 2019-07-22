@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
                 android:background="@color/md_grey_100"
                 android:layout_height="match_parent"
                 tools:context=".ui.names.NamesFragment">
 
-    <ProgressBar
-            android:id="@+id/pbNames"
-            android:visibility="gone"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <include layout="@layout/single_item_progress"
+             android:visibility="gone"
+             android:id="@+id/pbNames"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerInParent="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNames"

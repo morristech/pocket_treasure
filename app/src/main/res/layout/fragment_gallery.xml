@@ -6,13 +6,12 @@
                 android:layout_width="match_parent" android:layout_height="match_parent"
                 tools:context=".ui.gallery.GalleryFragment">
 
-    <ProgressBar
-            android:id="@+id/pbGallery"
-            android:visibility="gone"
-            android:layout_centerInParent="true"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <include layout="@layout/single_item_progress"
+             android:visibility="gone"
+             android:id="@+id/pbGallery"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_centerInParent="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGallery"
