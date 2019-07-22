@@ -9,13 +9,15 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
 import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
 import kotlinx.android.synthetic.main.fragment_aya.*
 import javax.inject.Inject
 
-class AyaFragment : BaseFragment() {
+class AyaFragment : BaseFragment() , AyaContract{
+
     @Inject
     lateinit var factory: PocketTreasureViewModelFactory
     @Inject
@@ -40,7 +42,7 @@ class AyaFragment : BaseFragment() {
     }
 
     override fun initializeComponents() {
-        ayasAdapter = AyasAdapter(mediaPlayer)
+        ayasAdapter = AyasAdapter(mediaPlayer, this)
         rvAya.adapter = ayasAdapter
         pbAya.visibility = View.VISIBLE
     }
@@ -67,5 +69,9 @@ class AyaFragment : BaseFragment() {
                 pbAya.visibility = View.GONE
             }
         })
+    }
+
+    override fun onMediaPlayerError() {
+      Snackbar.make(view!!, R.string.cannot_play_sound_check_connection, Snackbar.LENGTH_LONG).show()
     }
 }
