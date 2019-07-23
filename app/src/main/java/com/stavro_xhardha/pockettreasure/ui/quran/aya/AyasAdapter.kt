@@ -12,20 +12,21 @@ import com.stavro_xhardha.pockettreasure.brain.FIRST_SURAH_SENTENCE
 import com.stavro_xhardha.pockettreasure.model.Aya
 import kotlinx.android.synthetic.main.single_item_aya.view.*
 
-class AyasAdapter(val ayasContract: MediaPlayer) :
+class AyasAdapter(val mediaPlayer: MediaPlayer, val ayaContract: AyaContract) :
     PagedListAdapter<Aya, AyasAdapter.AyasViewHolder>(DIFF_UTIL_AYA) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AyasViewHolder =
         AyasViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item_aya, parent, false))
 
     override fun onBindViewHolder(holder: AyasViewHolder, position: Int) {
-        getItem(position).let { holder.bind(it, ayasContract) }
+        getItem(position).let { holder.bind(it, mediaPlayer, ayaContract) }
     }
 
     class AyasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(
             aya: Aya?,
-            mediaPlayer: MediaPlayer
+            mediaPlayer: MediaPlayer,
+            ayaContract: AyaContract
         ) = with(itemView) {
             if (aya?.ayatText!!.contains(FIRST_SURAH_SENTENCE) && aya.surahNumber != 1) {
                 val newAya = aya.ayatText.substring(FIRST_SURAH_SENTENCE.length, aya.ayatText.length)
@@ -37,20 +38,24 @@ class AyasAdapter(val ayasContract: MediaPlayer) :
 
             ivPlayImage.setOnClickListener {
                 if (!mediaPlayer.isPlaying) {
-                    ivPlayImage.setImageResource(R.drawable.ic_stop_black_24dp)
-                    ivPlayImage.tag = R.string.playing
                     try {
                         val audioUrl = if (aya.audioUrl.contains("https")) aya.audioUrl else
                             aya.audioUrl.replace("http", "https")
                         mediaPlayer.setDataSource(audioUrl)
-                        mediaPlayer.prepare()
-                        mediaPlayer.start()
+                        mediaPlayer.prepareAsync()
+
+                        mediaPlayer.setOnPreparedListener { mediaPlayer ->
+                            mediaPlayer.start()
+                            ivPlayImage.setImageResource(R.drawable.ic_stop_black_24dp)
+                            ivPlayImage.tag = R.string.playing
+                        }
                     } catch (exception: Exception) {
                         exception.printStackTrace()
                         ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)
                         ivPlayImage.tag = R.string.stoped
+                        ayaContract.onMediaPlayerError()
                     }
-                    mediaPlayer.setOnCompletionListener {
+                    mediaPlayer.setOnCompletionListener { mediaPlayer ->
                         mediaPlayer.stop()
                         mediaPlayer.reset()
                         ivPlayImage.setImageResource(R.drawable.ic_play_arrow_black_24dp)

@@ -92,5 +92,6 @@
     <string name="default_country_and_capital">Tirana, Albania</string>
     <string name="share">Share</string>
     <string name="share_app">Share App</string>
+    <string name="cannot_play_sound_check_connection">Cannot play sound, please check your connection</string>
 
 </resources>
