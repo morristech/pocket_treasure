@@ -34,7 +34,7 @@ class OfflinePrayerScheduler @Inject constructor(
                 rocket.writeBoolean(WORKER_FIRED_KEY, false)
                 throw RuntimeException(" Crash, Boom , Pew Pew, 1st January yet to come or has passed :) ")
             } else {
-                startWorkManager()
+                startWorkManager(context)
             }
         }
     }

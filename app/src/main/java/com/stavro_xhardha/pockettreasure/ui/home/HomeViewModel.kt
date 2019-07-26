@@ -1,6 +1,7 @@
 package com.stavro_xhardha.pockettreasure.ui.home
 
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,6 +33,9 @@ class HomeViewModel @Inject constructor(
     val asrColor = MutableLiveData<Int>()
     val maghribColor = MutableLiveData<Int>()
     val ishaColor = MutableLiveData<Int>()
+    private val _workManagerHasBeenFired = MutableLiveData<Boolean>()
+
+    val workManagerHasBeenFired: LiveData<Boolean> = _workManagerHasBeenFired
 
     fun loadPrayerTimes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -233,10 +237,13 @@ class HomeViewModel @Inject constructor(
 
     fun initWorker() {
         viewModelScope.launch {
-            if (!homeRepository.isWorkerFired()) {
-                startWorkManager()
-                homeRepository.updateWorkerFired()
-            }
+            _workManagerHasBeenFired.postValue(homeRepository.isWorkerFired())
+        }
+    }
+
+    fun updateWorkManagerFiredState() {
+        viewModelScope.launch {
+            homeRepository.updateWorkerFired()
         }
     }
 }

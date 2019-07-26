@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.stavro_xhardha.pockettreasure.BaseFragment
 import com.stavro_xhardha.pockettreasure.R
+import com.stavro_xhardha.pockettreasure.brain.startWorkManager
 import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -98,6 +99,11 @@ class SettingsFragment : BaseFragment() {
         sharedViewModel.updatedCountry.observe(this, Observer {
             settingsViewModel.resetDataForWorker()
             tvCountryAndCapital.text = it
+        })
+
+        settingsViewModel.workManagerReadyToStart.observe(this, Observer {
+            if (it)
+                startWorkManager(requireActivity())
         })
     }
 }
