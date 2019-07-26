@@ -1,5 +1,6 @@
 package com.stavro_xhardha.pockettreasure.brain
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
@@ -90,7 +91,7 @@ fun decrementIdlingResource() {
         Smoothie.endProcess()
 }
 
-fun startWorkManager() {
+fun startWorkManager(context: Context) {
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
@@ -98,5 +99,5 @@ fun startWorkManager() {
         .setConstraints(constraints)
         .build()
 
-    WorkManager.getInstance().enqueue(compressionWork)
+    WorkManager.getInstance(context).enqueue(compressionWork)
 }

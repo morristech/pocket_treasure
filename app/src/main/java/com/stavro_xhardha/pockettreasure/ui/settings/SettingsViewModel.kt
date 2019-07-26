@@ -20,6 +20,7 @@ class SettingsViewModel @Inject constructor(private val settingsRepository: Sett
     private val _maghribCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _ishaCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _countryAndCapital: MutableLiveData<String> = MutableLiveData()
+    private val _workManagerReadyToStart = MutableLiveData<Boolean>()
 
     val fajrCheck: LiveData<Boolean> = _fajrCheck
     val dhuhrCheck: LiveData<Boolean> = _dhuhrCheck
@@ -27,6 +28,7 @@ class SettingsViewModel @Inject constructor(private val settingsRepository: Sett
     val maghribCheck: LiveData<Boolean> = _maghribCheck
     val ishaCheck: LiveData<Boolean> = _ishaCheck
     val countryAndCapital: LiveData<String> = _countryAndCapital
+    val workManagerReadyToStart: LiveData<Boolean> = _workManagerReadyToStart
 
     private var fajrCheckHelper: Boolean = false
     private var dhuhrCheckHelper: Boolean = false
@@ -118,7 +120,9 @@ class SettingsViewModel @Inject constructor(private val settingsRepository: Sett
     fun resetDataForWorker() {
         viewModelScope.launch {
             settingsRepository.deleteAllDataInside()
-            startWorkManager()
+            withContext(Dispatchers.Main) {
+                _workManagerReadyToStart.value = true
+            }
         }
     }
 }
