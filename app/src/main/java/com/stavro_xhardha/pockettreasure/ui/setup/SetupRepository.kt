@@ -42,4 +42,29 @@ class SetupRepository @Inject constructor(
             }
         }
     }
+
+    suspend fun isLocationProvided(): Boolean =
+        rocket.readFloat(LATITUDE_KEY) != 0.toFloat() && rocket.readFloat(LONGITUDE_KEY) != 0.toFloat()
+                && rocket.readString(CAPITAL_SHARED_PREFERENCES_KEY)!!.isNotEmpty() && rocket.readString(
+            COUNTRY_SHARED_PREFERENCE_KEY
+        )!!.isNotEmpty()
+
+    suspend fun updateCountryAndLocation(
+        country: String,
+        cityName: String,
+        latitude: Double,
+        longitude: Double
+    ) {
+        rocket.writeString(COUNTRY_SHARED_PREFERENCE_KEY, country)
+        rocket.writeString(CAPITAL_SHARED_PREFERENCES_KEY, cityName)
+        rocket.writeBoolean(COUNTRY_UPDATED, true)
+        rocket.writeFloat(LATITUDE_KEY, latitude.toFloat())
+        rocket.writeFloat(LONGITUDE_KEY, longitude.toFloat())
+    }
+
+    suspend fun writeDefaultValues() {
+        rocket.writeFloat(LATITUDE_KEY, 0.toFloat())
+        rocket.writeFloat(LONGITUDE_KEY, 0.toFloat())
+    }
+
 }
