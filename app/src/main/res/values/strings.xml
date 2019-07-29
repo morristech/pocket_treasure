@@ -101,6 +101,6 @@
     <string name="values_cannot_be_updated">Location cannot be updated</string>
     <string name="location_updated_successfully">Location Updated Successfully</string>
     <string name="compass">Qibla Compass</string>
-    <string name="found">Found</string>
+    <string name="found">Qibla found</string>
 
 </resources>
