@@ -37,8 +37,6 @@ class SetupFragment : BaseFragment() {
     @Inject
     lateinit var factory: PocketTreasureViewModelFactory
 
-    //todo refactor
-
     private lateinit var setupViewModel: SetupViewModel
     private var locationRequest: LocationRequest? = null
     private lateinit var locationCallback: LocationCallback
@@ -88,7 +86,6 @@ class SetupFragment : BaseFragment() {
         }
     }
 
-    @SuppressLint("MissingPermission")
     private fun getUserLocation() {
         locationRequest = LocationRequest.create()?.apply {
             interval = 10000

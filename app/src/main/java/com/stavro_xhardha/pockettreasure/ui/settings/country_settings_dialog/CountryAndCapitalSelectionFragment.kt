@@ -53,7 +53,7 @@ class CountryAndCapitalSelectionFragment : DialogFragment(), SetupContract {
         })
 
         countrySelectionViewModel.countryAndCapital.observe(this, Observer {
-            sharedViewModel.updateCountry(it)
+            //sharedViewModel.updateCountry(it)
         })
 
         countrySelectionViewModel.fragmentReadyToClose.observe(this, Observer {

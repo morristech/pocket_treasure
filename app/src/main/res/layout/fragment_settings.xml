@@ -175,7 +175,7 @@
           android:background="@color/md_grey_300"
           android:layout_height="@dimen/global_unit_smaller_xxxxxx"/>
     <LinearLayout
-            android:id="@+id/llCountryAndCapital"
+            android:id="@+id/llLocation"
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/global_unit_bigger"
@@ -185,14 +185,14 @@
             android:layout_height="wrap_content">
         <TextView
                 android:textStyle="bold"
-                android:text="@string/country"
+                android:text="@string/location"
                 android:textSize="@dimen/text_global_unit_bigger_x"
                 android:textColor="@color/md_grey_700"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/tvCountryAndCapital"
-                android:text="@string/default_country_and_capital"
+                android:text="@string/click_to_change_location"
                 android:textSize="@dimen/text_global_unit_normal"
                 android:textColor="@color/md_grey_500"
                 android:layout_width="match_parent"

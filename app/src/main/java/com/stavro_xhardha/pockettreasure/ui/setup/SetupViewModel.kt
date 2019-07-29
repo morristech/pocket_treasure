@@ -3,14 +3,16 @@ package com.stavro_xhardha.pockettreasure.ui.setup
 import android.database.sqlite.SQLiteException
 import android.location.Geocoder
 import android.view.View
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
 

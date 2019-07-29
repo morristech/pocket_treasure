@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.brain.*
+import com.stavro_xhardha.pockettreasure.brain.ACCENT_BACKGROUND
+import com.stavro_xhardha.pockettreasure.brain.WHITE_BACKGROUND
+import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
+import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
 import com.stavro_xhardha.pockettreasure.model.PrayerTimeResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -237,7 +240,8 @@ class HomeViewModel @Inject constructor(
 
     fun initWorker() {
         viewModelScope.launch {
-            _workManagerHasBeenFired.postValue(homeRepository.isWorkerFired())
+            val isWorkerFired = homeRepository.isWorkerFired()
+            _workManagerHasBeenFired.postValue(isWorkerFired)
         }
     }
 

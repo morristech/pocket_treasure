@@ -7,7 +7,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions
 import androidx.test.espresso.contrib.DrawerMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.web.matcher.AmbiguousElementMatcherException
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import org.junit.After

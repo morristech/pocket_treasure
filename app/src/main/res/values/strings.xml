@@ -96,5 +96,9 @@
     <string name="service_not_available">Service not available</string>
     <string name="invalid_coorinates">Invalid Coordinates</string>
     <string name="settings_saved">Setttings saved</string>
+    <string name="location">Location</string>
+    <string name="click_to_change_location">Click here if you want to change location of your device</string>
+    <string name="values_cannot_be_updated">Location cannot be updated</string>
+    <string name="location_updated_successfully">Location Updated Successfully</string>
 
 </resources>

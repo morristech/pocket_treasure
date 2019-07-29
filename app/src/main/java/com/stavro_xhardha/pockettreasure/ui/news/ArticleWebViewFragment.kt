@@ -2,19 +2,12 @@ package com.stavro_xhardha.pockettreasure.ui.news
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
-import androidx.activity.OnBackPressedCallback
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.stavro_xhardha.pockettreasure.MainActivity
-
 import com.stavro_xhardha.pockettreasure.R
 import kotlinx.android.synthetic.main.fragment_article_web_view.*
 
