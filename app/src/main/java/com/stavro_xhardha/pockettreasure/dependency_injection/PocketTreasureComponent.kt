@@ -8,6 +8,7 @@ import com.stavro_xhardha.pockettreasure.background.OfflinePrayerScheduler
 import com.stavro_xhardha.pockettreasure.dependency_injection.module.*
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.TreasureDatabase
+import com.stavro_xhardha.pockettreasure.ui.compass.CompassFragment
 import com.stavro_xhardha.pockettreasure.ui.gallery.GalleryFragment
 import com.stavro_xhardha.pockettreasure.ui.home.HomeFragment
 import com.stavro_xhardha.pockettreasure.ui.names.NamesFragment
@@ -15,7 +16,6 @@ import com.stavro_xhardha.pockettreasure.ui.news.NewsFragment
 import com.stavro_xhardha.pockettreasure.ui.quran.QuranFragment
 import com.stavro_xhardha.pockettreasure.ui.quran.aya.AyaFragment
 import com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment
-import com.stavro_xhardha.pockettreasure.ui.settings.country_settings_dialog.CountryAndCapitalSelectionFragment
 import com.stavro_xhardha.pockettreasure.ui.setup.SetupFragment
 import com.stavro_xhardha.rocket.Rocket
 import dagger.BindsInstance
@@ -47,7 +47,7 @@ interface PocketTreasureComponent {
     fun inject(fragment: NewsFragment)
     fun inject(fragment: AyaFragment)
     fun inject(fragment: QuranFragment)
-    fun inject(fragment: CountryAndCapitalSelectionFragment)
+    fun inject(fragment: CompassFragment)
     fun inject(fragment: SettingsFragment)
     fun inject(fragment: SetupFragment)
 

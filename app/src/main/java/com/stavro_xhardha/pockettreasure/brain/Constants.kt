@@ -68,6 +68,9 @@ const val PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB = 2005
 const val PENDING_INTENT_FIRE_NOTIFICATION_ISHA = 2006
 const val PENDING_INTENT_FIRE_MAIN_ACTIVITY = 2007
 
+const val MAKKAH_LATITUDE = 21.4225
+const val MAKKAH_LONGITUDE = 39.8262
+
 const val PRAYER_TITLE = "prayer_title"
 const val PRAYER_DESCRIPTION = "prayer_description"
 const val FAJR = "Fajr Time"

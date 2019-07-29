@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.stavro_xhardha.pockettreasure.dependency_injection.PocketTreasureViewModelFactory
 import com.stavro_xhardha.pockettreasure.dependency_injection.ViewModelKey
+import com.stavro_xhardha.pockettreasure.ui.compass.CompassViewModel
 import com.stavro_xhardha.pockettreasure.ui.gallery.GalleryViewModel
 import com.stavro_xhardha.pockettreasure.ui.home.HomeViewModel
 import com.stavro_xhardha.pockettreasure.ui.map.MapViewModel
@@ -12,7 +13,6 @@ import com.stavro_xhardha.pockettreasure.ui.news.NewsViewModel
 import com.stavro_xhardha.pockettreasure.ui.quran.QuranViewModel
 import com.stavro_xhardha.pockettreasure.ui.quran.aya.AyaViewModel
 import com.stavro_xhardha.pockettreasure.ui.settings.SettingsViewModel
-import com.stavro_xhardha.pockettreasure.ui.settings.country_settings_dialog.CountrySettingsViewModel
 import com.stavro_xhardha.pockettreasure.ui.setup.SetupViewModel
 import dagger.Binds
 import dagger.Module
@@ -63,8 +63,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(CountrySettingsViewModel::class)
-    abstract fun bindsCountrySettingsViewModel(viewModel: CountrySettingsViewModel): ViewModel
+    @ViewModelKey(CompassViewModel::class)
+    abstract fun bindsCountrySettingsViewModel(viewModel: CompassViewModel): ViewModel
 
     @Binds
     @IntoMap

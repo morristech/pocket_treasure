@@ -39,6 +39,10 @@
                 app:destination="@id/settingsFragment" app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action android:id="@+id/action_homeFragment_to_compassFragment" app:destination="@id/compassFragment"
+                app:popUpTo="@+id/homeFragment" app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim" app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
             android:id="@+id/namesFragment"
@@ -78,10 +82,7 @@
     <fragment android:id="@+id/settingsFragment"
               android:name="com.stavro_xhardha.pockettreasure.ui.settings.SettingsFragment"
               android:label="Settings"
-              tools:layout="@layout/fragment_settings">
-        <action android:id="@+id/action_settingsFragment_to_countryAndCapitalSelectionFragment"
-                app:destination="@id/countryAndCapitalSelectionFragment"/>
-    </fragment>
+              tools:layout="@layout/fragment_settings"/>
     <fragment android:id="@+id/setupFragment"
               android:name="com.stavro_xhardha.pockettreasure.ui.setup.SetupFragment"
               android:label="Pick country"
@@ -108,11 +109,10 @@
               android:label="بسم الله الرحمن الرحيم" tools:layout="@layout/fragment_aya">
         <argument android:name="surahsNumber" app:argType="integer" android:defaultValue="0"/>
     </fragment>
-    <fragment android:id="@+id/countryAndCapitalSelectionFragment"
-              android:name="com.stavro_xhardha.pockettreasure.ui.settings.country_settings_dialog.CountryAndCapitalSelectionFragment"
-              android:label="fragment_country_and_capital_selection"
-              tools:layout="@layout/fragment_country_and_capital_selection"/>
     <dialog
             android:id="@+id/dialogFragment"
             android:name="com.stavro_xhardha.pockettreasure.ui.settings.country_settings_dialog.CountryAndCapitalSelectionFragment"/>
+    <fragment android:id="@+id/compassFragment"
+              android:name="com.stavro_xhardha.pockettreasure.ui.compass.CompassFragment"
+              android:label="Qibla Compass" tools:layout="@layout/fragment_compass"/>
 </navigation>

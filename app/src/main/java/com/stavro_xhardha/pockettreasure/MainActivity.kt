@@ -21,12 +21,9 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.stavro_xhardha.PocketTreasureApplication
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.ui.SharedViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListener {
 
@@ -63,14 +60,6 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
                     }
                     RESULT_CANCELED -> {
                         if (findNavController(R.id.nav_host_fragment).currentDestination?.id == R.id.settingsFragment) {
-                            if (isDebugMode) {
-                                GlobalScope.launch {
-                                    val rocket =
-                                        PocketTreasureApplication.getPocketTreasureComponent().getSharedPreferences()
-                                    Log.d(APPLICATION_TAG, rocket.readFloat(LATITUDE_KEY).toString())
-                                    Log.d(APPLICATION_TAG, rocket.readFloat(LONGITUDE_KEY).toString())
-                                }
-                            }
                             Toast.makeText(this, R.string.values_cannot_be_updated, Toast.LENGTH_LONG).show()
                         } else {
                             finish()
@@ -123,7 +112,8 @@ class MainActivity : AppCompatActivity(), AppBarConfiguration.OnNavigateUpListen
                 R.id.galleryFragment,
                 R.id.newsFragment,
                 R.id.settingsFragment,
-                R.id.setupFragment
+                R.id.setupFragment,
+                R.id.compassFragment
             ),
             drawerLayout
         )

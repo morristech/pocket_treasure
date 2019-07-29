@@ -100,5 +100,7 @@
     <string name="click_to_change_location">Click here if you want to change location of your device</string>
     <string name="values_cannot_be_updated">Location cannot be updated</string>
     <string name="location_updated_successfully">Location Updated Successfully</string>
+    <string name="compass">Qibla Compass</string>
+    <string name="found">Found</string>
 
 </resources>
