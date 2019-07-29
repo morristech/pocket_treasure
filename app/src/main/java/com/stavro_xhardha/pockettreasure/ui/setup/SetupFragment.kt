@@ -1,7 +1,6 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder

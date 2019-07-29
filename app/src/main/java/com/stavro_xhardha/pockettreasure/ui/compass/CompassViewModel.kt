@@ -15,7 +15,9 @@ import kotlinx.coroutines.withContext
 import java.lang.Math.toDegrees
 import java.lang.Math.toRadians
 import javax.inject.Inject
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
 
 class CompassViewModel @Inject constructor(private val rocket: Rocket) : ViewModel() {
     private val _rotateAnimation = MutableLiveData<RotateAnimation>()

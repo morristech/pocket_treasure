@@ -31,9 +31,5 @@ class DatabaseModule {
 
     @Provides
     @ApplicationScope
-    fun providesCountriesDao(database: TreasureDatabase) = database.countriesDao()
-
-    @Provides
-    @ApplicationScope
     fun providesPrayerTimesDao(database: TreasureDatabase) = database.prayerTimesDao()
 }

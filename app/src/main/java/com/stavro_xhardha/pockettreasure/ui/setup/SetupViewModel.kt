@@ -1,13 +1,11 @@
 package com.stavro_xhardha.pockettreasure.ui.setup
 
-import android.database.sqlite.SQLiteException
 import android.location.Geocoder
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stavro_xhardha.pockettreasure.model.Country
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -16,7 +14,6 @@ import javax.inject.Inject
 
 class SetupViewModel @Inject constructor(private val setupRepository: SetupRepository) : ViewModel() {
 
-    val countriesList: MutableLiveData<ArrayList<Country>> = MutableLiveData()
     val pbVisibility: MutableLiveData<Int> = MutableLiveData()
     val errorVisibility: MutableLiveData<Int> = MutableLiveData()
     val contentVisibility: MutableLiveData<Int> = MutableLiveData()
@@ -35,46 +32,8 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
     val prayerNotificationDialogViaibility: LiveData<Boolean> = _prayerNotificationDialogVisibility
     private var locationTurnOfRequested: Boolean = false
 
-    private lateinit var listOfCountries: ArrayList<Country>
-
     init {
         checkLocationsettings()
-    }
-
-    fun loadListOfCountries() {
-        viewModelScope.launch(Dispatchers.IO) {
-            if (setupRepository.isCountryOrCapitalEmpty()) {
-                makeCountriesApiCall()
-                _locationProvided.postValue(true)
-            } else {
-                _locationProvided.postValue(false)
-            }
-        }
-    }
-
-    suspend fun makeCountriesApiCall() {
-        withContext(Dispatchers.Main) {
-            switchProgressBarOn()
-        }
-        try {
-            val countriesListResponse = setupRepository.makeCountryApiCallAsync()
-            if (countriesListResponse.isSuccessful) {
-                listOfCountries = countriesListResponse.body()!!
-                withContext(Dispatchers.Main) {
-                    showContent()
-                    countriesList.value = countriesListResponse.body()
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    showErrorLayout()
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            withContext(Dispatchers.Main) {
-                showErrorLayout()
-            }
-        }
     }
 
     fun switchProgressBarOn() {
@@ -95,25 +54,9 @@ class SetupViewModel @Inject constructor(private val setupRepository: SetupRepos
         errorVisibility.value = View.VISIBLE
     }
 
-    fun onCountrySelected(country: Country) {
-        viewModelScope.launch {
-            setupRepository.saveCountryToSharedPreferences(country)
-        }
-    }
-
     fun updateNotificationFlags() {
         viewModelScope.launch(Dispatchers.IO) {
             setupRepository.switchNotificationFlags()
-        }
-    }
-
-    fun saveCountriesToDatabase() {
-        viewModelScope.launch {
-            try {
-                setupRepository.saveCountriesToDatabase(listOfCountries)
-            } catch (e: SQLiteException) {
-                e.printStackTrace()
-            }
         }
     }
 
