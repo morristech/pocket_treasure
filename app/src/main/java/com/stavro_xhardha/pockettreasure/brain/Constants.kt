@@ -19,6 +19,8 @@ const val CLIENT_ID = "9c80ea2aa631bda7ec75798cd6f0cfc2008ea6152721d80913464c4fc
 const val CLIENT_SECRET = "a69a283d85e85b8a72309e50c219211ab13284c4e0190ae30199e8e1d0ac3aa3"
 const val GOOGLE_MAP_PLACE_SEARCH = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
 const val REQUEST_STORAGE_PERMISSION = 355
+const val REQUEST_LOCATION_PERMISSION = 366
+const val REQUEST_CHECK_LOCATION_SETTINGS = 367
 const val QURAN_API_CALL_BASE_URL = "https://api.alquran.cloud/v1/quran/ar.alafasy"
 const val FIRST_SURAH_SENTENCE = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
 const val PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.stavro_xhardha.pockettreasure"
@@ -51,10 +53,12 @@ const val NOTIFY_USER_FOR_DHUHR = "app_notify_dhuhr"
 const val NOTIFY_USER_FOR_ASR = "app_notify_asr"
 const val NOTIFY_USER_FOR_MAGHRIB = "app_notify_maghrib"
 const val NOTIFY_USER_FOR_ISHA = "app_notify_isha"
-const val COUNTRY_UPDATED= "app_country_updated"
+const val COUNTRY_UPDATED = "app_country_updated"
 const val HAS_ONCE_ENTERED_NEWS = "app_has_once_entered_news"
 const val WORKER_FIRED_KEY = "app_worker_has_been_fired"
 const val DATA_ARE_READY = "app_worker_started"
+const val LATITUDE_KEY = "app_latitude_key"
+const val LONGITUDE_KEY = "app_longitude_key"
 
 const val PENDING_INTENT_SYNC = 1001
 const val PENDING_INTENT_FIRE_NOTIFICATION_FAJR = 2002
@@ -63,6 +67,9 @@ const val PENDING_INTENT_FIRE_NOTIFICATION_ASR = 2004
 const val PENDING_INTENT_FIRE_NOTIFICATION_MAGHRIB = 2005
 const val PENDING_INTENT_FIRE_NOTIFICATION_ISHA = 2006
 const val PENDING_INTENT_FIRE_MAIN_ACTIVITY = 2007
+
+const val MAKKAH_LATITUDE = 21.4225
+const val MAKKAH_LONGITUDE = 39.8262
 
 const val PRAYER_TITLE = "prayer_title"
 const val PRAYER_DESCRIPTION = "prayer_description"

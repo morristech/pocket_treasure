@@ -2,7 +2,6 @@ package com.stavro_xhardha.pockettreasure.ui.settings
 
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.room_db.PrayerTimesDao
-import com.stavro_xhardha.pockettreasure.room_db.TreasureDatabase
 import com.stavro_xhardha.rocket.Rocket
 import javax.inject.Inject
 
@@ -45,5 +44,18 @@ class SettingsRepository @Inject constructor(val rocket: Rocket, val prayerTimes
 
     suspend fun deleteAllDataInside() {
         prayerTimesDao.deleteAllDataInside()
+    }
+
+    suspend fun updateCountryAndLocation(
+        country: String,
+        cityName: String,
+        latitude: Double,
+        longitude: Double
+    ) {
+        rocket.writeString(COUNTRY_SHARED_PREFERENCE_KEY, country)
+        rocket.writeString(CAPITAL_SHARED_PREFERENCES_KEY, cityName)
+        rocket.writeBoolean(COUNTRY_UPDATED, true)
+        rocket.writeFloat(LATITUDE_KEY, latitude.toFloat())
+        rocket.writeFloat(LONGITUDE_KEY, longitude.toFloat())
     }
 }

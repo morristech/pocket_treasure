@@ -4,7 +4,6 @@ import com.stavro_xhardha.pockettreasure.model.Name
 import com.stavro_xhardha.pockettreasure.model.NameResponse
 import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import com.stavro_xhardha.pockettreasure.room_db.NamesDao
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -1,6 +1,5 @@
 package com.stavro_xhardha.pockettreasure.ui.news
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.stavro_xhardha.pockettreasure.brain.*
@@ -10,9 +9,7 @@ import com.stavro_xhardha.pockettreasure.network.TreasureApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Response
-import java.util.concurrent.Executor
 import javax.inject.Inject
 
 class NewsDataSource @Inject constructor(val treasureApi: TreasureApi) :

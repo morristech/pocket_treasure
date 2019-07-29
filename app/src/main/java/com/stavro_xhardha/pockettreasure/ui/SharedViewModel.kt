@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 
 
 class SharedViewModel : ViewModel() {
+    private val _onGpsOpened = MutableLiveData<Boolean>()
 
-    val updatedCountry = MutableLiveData<String>()
+    val onGpsOpened = _onGpsOpened
 
-    fun updateCountry(country: String) {
-        updatedCountry.value = country
+    fun onGpsOpened() {
+        _onGpsOpened.value = true
     }
-
 }

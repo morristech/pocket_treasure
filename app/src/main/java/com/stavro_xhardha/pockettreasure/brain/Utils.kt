@@ -12,7 +12,6 @@ import com.stavro_xhardha.pockettreasure.BuildConfig
 import com.stavro_xhardha.pockettreasure.background.PrayerTimeWorkManager
 import com.stavro_xhardha.pockettreasure.model.*
 import com.sxhardha.smoothie.Smoothie
-import java.util.concurrent.atomic.AtomicInteger
 
 val isDebugMode: Boolean = BuildConfig.DEBUG
 

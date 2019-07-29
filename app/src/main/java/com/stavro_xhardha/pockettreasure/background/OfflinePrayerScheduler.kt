@@ -6,13 +6,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.annotation.VisibleForTesting
 import com.stavro_xhardha.pockettreasure.brain.*
 import com.stavro_xhardha.pockettreasure.model.PrayerTiming
 import com.stavro_xhardha.pockettreasure.room_db.PrayerTimesDao
 import com.stavro_xhardha.rocket.Rocket
 import org.joda.time.DateTime
-import java.lang.RuntimeException
 import javax.inject.Inject
 
 class OfflinePrayerScheduler @Inject constructor(

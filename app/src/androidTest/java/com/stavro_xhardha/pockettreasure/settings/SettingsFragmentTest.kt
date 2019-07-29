@@ -18,7 +18,8 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
 @RunWith(AndroidJUnit4::class)
 class SettingsFragmentTest {
@@ -124,7 +125,7 @@ class SettingsFragmentTest {
 
     @Test
     fun testDialogFragmentOpening(){
-        performClickOnViews(R.id.llCountryAndCapital)
+        performClickOnViews(R.id.llLocation)
         verify(mockNavController).navigate(R.id.dialogFragment)
     }
 

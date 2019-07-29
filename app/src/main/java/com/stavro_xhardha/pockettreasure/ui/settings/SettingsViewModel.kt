@@ -1,16 +1,17 @@
 package com.stavro_xhardha.pockettreasure.ui.settings
 
 //import com.sxhardha.smoothie.Smoothie
+import android.location.Geocoder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stavro_xhardha.pockettreasure.brain.decrementIdlingResource
 import com.stavro_xhardha.pockettreasure.brain.incrementIdlingResource
-import com.stavro_xhardha.pockettreasure.brain.startWorkManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(private val settingsRepository: SettingsRepository) : ViewModel() {
@@ -21,6 +22,16 @@ class SettingsViewModel @Inject constructor(private val settingsRepository: Sett
     private val _ishaCheck: MutableLiveData<Boolean> = MutableLiveData()
     private val _countryAndCapital: MutableLiveData<String> = MutableLiveData()
     private val _workManagerReadyToStart = MutableLiveData<Boolean>()
+    private val _locationSettingsRequest = MutableLiveData<Boolean>()
+    private val _locationRequestTurnOff = MutableLiveData<Boolean>()
+    private val _serviceNotAvailableVisibility = MutableLiveData<Boolean>()
+    private val _locationErrorVisibility = MutableLiveData<Boolean>()
+
+    val locationSettingsRequest: LiveData<Boolean> = _locationSettingsRequest
+    val locationRequestTurnOff: LiveData<Boolean> = _locationRequestTurnOff
+    val serviceNotAvailableVisibility: LiveData<Boolean> = _serviceNotAvailableVisibility
+    val locationerrorVisibility: LiveData<Boolean> = _locationErrorVisibility
+    private var locationTurnOfRequested: Boolean = false
 
     val fajrCheck: LiveData<Boolean> = _fajrCheck
     val dhuhrCheck: LiveData<Boolean> = _dhuhrCheck
@@ -35,6 +46,7 @@ class SettingsViewModel @Inject constructor(private val settingsRepository: Sett
     private var asrCheckCheckHelper: Boolean = false
     private var mahgribCheckCheckHelper: Boolean = false
     private var ishaCheckCheckHelper: Boolean = false
+    private var workerReadyToRestart = false
 
     init {
         listenToRepository()
@@ -120,8 +132,35 @@ class SettingsViewModel @Inject constructor(private val settingsRepository: Sett
     fun resetDataForWorker() {
         viewModelScope.launch {
             settingsRepository.deleteAllDataInside()
-            withContext(Dispatchers.Main) {
-                _workManagerReadyToStart.value = true
+            _workManagerReadyToStart.postValue(true)
+        }
+    }
+
+    fun convertToAdress(geocoder: Geocoder, latitude: Double, longitude: Double) {
+        viewModelScope.launch {
+            try {
+                val adresses = geocoder.getFromLocation(latitude, longitude, 1)
+                if (adresses.size != 0) {
+                    val cityName = adresses[0].adminArea
+                    val country = adresses[0].countryName
+                    settingsRepository.updateCountryAndLocation(country, cityName, latitude, longitude)
+                    if (!locationTurnOfRequested) {
+                        locationTurnOfRequested = true
+                    }
+                }
+                workerReadyToRestart = true
+            } catch (exception: IOException) {
+                exception.printStackTrace()
+                _serviceNotAvailableVisibility.postValue(true)
+                workerReadyToRestart = false
+            } catch (illegalArgumentException: IllegalArgumentException) {
+                illegalArgumentException.printStackTrace()
+                _locationErrorVisibility.postValue(true)
+                workerReadyToRestart = false
+            } finally {
+                _locationRequestTurnOff.postValue(true)
+                if (workerReadyToRestart)
+                    resetDataForWorker()
             }
         }
     }

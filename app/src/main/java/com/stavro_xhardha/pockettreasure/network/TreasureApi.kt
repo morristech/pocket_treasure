@@ -11,9 +11,6 @@ interface TreasureApi {
     @GET("asmaAlHusna")
     suspend fun getNintyNineNamesAsync(): Response<NameResponse>
 
-    @GET
-    suspend fun getCountriesListAsync(@Url url: String): Response<ArrayList<Country>>
-
     @GET("timingsByCity")
     suspend fun getPrayerTimesTodayAsync(
         @Query("city") city: String?,
