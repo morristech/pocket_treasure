@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.DiffUtil
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
@@ -99,4 +101,10 @@ fun startWorkManager(context: Context) {
         .build()
 
     WorkManager.getInstance(context).enqueue(compressionWork)
+}
+
+val MIGRATION_1_2 = object : Migration(1, 2){
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("DROP TABLE IF EXISTS countries")
+    }
 }
